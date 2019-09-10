@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="main">
+
+        <!-- Sign up form -->
+        <section class="signup" id="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">Sign up</h2>
+                        <!-- <form method="POST" action="/user/signup" class="register-form" id="register-form"> -->
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="name" id="name" placeholder="Your Name"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" id="email" placeholder="Your Email"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="pass" id="pass" placeholder="Password"/>
+                            </div>
+                            <!-- <div class="form-group">
+                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
+                            </div> -->
+                            <!-- <div class="form-group">
+                                <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+                                <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
+                            </div> -->
+                            <div class="form-group form-button">
+                                <input type="submit" onclick="signup()" name="signup" id="signup" class="form-submit" value="Register"/>
+                            </div>
+                            <div id="msg"></div>
+
+                        <!-- </form> -->
+                    </div>
+                    <div class="signup-image">
+                        <figure><a href="/index.html"><img src="/logo/logo.png"></a></figure>
+                        <a href="#sign-in" class="signup-image-link">I am already member</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sing in  Form -->
+        <section class="sign-in" id="sign-in">
+            <div class="container">
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <figure><a href="/index.html"><img src="/logo/logo.png"></a></figure>
+                        <a href="#signup" class="signup-image-link">Create an account</a>
+                    </div>
+
+                    <div class="signin-form">
+                        <h2 class="form-title">Sign In</h2>
+                        <!-- <form method="POST" action="/user/signup" class="register-form" id="login-form"> -->
+                            <div class="form-group">
+                                <label for="your_email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="text" email="your_email" id="your_email" placeholder="Your email"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="your_pass" id="your_pass" placeholder="Password"/>
+                            </div>
+                            <div id="msg2"></div>
+                            <div id="status"></div>
+                            <!-- <div class="form-group">
+                                <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
+                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
+                            </div> -->
+                            <div class="form-group form-button">
+                                <input type="submit" onclick="signin()" name="signin" id="signin" class="form-submit" value="Log in"/>
+                            </div>
+                        <!-- </form> -->
+                        <div class="social-login">
+                            <span class="social-label">Or login with</span>
+                            <ul class="socials">
+                                <!-- <li><a href="#" scope="public_profile,email" onlogin="checkLoginState();"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li> -->
+                                <li><a><fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-butto</a></li>
+                                <!-- <i class="display-flex-center zmdi zmdi-facebook" scope="public_profile,email" onlogin="checkLoginState();"></i>
+                                n> -->
+                                <!-- <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li> -->
+                                <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JS -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        
+        function signup() {
+        var xhr = new XMLHttpRequest();
+        
+        xhr.open("POST", "/user/signup");
+        
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        
+
+        var userInfo = { 
+            "name": document.getElementById("name").value,
+            "email": document.getElementById("email").value,
+            "pass": document.getElementById("pass").value
+        };
+         
+        xhr.send(JSON.stringify(userInfo));
+
+
+        xhr.onreadystatechange = function () {
+            
+            let msg = JSON.parse(xhr.responseText);
+            
+            if(msg.data) {
+                document.getElementById('msg').innerHTML = 'Successful sign up!';
+                document.getElementById("msg").style.color = "black";
+                localStorage.setItem("user_info", xhr.responseText);
+            }else if(msg.error){
+                document.getElementById('msg').innerHTML = 'Please use other email address!';
+                document.getElementById("msg").style.color = "red";
+            }
+        };
+
+        }
+
+    </script>
+
+    <script>
+        
+        function signin() {
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("POST", "/user/signin");
+
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        
+        var userInfo = {
+            "provider":"native", 
+            "email": document.getElementById("your_email").value,
+            "pass": document.getElementById("your_pass").value
+        };
+
+        xhr.send(JSON.stringify(userInfo));
+
+        xhr.onreadystatechange = function () {
+            
+            let msg = JSON.parse(xhr.responseText);
+            
+            if(msg.data) {
+                document.getElementById('msg2').innerHTML = 'Successful log in!';
+                document.getElementById("msg2").style.color = "black";
+                localStorage.setItem("user_info", xhr.responseText);
+            }else if(msg.error){
+                document.getElementById('msg2').innerHTML = 'Please try again or create an account!';
+                document.getElementById("msg2").style.color = "red";
+            }
+        };
+
+        }
+    </script>
+
+    
+    <script>
+      //FB SDK
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '2231839726913744',  //應用程式編碼
+          cookie     : true,
+          xfbml      : true,
+          version    : 'v3.3'  //預設版本
+        });
+        
+        //檢查用戶登入狀態所執行的部分程式碼：  
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+            console.log(response);
+        });   
+          
+      };
+        
+        //提供給回呼的 response 物件
+      function statusChangeCallback(response) {
+        if (response.status === 'connected') {
+
+
+            var userInfo = {
+                token:response.authResponse.accessToken,
+                provider:"facebook",
+            }
+
+            console.log(response.authResponse.accessToken);
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST","/user/signin");
+            xhr.setRequestHeader("content-Type", "application/json");
+            xhr.send(JSON.stringify(userInfo));
+            // console.log(userInfo);
+            xhr.onload = function () {
+            
+              localStorage.setItem("user_info", xhr.responseText);
+              testAPI();
+            }
+            
+
+        }
+        // else{
+        //     document.getElementById('status').innerHTML = 'Please log ' +
+        //         'into this app.';
+        // }
+      }
+
+      function checkLoginState() {
+            FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+            
+            });
+        }
+
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "https://connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+
+
+       function testAPI() {
+            FB.api('/me?', function(response) {
+            document.getElementById('status').innerHTML =
+                'Thanks for logging in, ' + response.name + '!';
+            });
+        }
+         
+    </script>
+
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>
