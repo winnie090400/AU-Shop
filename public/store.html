@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>AuShop</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <!-- <link href="css/shop-homepage.css" rel="stylesheet"> -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384–5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+
+  <style>
+    .carousel-control-next{
+      width: 20px;
+    }
+
+    .carousel-control-prev{
+      width: 30px; 
+    }
+
+    .far.fa-heart{
+      position: absolute;
+      right: 1.5em;
+      bottom: 1em;
+      font-size: 1.5em;
+      cursor:pointer;
+    }
+
+    .fas.fa-heart{
+      position: absolute;
+      right: 1.5em;
+      bottom: 1em;
+      font-size: 1.5em;
+      cursor:pointer;
+    }
+
+    #heart_icon{
+      position:relative;
+      right: auto;
+      bottom: 0;
+    }
+
+    .fas.fa-search{
+      margin-top: 0.3em;
+      font-size: 1.5em;
+      color: white;
+      cursor:pointer;
+    }
+
+    ul li{
+      margin-right: 0.5em;
+    }
+
+    #top{
+      float:left;
+      font-size: 3em;
+      /*margin-left: 2em;
+      margin-bottom: 4em;*/
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-info fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/index.html">Au Shop</a>
+      <!-- <img src="/logo/logo.png" alt=""> -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <li class="nav-item active">
+            <input type="text" class="form-control" placeholder="" id="searchInput">
+          </li>
+          <li><i class="fas fa-search" onclick="search(this)"></i></li>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/wishlist.html">Wish List&nbsp<i class="far fa-heart" id="heart_icon"></i></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/signin.html#sign-in">Sign In&nbsp<i class="far fa-user"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5" id="container">
+
+    <div class="row mt-5" >
+      
+      <div class="col-lg-3">
+
+      <hr class="my-4">
+
+        <div class="list-group mt-5" id="cate">
+         
+        </div>
+
+      </div>
+
+      <div class="card-deck col-lg-9" id="card">
+        
+      </div>
+
+  </div>
+  <!-- /.col-lg-9 -->
+  <!-- <button id="top"><a href="#"> TOP </a></button>  -->
+</div>
+<!-- /.container -->
+   
+  <!-- Footer -->
+  <footer class="py-4 bg-info">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="./vendor/jquery/jquery.min.js"></script>
+  <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.min.js"></script>
+  <script>
+    
+    const xhr = new XMLHttpRequest();
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const store = urlParams.get("store");
+
+    xhr.open("GET", `/api/1.0/products/${store}`);
+
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    if(localStorage.getItem('user_info')){
+
+      let user_info = localStorage.getItem('user_info');
+
+      let token = JSON.parse(user_info).data.access_token;
+
+      xhr.setRequestHeader('Authorization', 'Bearer '+ token);
+    }
+
+    xhr.onreadystatechange = function() {
+
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        
+        let data = JSON.parse(xhr.responseText).data;
+        let cate = JSON.parse(xhr.responseText).cate;
+        let paging = JSON.parse(xhr.responseText).cate;
+
+        //render product
+        for(let i=0; i<data.length; i++){
+   
+          let card = document.createElement("div");
+          card.classList.add("col-md-3");
+          card.classList.add("mt-5");
+
+          let image = document.createElement("img");
+          image.classList.add("card-img-top");
+          image.src = data[i].img;
+
+          let link = document.createElement('a');
+          link.href = `/product.html?id=${data[i].id}&store=${data[i].store}`;
+          link.appendChild(image);
+
+          let cardbody = document.createElement("div");
+          cardbody.classList.add("card-body");
+
+          let title = document.createElement("h6");
+          title.innerHTML = data[i].title;
+          cardbody.appendChild(title);
+
+          let price = document.createElement("h5");
+          price.innerHTML = '$ '+ data[i].price;
+          cardbody.appendChild(price);
+
+          let discount = document.createElement("span");
+          discount.innerHTML = 'Save $'+ data[i].discount;
+          discount.style = 'color:red';
+          cardbody.appendChild(discount);
+
+          let heart = document.createElement("i");
+          // heart.classList.add("fas");
+          heart.classList.add("far");
+          heart.classList.add("fa-heart");
+          // heart.addEventListener("click", isWish);
+
+          let cardList = document.getElementById("card");
+          cardList.appendChild(card);
+          
+          card.appendChild(link);
+          card.appendChild(cardbody);
+          card.appendChild(heart);
+                         
+        }
+        //render category
+        for(let j=0; j<cate.length; j++){
+          let catelist = document.getElementById("cate");
+          let cates = document.createElement("a");
+          cates.classList.add("list-group-item");
+          cates.innerHTML = cate[j];
+          cates.href = `/store.html?store=${data[0].store}?filter=${cate[j]}`;
+          catelist.appendChild(cates);
+        }
+        
+      }
+    }
+    xhr.send();
+
+    function search(e) {
+        let keyword = document.getElementById('searchInput').value
+        location.assign(`/search.html?keyword=${keyword}`);
+    }
+
+
+    /* ==================
+    Variables
+    ================== */
+    // type="all" on initial loading
+    let type = "all";
+    // after <a> refirection, tag = tagQuery: all, women, men, or accessories 
+    // let tagQuery = getParamName("tag");
+    let pageNumber;
+    let pagingURL;
+    let ind = 0;
+
+    /* ==================
+    Render Products
+    ================== */
+    // === Product display rendering dynamically (createElement)
+    function renderProduct(data) {
+      // let allProducts = document.querySelector(".allProducts");
+      let data1 = data.data;
+      
+      // pagingURL for scroll event
+      if (data.paging !== undefined) {
+        pagingURL = `api/1.0/${store}?paging=${pageNumber}`;
+        console.log(pagingURL)
+        window.addEventListener("scroll", handleScroll);
+      } else {
+        pagingURL = "";
+        window.removeEventListener("scroll", handleScroll);
+      };
+
+      // start creating product from JSON data
+      for(let i=0; i<data1.length; i++){
+          let card = document.createElement("div");
+          card.classList.add("col-md-3");
+          card.classList.add("mt-5");
+
+          let image = document.createElement("img");
+          image.classList.add("card-img-top");
+          image.src = data1[i].img;
+
+          let link = document.createElement('a');
+          link.href = `/product.html?id=${data1[i].id}&store=${data1[i].store}`;
+          link.appendChild(image);
+
+          let cardbody = document.createElement("div");
+          cardbody.classList.add("card-body");
+
+          let title = document.createElement("h6");
+          title.innerHTML = data1[i].title;
+          cardbody.appendChild(title);
+
+          let price = document.createElement("h5");
+          price.innerHTML = '$ '+ data1[i].price;
+          cardbody.appendChild(price);
+
+          let discount = document.createElement("span");
+          discount.innerHTML = 'Save $'+ data1[i].discount;
+          discount.style = 'color:red';
+          cardbody.appendChild(discount);
+
+          let heart = document.createElement("i");
+          // heart.classList.add("fas");
+          heart.classList.add("far");
+          heart.classList.add("fa-heart");
+          // heart.addEventListener("click", isWish);
+
+          let cardList = document.getElementById("card");
+          cardList.appendChild(card);
+          
+          
+          card.appendChild(link);
+          card.appendChild(cardbody);
+          card.appendChild(heart);
+                         
+        }
+        //render category
+        for(let j=0; j<cate.length; j++){
+          let catelist = document.getElementById("cate");
+          let cates = document.createElement("a");
+          cates.classList.add("list-group-item");
+          cates.innerHTML = cate[j];
+          cates.href = `/store.html?store=${data1[0].store}?filter=${cate[j]}`;
+          catelist.appendChild(cates);
+        }
+    };
+
+    /* ==================
+    Scrolling & Paging Feature
+    ================== */
+    function handleScroll(e) {
+        let ticking = false;
+        if (!ticking) {
+          window.requestAnimationFrame(function() {
+            endlessScroll();
+            ticking = false;
+          });
+        }
+        ticking = true;
+    };
+
+    // 偵測是不是快滑到最下面
+    function endlessScroll() {
+      let windowHeight = window.innerHeight;
+      let remainingFooter = document.querySelector("footer").getBoundingClientRect().top;
+        if (remainingFooter - windowHeight < 0) {
+          getAjax(`/api/1.0/products/${store}?paging=${pageNumber}`, setExtProduct);
+          // console.log(pagingURL)
+          window.removeEventListener("scroll", handleScroll);
+        }
+    };
+
+    function getAjax(src, callback){ 
+      let xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+          callback(JSON.parse(xhr.response));
+        }
+      }
+      xhr.open("GET", src);
+      xhr.send();
+    };
+
+    function setExtProduct(data) {
+      if (data.paging !== undefined) {
+        pageNumber ++;
+        // setting data.paging(right) to the global pageNumber(left);
+        pageNumber = data.paging;
+      }
+      window.addEventListener("scroll", handleScroll);
+      renderProduct(data);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    /* ==================
+    Initial Page Loading
+    ================== */
+    // window.addEventListener('load', (event) => {
+    //   load & display marketing campaign
+    //   getAjax(`${API_HOST}/marketing/campaigns`, renderCampaign);
+
+    //   CSS styling for current category
+    //   let activeCatg = document.querySelectorAll(".catg");
+    //   activeCatg.forEach(x=>{
+    //     x.classList.remove("currentCategory");
+    //     if (x.name == tagQuery) {
+    //       x.classList.add("currentCategory");
+    //     }
+    //   });
+
+    //   砍掉重練 remove all products on initial loading
+    //   removeElement("allProducts");
+    //   if (tagQuery == "women" || tagQuery == "men" || tagQuery == "accessories") {
+    //     type = tagQuery;
+    //     getAjax(`${API_HOST_Products}/${tagQuery}`, renderProduct);
+    //   } else {
+    //     getAjax(`/api/1.0/all`, renderProduct);
+    //   }
+
+    // });
+  </script>
+
+</body>
+
+</html>
+
+
+
+

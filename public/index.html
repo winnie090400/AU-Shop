@@ -47,6 +47,29 @@
       right: auto;
       bottom: 0;
     }
+
+    .container.my-4{
+      position: relative;
+    }
+
+    .btn.btn-outline-warning{
+      position: absolute;
+      right: 2em;
+      top: 2em;
+    }
+
+    .fas.fa-search{
+      margin-top: 0.3em;
+      font-size: 1.5em;
+      color: white;
+      cursor:pointer;
+    }
+
+    ul li{
+      margin-right: 0.5em;
+    }
+
+
   </style>
 
 </head>
@@ -64,9 +87,9 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <input type="text" class="form-control" placeholder="">
-            <!-- <i class="fas fa-search"></i> -->
+            <input type="text" class="form-control" placeholder="" id="searchInput">
           </li>
+          <li><i class="fas fa-search" onclick="search(this)"></i></li>
           <li class="nav-item active">
             <a class="nav-link" href="/wishlist.html">Wish List&nbsp<i class="far fa-heart" id="heart_icon"></i></a>
           </li>
@@ -83,7 +106,7 @@
 
     <div class="row">
 
-      <div class="col-lg-3">
+      <!-- <div class="col-lg-3">
 
       <hr class="my-4">
 
@@ -93,18 +116,18 @@
           <a href="#" class="list-group-item">SKIN CARE</a>
         </div>
 
-      </div>
+      </div> -->
       <!-- /.col-lg-3 -->
 
-      <div class="col-lg-9 mt-5">
+      <div class="col-lg-12 mt-5">
 
 
 <!-- wws -->
 <div class="container my-4">
 
     <hr class="my-4">
-    <a href="https://www.woolworths.com.au"><img src="/logo/woolworths_logo.svg.png" style="height:4em; width: 4em;" alt=""></a>
-    
+    <a href="https://www.woolworths.com.au"><img src="/logo/woolworths_logo.svg.png" style="height:4em; width: 4em;"></a>
+    <button type="button" class="btn btn-outline-warning" name="woolworths" onclick="moreItem(this)">more</button>
     <!--Carousel Wrapper-->
     <div id="carouselIndicatorsWws" class="carousel slide carousel-multi-item" data-ride="carousel">
       <!--Controls-->
@@ -209,6 +232,7 @@
 
     <hr class="my-4">
     <a href="https://www.chemistwarehouse.com.au/"><img src="/logo/6402263-1.png" style="height:4em; width: 4em;" alt=""></a>
+    <button type="button" class="btn btn-outline-warning" name="chemistwarehouse" onclick="moreItem(this)">more</button>
     <!--Carousel Wrapper-->
     <div id="carouselIndicatorsChemist" class="carousel slide carousel-multi-item" data-ride="carousel">
       <!--Controls-->
@@ -306,6 +330,7 @@
 
     <hr class="my-4">
     <a href="https://www.bigw.com.au/"><img src="/logo/BIGW-logo.png" style="height:4em; width: 4em;"></a>
+    <button type="button" class="btn btn-outline-warning" name="bigw" onclick="moreItem(this)">more</button>
     <!--Carousel Wrapper-->
     <div id="carouselIndicatorsBigw" class="carousel slide carousel-multi-item" data-ride="carousel">
       <!--Controls-->
@@ -424,7 +449,7 @@
 
     let xhr = new XMLHttpRequest();   // new HttpRequest instance 
 
-    xhr.open("GET", '/api/1.0/products/all');
+    xhr.open("GET", '/api/1.0/all');
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
     let user_info = localStorage.getItem('user_info');
@@ -437,6 +462,7 @@
 
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4 && xhr.status == 200) {
+        // console.log(JSON.parse(xhr.responseText).body)
         let wws = JSON.parse(xhr.responseText).wws;
         let chemist = JSON.parse(xhr.responseText).chemist;
         let bigw = JSON.parse(xhr.responseText).bigw;
@@ -668,6 +694,18 @@
       }
 
     }
+
+    function moreItem(e) {
+        let store = e.name;
+        location.assign(`/store.html?store=${store}`);
+    }
+
+    function search(e) {
+        let keyword = document.getElementById('searchInput').value
+        // console.log(keyword)
+        location.assign(`/search.html?keyword=${keyword}`);
+    }
+
   </script>
 
 </body>

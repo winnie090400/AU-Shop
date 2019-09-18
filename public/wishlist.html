@@ -48,6 +48,17 @@
       bottom: 0;
     }
 
+    .fas.fa-search{
+      margin-top: 0.3em;
+      font-size: 1.5em;
+      color: white;
+      cursor:pointer;
+    }
+
+    ul li{
+      margin-right: 0.5em;
+    }
+    
   </style>
 
 </head>
@@ -65,14 +76,17 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <input type="text" class="form-control" placeholder="">
-            <!-- <i class="fas fa-search"></i> -->
+            <input type="text" class="form-control" placeholder="" id="searchInput">
           </li>
+          <li><i class="fas fa-search" onclick="search(this)"></i></li>
           <li class="nav-item active">
             <a class="nav-link" href="/wishlist.html">Wish List&nbsp<i class="far fa-heart" id="heart_icon"></i></a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="/signin.html">Sign In&nbsp<i class="far fa-user"></i></a>
+            <a class="nav-link" href="/tracklist.html">track List&nbsp<i class="far fa-bell" id="track_icon"></i></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/signin.html#sign-in">Sign In&nbsp<i class="far fa-user"></i></a>
           </li>
         </ul>
       </div>
@@ -230,6 +244,12 @@
     }
 
   }
+
+  function search(e) {
+        let keyword = document.getElementById('searchInput').value
+        // console.log(keyword)
+        location.assign(`/search.html?keyword=${keyword}`);
+    }
   </script>
 
 

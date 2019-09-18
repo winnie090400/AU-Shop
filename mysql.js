@@ -2,7 +2,7 @@
 const mysql = require("mysql");
 
 const pool = mysql.createPool({
-	connectionLimit : 10,  //最大連線數量
+	connectionLimit : 100,  //最大連線數量
 	host:"localhost",
 	user:"root",
 	password:"123456789",

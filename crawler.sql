@@ -1,5 +1,4 @@
 use crawler;
-
 -- -----------------------------------------------------
 -- Table `test`.`product_c`
 -- -----------------------------------------------------
@@ -21,6 +20,8 @@ CREATE TABLE IF NOT EXISTS `crawler`.`product_c` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+ALTER TABLE product_c
+MODIFY `id` VARCHAR(20);
 
 CREATE TABLE IF NOT EXISTS `crawler`.`product_w` (
   `id` VARCHAR(20) NOT NULL,
@@ -80,6 +81,7 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci; 
 
 
+
 -- -----------------------------------------------------
 -- Table `crawler`.`wishlist`
 -- -----------------------------------------------------
@@ -96,9 +98,14 @@ CREATE TABLE IF NOT EXISTS `crawler`.`wishlist` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
-select * from wishlist inner join product_b on wishlist.product_id = product_b.id;
+DEFAULT CHARACTER SET = utf8;
+
+drop table wishlist;
+
+select * from wishlist left join product_c on wishlist.product_id = product_c.id and wishlist.store = product_c.store left join product_b on wishlist.product_id = product_b.id and wishlist.store = product_b.store left join product_w on wishlist.product_id = product_w.id and wishlist.store = product_w.store;
+select * from wishlist inner join product_b on wishlist.product_id = product_b.id and wishlist.store = product_b.store and user_id ='1';
+select * from wishlist inner join product_w on wishlist.product_id = product_w.id and wishlist.store = product_w.store;
+select * from wishlist inner join product_c on wishlist.product_id = product_c.id and wishlist.store = product_c.store;
 
 select * from product_c; 
 select * from product_w; 		
@@ -106,11 +113,11 @@ select * from product_b;
 select * from wishlist;
 select * from user;
 
-
 cenovis-guarana-2000-ginseng-500mg-60-tablets				
 cenovis-guarana-2000mg-ginseng-500mg-60pk
 117843  
-select * from product_c where subTitle like '%cenovis%guarana%2000%ginseng%500%60%' or subTitle like 'cenovis-guarana-2000mg-ginseng-500mg%' or id = '117843'; 
+
+select * from product_c where subTitle like '%cenovis%guarana%2000mg%' or subTitle like 'cenovis-guarana-2000mg-ginseng-500mg%' or id = '117843'; 
 select * from product_b where subTitle like '%cenovis%guarana%2000%ginseng%500%60%' or subTitle like 'cenovis-guarana-2000mg-ginseng-500mg%' or id = '117843'; 
 select * from product_w where subTitle like '%cenovis%guarana%2000%ginseng%500%60%' or subTitle like 'cenovis-guarana-2000mg-ginseng-500mg%' or id = '117843'; 
 
@@ -138,7 +145,7 @@ select * from user;
 show tables;
 
 
-select * from product_w where category ='MENS TOILETRIES & RAZORS'; 
+select * from product_w where category ='HAIR ACCESSORIES'; 
 select count(*) as total from product_w where discount > 0 and price > 0 and category ='COSMETICS';
 select * from product_w where discount >= price and price > 0;
 select * from product_w where discount >= price and price > 0 and category ='DIET & SPORT NUTRITION';

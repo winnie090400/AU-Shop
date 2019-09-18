@@ -197,6 +197,21 @@ module.exports={
 			});
 
 		});
+	},
+	getUserEmail:function(){
+		return new Promise(function(resolve, reject){
+			conn.query("select id,email,name from user", function(error, results, fields){
+				if(error){
+					res.send({error:"Database Query Error"});
+				}else{
+					let data = results;
+					resolve({data});
+					
+				}
+
+			});
+
+		});
 	}
 	
 };

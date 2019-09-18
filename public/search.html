@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>AuShop</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <!-- <link href="css/shop-homepage.css" rel="stylesheet"> -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384–5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+
+  <style>
+
+    .far.fa-heart{
+      position: absolute;
+      right: 1.5em;
+      bottom: 1em;
+      font-size: 1.5em;
+      cursor:pointer;
+    }
+
+    .fas.fa-heart{
+      position: absolute;
+      right: 1.5em;
+      bottom: 1em;
+      font-size: 1.5em;
+      cursor:pointer;
+    }
+  
+    #heart_icon{
+      position:relative;
+      right: auto;
+      bottom: 0;
+    }
+
+    
+
+    .fas.fa-search{
+      margin-top: 0.3em;
+      font-size: 1.5em;
+      color: white;
+      cursor:pointer;
+    }
+
+    ul li{
+      margin-right: 0.5em;
+    }
+
+    .logo{
+      height: 3em;
+      width: 3em;
+      float:left;
+      z-index: 7;
+    }
+
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-info fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/index.html">Au Shop</a>
+      <!-- <img src="/logo/logo.png" alt=""> -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <input type="text" class="form-control" placeholder="" id="searchInput">
+          </li>
+          <li><i class="fas fa-search" onclick="search(this)"></i></li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/wishlist.html">Wish List&nbsp<i class="far fa-heart" id="heart_icon"></i></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/signin.html#sign-in">Sign In&nbsp<i class="far fa-user"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container mt-5">
+
+    <div class="row mt-5">
+
+      <div class="card-deck col-lg-12 mt-5" id="card">
+        
+      </div>
+
+    </div>
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="py-4 bg-info">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="./vendor/jquery/jquery.min.js"></script>
+  <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const xhr = new XMLHttpRequest();
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const keyword = urlParams.get("keyword");
+
+    xhr.open("GET", `/api/1.0/search?keyword=${keyword}`);
+
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    if(localStorage.getItem('user_info')){
+
+      let user_info = localStorage.getItem('user_info');
+
+      let token = JSON.parse(user_info).data.access_token;
+
+      xhr.setRequestHeader('Authorization', 'Bearer '+ token);
+    }
+
+    xhr.onreadystatechange = function() {
+
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        
+        let data = JSON.parse(xhr.responseText).data;
+
+        for(let i=0; i<data.length; i++){
+   
+          let card = document.createElement("div");
+          card.classList.add("col-md-3");
+          card.classList.add("mt-5");
+
+          let image = document.createElement("img");
+          image.classList.add("card-img-top");
+          image.src = data[i].img;
+
+          let link = document.createElement('a');
+          link.href = `/product.html?id=${data[i].id}&store=${data[i].store}`;
+          link.appendChild(image);
+
+          let cardbody = document.createElement("div");
+          cardbody.classList.add("card-body");
+
+          let title = document.createElement("h6");
+          title.innerHTML = data[i].title;
+          cardbody.appendChild(title);
+
+          let price = document.createElement("h5");
+          price.innerHTML = '$ '+ data[i].price;
+          cardbody.appendChild(price);
+
+          let discount = document.createElement("span");
+          discount.innerHTML = 'Save $'+ data[i].discount;
+          discount.style = 'color:red';
+          cardbody.appendChild(discount);
+
+          let heart = document.createElement("i");
+          // heart.classList.add("fas");
+          heart.classList.add("far");
+          heart.classList.add("fa-heart");
+          // heart.addEventListener("click", isWish);
+
+          // let logo = document.createElement("img");
+          // logo.classList.add("logo");
+          // if(data[i].store === 'woolworths'){
+          //   logo.src = '/logo/woolworths_logo.svg.png';
+          // }else if(data[i].store === 'chemistwarehouse'){
+          //   logo.src = '/logo/6402263-1.png';
+          // }else if(data[i].store === 'bigw'){
+          //   logo.src = '/logo/BIGW-logo.png';
+          // }
+
+          let cardList = document.getElementById("card");
+          cardList.appendChild(card);
+          
+          card.appendChild(link);
+          card.appendChild(cardbody);
+          card.appendChild(heart);
+          // card.appendChild(logo);
+                         
+        }
+        
+        
+      }
+    }
+    xhr.send();
+
+    function search(e) {
+        let keyword = document.getElementById('searchInput').value
+        // console.log(keyword)
+        location.assign(`/search.html?keyword=${keyword}`);
+    }
+
+  </script>
+
+</body>
+
+</html>
+
+

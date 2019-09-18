@@ -18,15 +18,8 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384–5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
   <style>
-    .carousel-control-next{
-      width: 20px;
-    }
-
-    .carousel-control-prev{
-      width: 30px; 
-    }
-
-    .far.fa-heart{
+    
+    .far.fa-bell{
       position: absolute;
       right: 1.5em;
       bottom: 1em;
@@ -34,21 +27,12 @@
       cursor:pointer;
     }
 
-    .fas.fa-heart{
+    .fas.fa-bell{
       position: absolute;
       right: 1.5em;
       bottom: 1em;
       font-size: 1.5em;
       cursor:pointer;
-    }
-
-    #container{
-      margin-top: 80px;
-    }
-
-    #container img{
-      height: 22em;
-      width: 22em;
     }
 
     #heart_icon{
@@ -57,6 +41,17 @@
       bottom: 0;
     }
 
+    .fas.fa-search{
+      margin-top: 0.3em;
+      font-size: 1.5em;
+      color: white;
+      cursor:pointer;
+    }
+
+    ul li{
+      margin-right: 0.5em;
+    }
+    
   </style>
 
 </head>
@@ -74,9 +69,9 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <input type="text" class="form-control" placeholder="">
-            <!-- <i class="fas fa-search"></i> -->
+            <input type="text" class="form-control" placeholder="" id="searchInput">
           </li>
+          <li><i class="fas fa-search" onclick="search(this)"></i></li>
           <li class="nav-item active">
             <a class="nav-link" href="/wishlist.html">Wish List&nbsp<i class="far fa-heart" id="heart_icon"></i></a>
           </li>
@@ -91,24 +86,13 @@
     </div>
   </nav>
 
-  <div class="container mt-5">
+  <div class="container mt-5" id="container">
 
-    <div class="col-lg-12 mt-5">
-      <div id="container"></div>
-      <table class="table mt-4 mb-5">
-        <thead>
-          <tr>
-            <th scope="col">STORE</th>
-            <th scope="col">PRICE</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-
-          </tr>
-        </thead>
-        <tbody id="table">
-         
-        </tbody>
-      </table>
+    <div class="row mt-5" >
+    
+      <div class="card-deck" id="card">
+        
+      </div>
 
   </div>
   <!-- /.col-lg-9 -->
@@ -128,66 +112,72 @@
   <script src="./vendor/jquery/jquery.min.js"></script>
   <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get("id");
-    const store = urlParams.get("store");
-    const url = `/api/1.0/products/details?id=${productId}&store=${store}`;
-    // const container = document.querySelector(".wishTable");
+    
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
 
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.open("POST", '/api/1.0/user/tracklist');
+
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    let user_info = localStorage.getItem('user_info');
+
+    if(!user_info){
+      // window.location.assign('/signin.html');
+      window.alert('Please sign in first!');
+      
+    }
+
+    let token = JSON.parse(user_info).data.access_token;
+
+    xhr.setRequestHeader('Authorization', 'Bearer '+ token);
 
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4 && xhr.status == 200) {
         
         let data = JSON.parse(xhr.responseText).data;
-        console
-        
-        let image = document.createElement("img");
-        image.classList.add("mb-3");
-        image.src = data[0].img;
 
-        let title = document.createElement("h4");
-        title.innerHTML = data[0].title;
-        
-        let container = document.getElementById("container");
-        container.appendChild(image);
-        container.appendChild(title);
+          for(let i=0; i<data.length; i++){
+            let card = document.createElement("div");
+            card.classList.add("col-md-3");
+            card.classList.add("mt-5");
 
-        for (let i = 0; i < data.length; i++) {
+            let image = document.createElement("img");
+            image.classList.add("card-img-top");
+            image.src = data[i].img;
 
-          let tr = document.createElement("tr");
-          
-          let store = document.createElement("td");
-          
-          let link = document.createElement("a");
-          if(data[i].store === 'chemistwarehouse'){
-            link.href = 'https://www.'+data[i].link;
-          }else{
-            link.href = data[i].link;
-          }
-          link.innerHTML = data[i].store;
-          store.appendChild(link);
-          tr.appendChild(store);
+            let link = document.createElement('a');
+            link.href = `/product.html?id=${data[i].id}&store=${data[i].store}`;
+            link.appendChild(image);
 
-          let price = document.createElement("td");
-          price.innerHTML = '$'+data[i].price;
-          tr.appendChild(price);
+            let cardbody = document.createElement("div");
+            cardbody.classList.add("card-body");
 
-          let calendar = document.createElement("td");
-          calendar.innerHTML = '<i class="far fa-calendar-alt"></i>';
-          tr.appendChild(calendar);
+            let title = document.createElement("h6");
+            title.innerHTML = data[i].title;
+            cardbody.appendChild(title);
 
-          let bell = document.createElement("td");
-          bell.innerHTML = '<i class="far fa-bell"></i>';
-          bell.classList.add(`${data[i].store}-${data[i].originPrice}-${data[i].id}`);
-          bell.addEventListener("click", isTrack);
-          tr.appendChild(bell);
-          
-          let table = document.getElementById("table");
-          table.appendChild(tr);
-   
+            let price = document.createElement("h5");
+            price.innerHTML = '$ '+ data[i].price;
+            cardbody.appendChild(price);
+
+            let discount = document.createElement("span");
+            discount.innerHTML = 'Save $'+ data[i].discount;
+            discount.style = 'color:red';
+            cardbody.appendChild(discount);
+
+            let bell = document.createElement("i");
+            bell.classList.add("fas");
+            bell.classList.add("far");
+            bell.classList.add("fa-bell");
+            bell.classList.add(`${data[i].store}-${data[i].originPrice}-${data[i].id}`);
+            bell.addEventListener("click", isTrack);
+
+            let cardList = document.getElementById("card");
+            cardList.appendChild(card);
+            
+            card.appendChild(link);
+            card.appendChild(cardbody);
+            card.appendChild(bell);   
         }
         
       }
@@ -196,17 +186,17 @@
 
     function isTrack(e) {
 
-      let user_info = localStorage.getItem('user_info');
+    let user_info = localStorage.getItem('user_info');
 
-      if(!user_info){
-        window.alert('Please sign in first!');
-        return;
-      }else{
+    if(!user_info){
+      window.alert('Please sign in first!');
+      return;
+    }else{
 
-        
         e.target.classList.toggle("fas");
 
-        let track = e.target.parentNode.classList.value;
+        let track = e.target.classList.value.split(" ")[2];
+        console.log(track)
         
         let xhr = new XMLHttpRequest();
 
@@ -242,6 +232,11 @@
 
     }
 
+  function search(e) {
+        let keyword = document.getElementById('searchInput').value
+        // console.log(keyword)
+        location.assign(`/search.html?keyword=${keyword}`);
+    }
   </script>
 
 
