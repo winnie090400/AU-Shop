@@ -76,10 +76,13 @@
             <a class="nav-link" href="/wishlist.html">Wish List&nbsp<i class="far fa-heart" id="heart_icon"></i></a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="/tracklist.html">track List&nbsp<i class="far fa-bell" id="track_icon"></i></a>
+            <a class="nav-link" href="/tracklist.html">Track List&nbsp<i class="far fa-bell" id="track_icon"></i></a>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="/signin.html#sign-in">Sign In&nbsp<i class="far fa-user"></i></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/index.html" onclick="signOut()">Sign Out&nbsp<i class="fas fa-sign-out-alt"></i></a>
           </li>
         </ul>
       </div>
@@ -196,7 +199,6 @@
         e.target.classList.toggle("fas");
 
         let track = e.target.classList.value.split(" ")[2];
-        console.log(track)
         
         let xhr = new XMLHttpRequest();
 
@@ -213,13 +215,32 @@
             "store":track.split('-')[0],
             "price":track.split('-')[1]
         };
-        // console.log(wishInfo)
+        
+        let track_info = JSON.parse(localStorage.getItem('track_info'));
+
+        let product_track = track_info.find(function(item, index, array){
+
+          return item.product_id === trackInfo.product_id && item.store === trackInfo.store;
+
+        });
+        console.log(product_track);
+        if(!product_track || product_track === undefined){
+          track_info.push(trackInfo)
+          localStorage.setItem('track_info', JSON.stringify(track_info));
+          console.log('add track cache')
+          
+        }else{
+          track_info.splice(track_info.indexOf(product_track), 1);
+          localStorage.setItem('track_info', JSON.stringify(track_info));
+          console.log('delete track cache')
+        }
+
         xhr.send(JSON.stringify(trackInfo));
 
         xhr.onreadystatechange = function () {
             
             let msg = JSON.parse(xhr.responseText);
-            // console.log(JSON.parse(msg));
+       
 
             if(msg.data) {
               console.log(msg.data)

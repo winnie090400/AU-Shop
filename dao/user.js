@@ -102,9 +102,28 @@ module.exports={
 		            
 		            data.user = user;
 
-		            let signin_response = {data:data};
+		            // let signin_response = {data:data};
 
-		            resolve(signin_response);
+		            // resolve(signin_response);
+
+		            conn.query('SELECT * FROM wishlist WHERE user_id = ?', id ,function (err,results) {
+		            	if(results.length>0){
+		            		let wishInfo = results;
+		            		data.wishInfo = wishInfo;
+		            	}
+
+		            	conn.query('SELECT * FROM tracklist WHERE user_id = ?', id ,function (err,results) {
+		            		if(results.length>0){
+			            		let trackInfo = results;
+			            		data.trackInfo = trackInfo;
+		            		}
+		            		let signin_response = {data:data};
+		            		resolve(signin_response);
+		            	});
+		            		
+		            });
+
+		            
 	 			});
 
 	        });

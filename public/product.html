@@ -81,10 +81,13 @@
             <a class="nav-link" href="/wishlist.html">Wish List&nbsp<i class="far fa-heart" id="heart_icon"></i></a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="/tracklist.html">track List&nbsp<i class="far fa-bell" id="track_icon"></i></a>
+            <a class="nav-link" href="/tracklist.html">Track List&nbsp<i class="far fa-bell" id="track_icon"></i></a>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="/signin.html#sign-in">Sign In&nbsp<i class="far fa-user"></i></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/index.html" onclick="signOut()">Sign Out&nbsp<i class="fas fa-sign-out-alt"></i></a>
           </li>
         </ul>
       </div>
@@ -142,8 +145,20 @@
       if (xhr.readyState == 4 && xhr.status == 200) {
         
         let data = JSON.parse(xhr.responseText).data;
-        console
+
+        let user_info = localStorage.getItem('user_info');
         
+        
+        let track_info,tracklist;
+        if(localStorage.getItem('track_info') === undefined){
+          tracklist = [];
+          localStorage.setItem('track_info',tracklist);
+        }else{
+          track_info = localStorage.getItem('track_info');
+          tracklist = JSON.parse(track_info);
+        }
+        
+
         let image = document.createElement("img");
         image.classList.add("mb-3");
         image.src = data[0].img;
@@ -180,7 +195,24 @@
           tr.appendChild(calendar);
 
           let bell = document.createElement("td");
-          bell.innerHTML = '<i class="far fa-bell"></i>';
+
+          if(tracklist.length >0){
+            let product_track = tracklist.find(function(item, index, array){
+                return item.product_id === data[i].id && item.store === data[i].store;
+              });
+
+            let heart = document.createElement("i");
+            if(!product_track){
+              bell.innerHTML = '<i class="far fa-bell"></i>';
+              console.log('not track')
+            }else{
+              bell.innerHTML = '<i class="far fa-bell fas"></i>';
+              console.log('track')
+            }
+            
+          }else{
+            bell.innerHTML = '<i class="far fa-bell"></i>';
+          }
           bell.classList.add(`${data[i].store}-${data[i].originPrice}-${data[i].id}`);
           bell.addEventListener("click", isTrack);
           tr.appendChild(bell);
@@ -215,15 +247,46 @@
         xhr.setRequestHeader('Content-Type', 'application/json');
 
         let token = JSON.parse(user_info).data.access_token;
-
         xhr.setRequestHeader('Authorization', 'Bearer '+ token);
         
+        // const tracklist = (localStorage.getItem('track_info')) ? JSON.parse(localStorage.getItem('track_info')):{
+        //   track_info: []
+        // };
+
         let trackInfo = {
             "product_id":track.split('-')[2], 
             "store":track.split('-')[0],
             "price":track.split('-')[1]
         };
-        // console.log(wishInfo)
+
+        if(localStorage.getItem('track_info')){
+          let track_info = JSON.parse(localStorage.getItem('track_info'));
+
+          let product_track = track_info.find(function(item, index, array){
+
+            return item.product_id === trackInfo.product_id && item.store === trackInfo.store;
+
+          });
+          console.log(product_track)
+          
+          if(!product_track||product_track === undefined){
+
+            track_info.push(trackInfo)
+            localStorage.setItem('track_info', JSON.stringify(track_info));
+            console.log('add track cache')
+
+          }else{
+            track_info.splice(track_info.indexOf(product_track), 1);
+            localStorage.setItem('track_info', JSON.stringify(track_info));
+            console.log('delete track cache')
+          }
+
+        }else{
+          let track_info = [];
+          track_info.push(trackInfo);
+          localStorage.setItem('track_info', JSON.stringify(track_info));
+        };
+
         xhr.send(JSON.stringify(trackInfo));
 
         xhr.onreadystatechange = function () {
@@ -241,6 +304,54 @@
       }
 
     }
+
+    // function isTrack(e) {
+
+    //   let user_info = localStorage.getItem('user_info');
+
+    //   if(!user_info){
+    //     window.alert('Please sign in first!');
+    //     return;
+    //   }else{
+
+        
+    //     e.target.classList.toggle("fas");
+
+    //     let track = e.target.parentNode.classList.value;
+        
+    //     let xhr = new XMLHttpRequest();
+
+    //     xhr.open("POST", "/api/1.0/tracklist");
+
+    //     xhr.setRequestHeader('Content-Type', 'application/json');
+
+    //     let token = JSON.parse(user_info).data.access_token;
+
+    //     xhr.setRequestHeader('Authorization', 'Bearer '+ token);
+        
+    //     let trackInfo = {
+    //         "product_id":track.split('-')[2], 
+    //         "store":track.split('-')[0],
+    //         "price":track.split('-')[1]
+    //     };
+    //     // console.log(wishInfo)
+    //     xhr.send(JSON.stringify(trackInfo));
+
+    //     xhr.onreadystatechange = function () {
+            
+    //         let msg = JSON.parse(xhr.responseText);
+    //         // console.log(JSON.parse(msg));
+
+    //         if(msg.data) {
+    //           console.log(msg.data)
+    //         }else if(msg.error){
+    //             console.log(msg.error);
+    //         }
+    //     };
+
+    //   }
+
+    // }
 
   </script>
 

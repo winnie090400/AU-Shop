@@ -94,7 +94,13 @@
             <a class="nav-link" href="/wishlist.html">Wish List&nbsp<i class="far fa-heart" id="heart_icon"></i></a>
           </li>
           <li class="nav-item active">
+            <a class="nav-link" href="/tracklist.html">Track List&nbsp<i class="far fa-bell" id="track_icon"></i></a>
+          </li>
+          <li class="nav-item active">
             <a class="nav-link" href="/signin.html#sign-in">Sign In&nbsp<i class="far fa-user"></i></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/index.html" onclick="signOut()">Sign Out&nbsp<i class="fas fa-sign-out-alt"></i></a>
           </li>
         </ul>
       </div>
@@ -564,7 +570,7 @@
             let product_wish = wishlist.find(function(item, index, array){
                 return item.product_id === chemist[j].id && item.store === chemist[j].store;
               });
-
+          
             let heart = document.createElement("i");
             if(!product_wish){
               heart.classList.add("far");
@@ -660,8 +666,9 @@
         let heart = e.target;
 
         heart.classList.toggle("fas");
+
         let product_id = heart.parentNode.children[1].href;
-        console.log(product_id);
+
         let xhr = new XMLHttpRequest();
 
         xhr.open("POST", "/api/1.0/wishlist");
@@ -704,6 +711,25 @@
         let keyword = document.getElementById('searchInput').value
         // console.log(keyword)
         location.assign(`/search.html?keyword=${keyword}`);
+    }
+
+    function signOut() {
+
+      let user_info = localStorage.getItem('user_info');
+      let token = JSON.parse(user_info).data.access_token;
+      if(!user_info){
+        window.alert('Please sign in first!');
+      }else{
+        
+        let wish_info = localStorage.getItem('wish_info');
+        let trac_info = localStorage.getItem('track_info');
+
+        localStorage.removeItem('user_info');
+        localStorage.removeItem('track_info');
+        localStorage.removeItem('wish_info');
+
+      }
+
     }
 
   </script>

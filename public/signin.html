@@ -173,6 +173,10 @@
                 document.getElementById('msg2').innerHTML = 'Successful log in!';
                 document.getElementById("msg2").style.color = "black";
                 localStorage.setItem("user_info", xhr.responseText);
+                localStorage.setItem("wish_info", JSON.stringify(msg.data.wishInfo));
+                localStorage.setItem("track_info", JSON.stringify(msg.data.trackInfo));
+                // 拿資料時候要JSON.parse(localStorage.wish_info)
+
             }else if(msg.error){
                 document.getElementById('msg2').innerHTML = 'Please try again or create an account!';
                 document.getElementById("msg2").style.color = "red";
@@ -221,6 +225,8 @@
             xhr.onload = function () {
             
               localStorage.setItem("user_info", xhr.responseText);
+              localStorage.setItem("wish_info", JSON.stringify(msg.data.wishInfo));
+              localStorage.setItem("track_info", JSON.stringify(msg.data.trackInfo));
               testAPI();
             }
             

@@ -173,6 +173,49 @@ module.exports={
 			
 		});
 	},
+	insertPriceline:function(body,element){
+		return new Promise(function(resolve, reject){
+
+			let $ = cheerio.load(body);
+
+			$('.product-name.brand-name').each((i, el) => {
+				let link = $(el).find('a').attr('href');
+				console.log(link)
+				// if(link.substr(0,1) == 'h'){
+	   //      		link = link;
+	   //      	}else{
+	   //      		link = 'https://www.bigw.com.au' + link;
+	   //      	}
+				// let title = $(el).find('a').attr('title');
+				// let id = $(el).find('a').attr('data-product-code');
+				// let price = parseFloat($(el).find('.online-price.padding-right-zero').text().replace(/\s\s+/g, '.').replace('.$.', '').slice(0, -1));
+	   //      	let img = 'https://www.bigw.com.au' + $(el).find('.image a').html().replace(/\s\s+/g, '').split(" ")[3].split('"')[1];
+	   //      	let discount = $(el).find('.subText.save').text().replace(/\s\s+/g, '').replace('save $','');
+	   //      	if(!discount){
+	   //      		discount = 0;
+	   //      	}else{
+	   //      		discount = parseFloat(discount);
+	   //      	}
+	   //      	let category = element.c.split("/")[0];
+	   //      	let subTitle = link.split("/")[4];
+	   //      	let originPrice = Math.floor((parseFloat(price) + parseFloat(discount))*100) / 100;
+	   //      	let store = 'bigw';
+	   //      	let data = {id,category,link,title,subTitle,img,price,discount,originPrice,store};
+
+	        	
+				// conn.query("INSERT INTO product_b SET ? ON DUPLICATE KEY UPDATE originPrice=?,price=?,discount=?", [data,originPrice,price,discount], function(err, results, fields){
+				// 	if(err){
+
+				// 		console.log(err);
+				// 		return;
+				// 	}
+				// 	console.log('insert or update product')
+				// });
+					        	
+			});
+			
+		});
+	},
 	forIndex:function(size, accessToken){
 		return new Promise(function(resolve, reject){
 			
@@ -280,15 +323,19 @@ module.exports={
 	list:function(category, filters, size, accessToken, paging){
 		
 		return new Promise(function(resolve, reject){
+			// console.log(filters)
+			// console.log(paging)
 			let offset=paging*size;
 			let filter="";
 			if(filters!==null){
-				if(filters.filter){
-					filter=" where category like "+conn.escape(filters.filter+"%");
-				}else if(filters.keyword){
-					filter=" where title like "+conn.escape("%"+filters.keyword+"%");
-					console.log(filter)
-				}
+				// if(filters.filter){
+					filter=" where category like "+conn.escape(filters+"%");
+					
+				// }
+				// else if(filters.keyword){
+				// 	filter=" where title like "+conn.escape("%"+filters.keyword+"%");
+					
+				// }
 			}
 
 			let query=`select count(*) as total from product_${category.store}`;
@@ -341,7 +388,7 @@ module.exports={
 					}else{
 
 						conn.query(`select * from product_${category.store} `+filter+" order by discount desc limit ?,?", [offset,size], function(error, results, fields){
-										
+							
 							if(error){
 								reject("Database Query Error 4");
 							}else{
@@ -523,27 +570,10 @@ module.exports={
 				});
 			});
 
-			// if(b===null&&c===null&&w===null){
-			// 	reject('nothing');
-			// }else{
-		
-				// resolve(b);
-			// }
+			
 			Promise.all([w,b,c]).then(function(values){
 				let data = [];
-				// for(let value of values){
-				// 	if(value != null){
-				// 		data.push(value);
-				// 	}
-				// }
-				// for(let i=0; i<3; i++){
-				// 	let data=[];
-				// 	if(values[i].length > 1){
-				// 		data.push(values[]);
-				// 	}
-				// }
 				
-
 				resolve({data:values});
 			})
 

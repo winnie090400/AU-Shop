@@ -83,10 +83,13 @@
             <a class="nav-link" href="/wishlist.html">Wish List&nbsp<i class="far fa-heart" id="heart_icon"></i></a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="/tracklist.html">track List&nbsp<i class="far fa-bell" id="track_icon"></i></a>
+            <a class="nav-link" href="/tracklist.html">Track List&nbsp<i class="far fa-bell" id="track_icon"></i></a>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="/signin.html#sign-in">Sign In&nbsp<i class="far fa-user"></i></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/index.html" onclick="signOut()">Sign Out&nbsp<i class="fas fa-sign-out-alt"></i></a>
           </li>
         </ul>
       </div>
@@ -225,6 +228,33 @@
       let wishInfo = {
           "product_id":product_id.split('=')[1].split('&')[0], 
           "store":product_id.split('=')[2],
+      };
+
+      if(localStorage.getItem('wish_info')){
+        let wish_info = JSON.parse(localStorage.getItem('wish_info'));
+
+        let product_track = wish_info.find(function(item, index, array){
+
+          return item.product_id === wishInfo.product_id && item.store === wishInfo.store;
+
+        });
+        
+        if(!product_track||product_track === undefined){
+
+          wish_info.push(wishInfo)
+          localStorage.setItem('wish_info', JSON.stringify(wish_info));
+          console.log('add track cache')
+
+        }else{
+          wish_info.splice(wish_info.indexOf(product_track), 1);
+          localStorage.setItem('wish_info', JSON.stringify(wish_info));
+          console.log('delete track cache')
+        }
+
+      }else{
+        let wish_info = [];
+        wish_info.push(wishInfo);
+        localStorage.setItem('wish_info', JSON.stringify(wish_info));
       };
 
       xhr.send(JSON.stringify(wishInfo));

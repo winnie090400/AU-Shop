@@ -4,9 +4,8 @@ const dao={
 	product:require("./dao/product.js"),
 	user:require("./dao/user.js")
 };
-const nodemailer = require('nodemailer');
 const CronJob = require('cron').CronJob;
-const credentials = require('./credentials.js')
+const crawler = require('./crawler.js');
 const app = express();
 
 const usersRouter = require('./route/user');
@@ -27,8 +26,6 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.use('/user', usersRouter);
-// app.use('/admin', adminRouter);
-// app.use('/api/1.0', apiRouter);
 
 
 app.get("/api/1.0/products/details",function(req, res){
@@ -90,7 +87,13 @@ app.get("/api/1.0/products/:category", function(req, res){
 	if(!Number.isInteger(paging)){
 		paging=0;
 	}
-
+	// console.log(paging)
+	let filter=req.query.filter;
+	if(!filter){
+		filter=null;
+	}
+	console.log(filter)
+	// console.log('index   '+filter)
 	let accessToken=req.get("Authorization");
 	if(accessToken === undefined){
 		accessToken=null;
@@ -108,40 +111,23 @@ app.get("/api/1.0/products/:category", function(req, res){
 	switch(category){
 
 		case "woolworths":
-			if(req.query.filter){
-				listProducts({store:'w'},{filter:req.query.filter}, size, accessToken, paging, listCallback);
-			}else{
-				listProducts({store:'w'}, null, size, accessToken, paging, listCallback);
-			}
+			listProducts({store:'w'},filter, size, accessToken, paging, listCallback);
 			break;
 			
 		case "chemistwarehouse":
-			if(req.query.filter){
-				listProducts({store:'c'},{filter:req.query.filter}, size, accessToken, paging, listCallback);
-			}else{
-				listProducts({store:'c'}, null, size, accessToken, paging, listCallback);
-			}
+			listProducts({store:'c'},filter, size, accessToken, paging, listCallback);
 			break;
 		case "bigw":
-			if(req.query.filter){
-				listProducts({store:'b'},{filter:req.query.filter}, size, accessToken, paging, listCallback);
-			}else{
-				listProducts({store:'b'}, null, size, accessToken, paging, listCallback);
-			}
+			listProducts({store:'b'},filter, size, accessToken, paging, listCallback);
+			
 			break;
 		case "coles":
-			if(req.query.filter){
-				listProducts({store:'co'},{filter:req.query.filter}, size, accessToken, paging, listCallback);
-			}else{
-				listProducts({store:'co'}, null, size, accessToken, paging, listCallback);
-			}
+			istProducts({store:'co'},filter, size, accessToken, paging, listCallback);
+			
 			break;
 		case "priceline":
-			if(req.query.filter){
-				listProducts({store:'p'},{filter:req.query.filter}, size, accessToken, paging, listCallback);
-			}else{
-				listProducts({store:'p'}, null, size, accessToken, paging, listCallback);
-			}
+			listroducts({store:'p'},filter, size, accessToken, paging, listCallback);
+			
 			break;
 	
 		default:
@@ -155,6 +141,79 @@ app.get("/api/1.0/products/:category", function(req, res){
 			callback({error:error});
 		});		
 	}
+
+
+// app.get("/api/1.0/products/:category", function(req, res){
+
+// 	let paging=parseInt(req.query.paging);
+// 	if(!Number.isInteger(paging)){
+// 		paging=0;
+// 	}
+
+// 	let accessToken=req.get("Authorization");
+// 	if(accessToken === undefined){
+// 		accessToken=null;
+// 	}else{
+// 		accessToken=req.get("Authorization").replace("Bearer ", "");
+// 	}
+
+// 	let size = 24;
+// 	let category = req.params.category;
+// 	let result = {error:"Wrong Request"};
+// 	let listCallback=function(data){
+// 		res.send(data);
+// 	};
+	
+// 	switch(category){
+
+// 		case "woolworths":
+// 			if(req.query.filter){
+// 				listProducts({store:'w'},{filter:req.query.filter}, size, accessToken, paging, listCallback);
+// 			}else{
+// 				listProducts({store:'w'}, null, size, accessToken, paging, listCallback);
+// 			}
+// 			break;
+			
+// 		case "chemistwarehouse":
+// 			if(req.query.filter){
+// 				listProducts({store:'c'},{filter:req.query.filter}, size, accessToken, paging, listCallback);
+// 			}else{
+// 				listProducts({store:'c'}, null, size, accessToken, paging, listCallback);
+// 			}
+// 			break;
+// 		case "bigw":
+// 			if(req.query.filter){
+// 				listProducts({store:'b'},{filter:req.query.filter}, size, accessToken, paging, listCallback);
+// 			}else{
+// 				listProducts({store:'b'}, null, size, accessToken, paging, listCallback);
+// 			}
+// 			break;
+// 		case "coles":
+// 			if(req.query.filter){
+// 				listProducts({store:'co'},{filter:req.query.filter}, size, accessToken, paging, listCallback);
+// 			}else{
+// 				listProducts({store:'co'}, null, size, accessToken, paging, listCallback);
+// 			}
+// 			break;
+// 		case "priceline":
+// 			if(req.query.filter){
+// 				listProducts({store:'p'},{filter:req.query.filter}, size, accessToken, paging, listCallback);
+// 			}else{
+// 				listProducts({store:'p'}, null, size, accessToken, paging, listCallback);
+// 			}
+// 			break;
+	
+// 		default:
+// 			res.send({error:"Wrong Request"});
+// 	}
+// });
+// 	function listProducts(category, filters, size, accessToken, paging,callback){
+// 		dao.product.list(category, filters, size, accessToken, paging).then(function(body){
+// 			callback(body);
+// 		}).catch(function(error){
+// 			callback({error:error});
+// 		});		
+// 	}
 
 
 //使用者增加或刪除願望清單
@@ -259,64 +318,6 @@ app.post("/api/1.0/user/tracklist", function(req, res){
 });
 
 
-async function sendMail() {
-  
-
-	const mailTransport = nodemailer.createTransport( {
-	    service: 'Gmail',
-	    auth: {
-	        user: credentials.gmail.user,
-	        pass: credentials.gmail.pass
-    	}
-	});
-
-	let mailList;
-	await dao.user.getUserEmail().then(function(body){
-			mailList = body.data;
-		}).catch(function(error){
-			return error;
-		});
-	console.log(mailList)
-
-	for(let mail of mailList){
-
-		let data;
-		await dao.product.showTracklist(`${mail.id}`).then(function(body){
-			
-			data = body.data;
-			
-			if(data!='no results'){
-				let content;
-				for(let i=0; i<data.length; i++){
-					if(data[i].discount != 0){
-						content += `<a href='${data[i].link}'><img src='${data[i].img}'></a>`+`<span>${data[i].title} at ${data[i].store} now is $${data[i].price}</span>`+`<span style="color:red;"> save $${data[i].discount}</span><br>`;
-					}
-				};
-				mailTransport.sendMail({
-			    from: 'AU SHOP <aushop951753@gmail.com>',
-			    to: `<${mail.email}>`,
-			    subject: `Hi, ${mail.name} :)`,
-			    html: 
-			    `<h1>Your tacking list for this week:</h1>
-			    <h3>${content}</h3>`
-				
-				}, function(err){
-				    if(err){
-				        console.log('Unable to send email: ' + err);
-				    }
-				});
-			}
-			
-		}).catch(function(error){
-			return error;
-		});
-
-		
-	}
-
-
-};
-sendMail();
 
 // const fs = require('fs');
 // const readline = require('readline');
