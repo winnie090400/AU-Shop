@@ -63,3 +63,5 @@ typings/
 credentials.js
 
 credentials.json
+
+mysql.js
