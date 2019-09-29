@@ -160,10 +160,12 @@
       let token = JSON.parse(user_info).data.access_token;
 
       xhr.setRequestHeader('Authorization', 'Bearer '+ token);
+
     }
 
+    // console.log(localStorage.getItem('wish_info'))
     let wish_info,wishlist;
-      if(localStorage.getItem('wish_info') === undefined){
+      if(localStorage.getItem('wish_info') == 'undefined'){
         wishlist = [];
         localStorage.setItem('wish_info',wishlist);
       }else{
@@ -212,7 +214,7 @@
 
           let heart = document.createElement("i");
 
-          if(wishlist.length >0){
+          if(wishlist){
             let product_track = wishlist.find(function(item, index, array){
                 return item.product_id === data[i].id && item.store === data[i].store;
               });
@@ -262,6 +264,14 @@
         location.assign(`/search.html?keyword=${keyword}`);
     }
 
+    let input = document.getElementById('searchInput');
+    input.addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+       event.preventDefault();
+       search(this);
+      }
+    });
+
     function isWish(e) {
 
       let user_info = localStorage.getItem('user_info');
@@ -292,6 +302,7 @@
             "store":product_id.split('=')[2],
         };
 
+        
         if(localStorage.getItem('wish_info')){
           let wish_info = JSON.parse(localStorage.getItem('wish_info'));
 
@@ -351,8 +362,7 @@
     function renderProduct(data) {
       // let allProducts = document.querySelector(".allProducts");
       let data1 = data.data;
-      console.log(data.paging);
-
+      
       // pagingURL for scroll event
       if (data.paging !== undefined) {
         if(!urlParams.get("filter")){
@@ -360,10 +370,16 @@
         }else{
           pagingURL = `api/1.0/${store}?paging=${pageNumber}`;
         }
-        // console.log(pagingURL)
+        
         window.addEventListener("scroll", handleScroll);
       } else {
-        console.log(pagingURL)
+        // pageNumber = '1';
+        // if(!urlParams.get("filter")){
+        //   pagingURL = `api/1.0/${store}&paging=${pageNumber}`;
+        // }else{
+        //   pagingURL = `api/1.0/${store}?paging=${pageNumber}`;
+        // }
+        // console.log(pagingURL)
         pagingURL = "";
         window.removeEventListener("scroll", handleScroll);
       };
@@ -401,7 +417,7 @@
 
           let heart = document.createElement("i");
 
-          if(wishlist.length >0){
+          if(wishlist){
             let product_track = wishlist.find(function(item, index, array){
                 return item.product_id === data1[i].id && item.store === data1[i].store;
               });
@@ -463,7 +479,8 @@
       let windowHeight = window.innerHeight;
       let remainingFooter = document.querySelector("footer").getBoundingClientRect().top;
         if (remainingFooter - windowHeight < 0) {
-          if(!urlParams.get("filter")){
+
+          if(store.search("filter")>0){
             getAjax(`/api/1.0/products/${store}&paging=${pageNumber}`, setExtProduct);
           }else{
             getAjax(`/api/1.0/products/${store}?paging=${pageNumber}`, setExtProduct);

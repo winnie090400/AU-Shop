@@ -32,10 +32,10 @@ router.post('/signin', function(req, res) {
 	let pass = req.body.pass;
 	let provider = req.body.provider;
 
-	if(!email||!pass){
-		res.send({error:"Wrong Request"});
-		return;
-	}
+	// if(!email||!pass){
+	// 	res.send({error:"Wrong Request"});
+	// 	return;
+	// }
 
 	if(provider == "native"){
 
@@ -57,7 +57,7 @@ router.post('/signin', function(req, res) {
 	    	//判斷email 在DB內有沒有資料
 
 	    	dao.user.FB(name,email).then(function(data){
-			res.send(data);
+				res.send(data);
 			}).catch(function(error){
 				res.send({error:error});
 			});

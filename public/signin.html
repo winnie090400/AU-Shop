@@ -164,7 +164,7 @@
         };
 
         xhr.send(JSON.stringify(userInfo));
-
+        
         xhr.onreadystatechange = function () {
             
             let msg = JSON.parse(xhr.responseText);
@@ -172,9 +172,28 @@
             if(msg.data) {
                 document.getElementById('msg2').innerHTML = 'Successful log in!';
                 document.getElementById("msg2").style.color = "black";
+
                 localStorage.setItem("user_info", xhr.responseText);
-                localStorage.setItem("wish_info", JSON.stringify(msg.data.wishInfo));
-                localStorage.setItem("track_info", JSON.stringify(msg.data.trackInfo));
+                if(msg.data.wishInfo){
+                    localStorage.setItem("wish_info", JSON.stringify(msg.data.wishInfo));
+                }
+
+                if(msg.data.trackInfo){
+                    localStorage.setItem("track_info", JSON.stringify(msg.data.trackInfo));
+                }
+
+                // }else{
+                //     wishlist = [];
+                //     localStorage.setItem('wish_info',wishlist);
+                // }
+                
+                // if(msg.data.trackInfo){
+                    // localStorage.setItem("track_info", JSON.stringify(msg.data.trackInfo));
+                // }else{
+                //     tracklist = [];
+                //     localStorage.setItem('track_info',tracklist);
+                // }
+                
                 // 拿資料時候要JSON.parse(localStorage.wish_info)
 
             }else if(msg.error){
@@ -223,19 +242,27 @@
             xhr.send(JSON.stringify(userInfo));
             // console.log(userInfo);
             xhr.onload = function () {
-            
+
+              let msg = JSON.parse(xhr.responseText);
+
               localStorage.setItem("user_info", xhr.responseText);
-              localStorage.setItem("wish_info", JSON.stringify(msg.data.wishInfo));
-              localStorage.setItem("track_info", JSON.stringify(msg.data.trackInfo));
+              
+                if(msg.data.wishInfo){
+                    localStorage.setItem("wish_info", JSON.stringify(msg.data.wishInfo));
+                }
+
+                if(msg.data.trackInfo){
+                    localStorage.setItem("track_info", JSON.stringify(msg.data.trackInfo));
+                }
               testAPI();
             }
             
 
         }
-        // else{
-        //     document.getElementById('status').innerHTML = 'Please log ' +
-        //         'into this app.';
-        // }
+        else{
+            document.getElementById('status').innerHTML = 'Please log ' +
+                'into this app.';
+        }
       }
 
       function checkLoginState() {

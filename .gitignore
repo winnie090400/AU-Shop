@@ -65,3 +65,5 @@ credentials.js
 credentials.json
 
 mysql.js
+
+crawler.js

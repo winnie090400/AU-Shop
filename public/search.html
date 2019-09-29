@@ -41,8 +41,6 @@
       bottom: 0;
     }
 
-    
-
     .fas.fa-search{
       margin-top: 0.3em;
       font-size: 1.5em;
@@ -144,6 +142,15 @@
       xhr.setRequestHeader('Authorization', 'Bearer '+ token);
     }
 
+    let wish_info,wishlist;
+      if(localStorage.getItem('wish_info') === undefined){
+        wishlist = [];
+        localStorage.setItem('wish_info',wishlist);
+      }else{
+        wish_info = localStorage.getItem('wish_info');
+        wishlist = JSON.parse(wish_info);
+      }
+
     xhr.onreadystatechange = function() {
 
       if (xhr.readyState == 4 && xhr.status == 200) {
@@ -181,10 +188,29 @@
           cardbody.appendChild(discount);
 
           let heart = document.createElement("i");
-          // heart.classList.add("fas");
-          heart.classList.add("far");
-          heart.classList.add("fa-heart");
-          // heart.addEventListener("click", isWish);
+
+          if(wishlist){
+            let product_track = wishlist.find(function(item, index, array){
+                return item.product_id === data[i].id && item.store === data[i].store;
+              });
+
+            if(!product_track){
+              heart.classList.add("far");
+              heart.classList.add("fa-heart");
+              console.log('not track')
+            }else{
+              heart.classList.add("fas");
+              heart.classList.add("far");
+              heart.classList.add("fa-heart");
+              console.log('track')
+            }
+            
+          }else{
+            heart.classList.add("far");
+            heart.classList.add("fa-heart");
+          }
+
+          heart.addEventListener("click", isWish);
 
           // let logo = document.createElement("img");
           // logo.classList.add("logo");
@@ -215,6 +241,88 @@
         let keyword = document.getElementById('searchInput').value
         // console.log(keyword)
         location.assign(`/search.html?keyword=${keyword}`);
+    }
+
+    let input = document.getElementById('searchInput');
+    input.addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+       event.preventDefault();
+       search(this);
+      }
+    });
+
+    function isWish(e) {
+
+      let user_info = localStorage.getItem('user_info');
+
+      if(!user_info){
+        window.alert('Please sign in first!');
+        return;
+      }else{
+
+        let heart = e.target;
+
+        heart.classList.toggle("fas");
+
+        let product_id = heart.parentNode.children[0].href;
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("POST", "/api/1.0/wishlist");
+
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        let token = JSON.parse(user_info).data.access_token;
+
+        xhr.setRequestHeader('Authorization', 'Bearer '+ token);
+        
+        let wishInfo = {
+            "product_id":product_id.split('=')[1].split('&')[0], 
+            "store":product_id.split('=')[2],
+        };
+
+        if(localStorage.getItem('wish_info')){
+          let wish_info = JSON.parse(localStorage.getItem('wish_info'));
+
+          let product_track = wish_info.find(function(item, index, array){
+
+            return item.product_id === wishInfo.product_id && item.store === wishInfo.store;
+
+          });
+          console.log(product_track)
+          
+          if(!product_track||product_track === undefined){
+
+            wish_info.push(wishInfo)
+            localStorage.setItem('wish_info', JSON.stringify(wish_info));
+            console.log('add track cache')
+
+          }else{
+            wish_info.splice(wish_info.indexOf(product_track), 1);
+            localStorage.setItem('wish_info', JSON.stringify(wish_info));
+            console.log('delete track cache')
+          }
+
+        }else{
+          let wish_info = [];
+          wish_info.push(wishInfo);
+          localStorage.setItem('wish_info', JSON.stringify(wish_info));
+        };
+
+        xhr.send(JSON.stringify(wishInfo));
+
+        xhr.onreadystatechange = function () {
+            
+            let msg = JSON.parse(xhr.responseText);
+
+            if(msg.data) {
+              console.log(msg.data)
+            }else if(msg.error){
+                console.log(msg.error);
+            }
+        };
+
+      }
     }
 
   </script>

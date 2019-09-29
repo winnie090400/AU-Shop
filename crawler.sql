@@ -160,6 +160,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
+
 select * from wishlist left join product_c on wishlist.product_id = product_c.id and wishlist.store = product_c.store left join product_b on wishlist.product_id = product_b.id and wishlist.store = product_b.store left join product_w on wishlist.product_id = product_w.id and wishlist.store = product_w.store;
 select * from wishlist inner join product_b on wishlist.product_id = product_b.id and wishlist.store = product_b.store and user_id ='1';
 select * from wishlist inner join product_w on wishlist.product_id = product_w.id and wishlist.store = product_w.store;
@@ -172,6 +173,8 @@ select * from wishlist;
 select * from user;
 select * from tracklist;
 select count(*) as total from product_w  where title like '%carusos%' union all select count(*) as total from product_c  where title like '
+
+
 
 DELETE FROM tracklist WHERE product_id = '819953' AND store = 'woolworths';
 SET SQL_SAFE_UPDATES=0;

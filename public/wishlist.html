@@ -146,56 +146,49 @@
         
         let data = JSON.parse(xhr.responseText).data;
         
-        for(let i=0; i<3; i++){
-          if(data[i] === 0){
-            return i++;
-          }else{
-            for(let j=0; j<data[i].length; j++){
-              let card = document.createElement("div");
-              card.classList.add("col-md-3");
-              card.classList.add("mt-5");
+        for(let i=0; i<data.length; i++){
+          let card = document.createElement("div");
+          card.classList.add("col-md-3");
+          card.classList.add("mt-5");
 
-              let image = document.createElement("img");
-              image.classList.add("card-img-top");
-              image.src = data[i][j].img;
+          let image = document.createElement("img");
+          image.classList.add("card-img-top");
+          image.src = data[i].img;
 
-              let link = document.createElement('a');
-              link.href = `/product.html?id=${data[i][j].id}&store=${data[i][j].store}`;
-              link.appendChild(image);
+          let link = document.createElement('a');
+          link.href = `/product.html?id=${data[i].id}&store=${data[i].store}`;
+          link.appendChild(image);
 
-              let cardbody = document.createElement("div");
-              cardbody.classList.add("card-body");
+          let cardbody = document.createElement("div");
+          cardbody.classList.add("card-body");
 
-              let title = document.createElement("h6");
-              title.innerHTML = data[i][j].title;
-              cardbody.appendChild(title);
+          let title = document.createElement("h6");
+          title.innerHTML = data[i].title;
+          cardbody.appendChild(title);
 
-              let price = document.createElement("h5");
-              price.innerHTML = '$ '+ data[i][j].price;
-              cardbody.appendChild(price);
+          let price = document.createElement("h5");
+          price.innerHTML = '$ '+ data[i].price;
+          cardbody.appendChild(price);
 
-              let discount = document.createElement("span");
-              discount.innerHTML = 'Save $'+ data[i][j].discount;
-              discount.style = 'color:red';
-              cardbody.appendChild(discount);
+          let discount = document.createElement("span");
+          discount.innerHTML = 'Save $'+ data[i].discount;
+          discount.style = 'color:red';
+          cardbody.appendChild(discount);
 
-              let heart = document.createElement("i");
-              heart.classList.add("fas");
-              heart.classList.add("far");
-              heart.classList.add("fa-heart");
-              heart.addEventListener("click", isWish);
+          let heart = document.createElement("i");
+          heart.classList.add("fas");
+          heart.classList.add("far");
+          heart.classList.add("fa-heart");
+          heart.addEventListener("click", isWish);
 
-              let cardList = document.getElementById("card");
-              cardList.appendChild(card);
-              
-              card.appendChild(link);
-              card.appendChild(cardbody);
-              card.appendChild(heart);
-                
-            }
-          }
+          let cardList = document.getElementById("card");
+          cardList.appendChild(card);
+          
+          card.appendChild(link);
+          card.appendChild(cardbody);
+          card.appendChild(heart);
+            
         }
-        
       }
     }
     xhr.send();
@@ -280,6 +273,14 @@
         // console.log(keyword)
         location.assign(`/search.html?keyword=${keyword}`);
     }
+
+    let input = document.getElementById('searchInput');
+    input.addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+       event.preventDefault();
+       search(this);
+      }
+    });
   </script>
 
 

@@ -1,4 +1,5 @@
 const conn = require("../mysql.js");
+// const conn = require("../mysql.js").pool;
 const crypto = require('crypto');
 
 module.exports={
@@ -89,18 +90,18 @@ module.exports={
 	            console.log('Rows affected:', results.affectedRows);
 
 	            conn.query('SELECT * FROM user WHERE id = ?', id ,function (err,results) {
-		            let user = {};
-		            user.id = results[0].id;
-		            user.provider = results[0].provider;
-		            user.name = results[0].name;
-		            user.email = results[0].email;
-		            user.picture = results[0].picture;
+		            // let user = {};
+		            // user.id = results[0].id;
+		            // user.provider = results[0].provider;
+		            // user.name = results[0].name;
+		            // user.email = results[0].email;
+		            // user.picture = results[0].picture;
 
 		            let data = {};
 		            data.access_token = results[0].token;
 		            data.access_expired = results[0].token_expired;
 		            
-		            data.user = user;
+		            // data.user = user;
 
 		            // let signin_response = {data:data};
 
@@ -135,7 +136,8 @@ module.exports={
 		});
 	},
 	FB:function(name,email){
-
+		return new Promise(function(resolve, reject){
+		// console.log(name,email)
 		conn.query('SELECT id FROM user WHERE name = ? AND email = ? AND provider = "facebook"', [name,email] , function (err,results) {
     		
     		if(!results.length){
@@ -151,14 +153,23 @@ module.exports={
 		            picture:"temp.jpg",
 
 		        }
-
+		        console.log(userInsert)
 		        conn.query('INSERT INTO user SET ?',userInsert,function (err,results) {
 		            if(err){
 						console.log(err);
 						return;
 					}
 		            console.log('Add fb user info into DB');
+
+		            let data = {};
+		            data.access_token = userInsert.token;
+		            data.access_expired = userInsert.token_expired;
+		            let fbsignin_response = {data:data};
+		            resolve(fbsignin_response);
+
 		        });
+
+
 		    	
 		    }else{
 
@@ -173,24 +184,42 @@ module.exports={
 						console.log(err);
 						return;
 					}
-		            console.log('Rows affected:', results.affectedRows);
+		            // console.log('Rows affected:', results.affectedRows);
 			        
 			        conn.query('SELECT * FROM user WHERE id = ?', id ,function (err,results) {
-			            let user = {};
-			            user.id = results[0].id;
-			            user.provider = results[0].provider;
-			            user.name = results[0].name;
-			            user.email = results[0].email;
-			            user.picture = results[0].picture;
+			            // let user = {};
+			            // user.id = results[0].id;
+			            // user.provider = results[0].provider;
+			            // user.name = results[0].name;
+			            // user.email = results[0].email;
+			            // user.picture = results[0].picture;
 
 			            let data = {};
 			            data.access_token = results[0].token;
 			            data.access_expired = results[0].token_expired;
 			            
-			            data.user = user;
+			            // data.user = user;
 
-			            let fbsignin_response = {data:data};
-			            resolve(fbsignin_response);
+			            // let fbsignin_response = {data:data};
+			            // resolve(fbsignin_response);
+
+			            conn.query('SELECT * FROM wishlist WHERE user_id = ?', id ,function (err,results) {
+			            	if(results.length>0){
+			            		let wishInfo = results;
+			            		data.wishInfo = wishInfo;
+			            	}
+
+			            	conn.query('SELECT * FROM tracklist WHERE user_id = ?', id ,function (err,results) {
+			            		if(results.length>0){
+				            		let trackInfo = results;
+				            		data.trackInfo = trackInfo;
+			            		}
+			            		let fbsignin_response = {data:data};
+			            		resolve(fbsignin_response);
+			            	});
+		            		
+		            	});
+
 		 			});
 
 		        });
@@ -198,6 +227,7 @@ module.exports={
 		    }
 
 	    });
+	  });  
 	},
 	check:function(accessToken){
 		return new Promise(function(resolve, reject){

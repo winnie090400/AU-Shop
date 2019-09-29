@@ -57,6 +57,13 @@
       bottom: 0;
     }
 
+    .fas.fa-search{
+      margin-top: 0.3em;
+      font-size: 1.5em;
+      color: white;
+      cursor:pointer;
+    }
+
   </style>
 
 </head>
@@ -74,9 +81,9 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <input type="text" class="form-control" placeholder="">
-            <!-- <i class="fas fa-search"></i> -->
+            <input type="text" class="form-control" placeholder="" id="searchInput">
           </li>
+          <li><i class="fas fa-search" onclick="search(this)"></i></li>
           <li class="nav-item active">
             <a class="nav-link" href="/wishlist.html">Wish List&nbsp<i class="far fa-heart" id="heart_icon"></i></a>
           </li>
@@ -145,7 +152,7 @@
       if (xhr.readyState == 4 && xhr.status == 200) {
         
         let data = JSON.parse(xhr.responseText).data;
-
+        console.log(data)
         let user_info = localStorage.getItem('user_info');
         
         
@@ -190,13 +197,13 @@
           price.innerHTML = '$'+data[i].price;
           tr.appendChild(price);
 
-          let calendar = document.createElement("td");
-          calendar.innerHTML = '<i class="far fa-calendar-alt"></i>';
-          tr.appendChild(calendar);
+          // let calendar = document.createElement("td");
+          // calendar.innerHTML = '<i class="far fa-calendar-alt"></i>';
+          // tr.appendChild(calendar);
 
           let bell = document.createElement("td");
 
-          if(tracklist.length >0){
+          if(tracklist){
             let product_track = tracklist.find(function(item, index, array){
                 return item.product_id === data[i].id && item.store === data[i].store;
               });
@@ -225,6 +232,20 @@
       }
     }
     xhr.send();
+
+    function search(e) {
+        let keyword = document.getElementById('searchInput').value
+        // console.log(keyword)
+        location.assign(`/search.html?keyword=${keyword}`);
+    }
+
+    let input = document.getElementById('searchInput');
+    input.addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+       event.preventDefault();
+       search(this);
+      }
+    });
 
     function isTrack(e) {
 

@@ -35,7 +35,7 @@
       cursor:pointer;
     }
 
-    #heart_icon{
+    #track_icon{
       position:relative;
       right: auto;
       bottom: 0;
@@ -258,6 +258,14 @@
         // console.log(keyword)
         location.assign(`/search.html?keyword=${keyword}`);
     }
+
+    let input = document.getElementById('searchInput');
+    input.addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+       event.preventDefault();
+       search(this);
+      }
+    });
   </script>
 
 
