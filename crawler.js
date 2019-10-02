@@ -1,4 +1,4 @@
-//const pptrFirefox = require('puppeteer-firefox');
+const pptrFirefox = require('puppeteer-firefox');
 const cheerio = require('cheerio');
 const request = require("request");
 const dao={
@@ -8,73 +8,74 @@ const dao={
 const CronJob = require('cron').CronJob;
 const credentials = require('./credentials.js');
 const nodemailer = require('nodemailer');
-
+const NodeCache = require( "node-cache" );
+const myCache = new NodeCache();
 
 
 // coles 爬蟲
 
-new CronJob('0 35 2 * * 3', function() {
+new CronJob('0 14 2 * * 3', function() {
 	
 	crawler_coles({m:'health-beauty',c:'cosmetics',p:3})
 	
 }, null, true, 'Australia/Sydney');
 
 
-new CronJob('0 36 2 * * 3', function() {
+new CronJob('0 15 2 * * 3', function() {
 	
 	crawler_coles({m:'health-beauty',c:'dental',p:6})
 	
 }, null, true, 'Australia/Sydney');
 
-new CronJob('0 38 2 * * 3', function() {
+new CronJob('0 17 2 * * 3', function() {
 	
 	crawler_coles({m:'health-beauty',c:'first-aid',p:3})
 	
 }, null, true, 'Australia/Sydney');
 
-new CronJob('0 39 2 * * 3', function() {
+new CronJob('0 18 2 * * 3', function() {
 	
 	crawler_coles({m:'health-beauty',c:'hair-accessories',p:2})
 	
 }, null, true, 'Australia/Sydney');
 
-new CronJob('30 39 2 * * 3', function() {
+new CronJob('30 18 2 * * 3', function() {
 	
 	crawler_coles({m:'health-beauty',c:'hair-care',p:9})
 	
 }, null, true, 'Australia/Sydney');
 
-new CronJob('30 42 2 * * 3', function() {
+new CronJob('30 21 2 * * 3', function() {
 	
 	crawler_coles({m:'health-beauty',c:'hair-removal',p:4})
 	
 }, null, true, 'Australia/Sydney');
 
-new CronJob('0 44 2 * * 3', function() {
+new CronJob('0 23 2 * * 3', function() {
 	
 	crawler_coles({m:'health-beauty',c:'medicinal',p:13})
 	
 }, null, true, 'Australia/Sydney');
 
-new CronJob('30 48 2 * * 3', function() {
+new CronJob('30 27 2 * * 3', function() {
 	
 	crawler_coles({m:'health-beauty',c:'personal-care-hygiene',p:11})
 	
 }, null, true, 'Australia/Sydney');
 
-new CronJob('0 52 2 * * 3', function() {
+new CronJob('0 31 2 * * 3', function() {
 	
 	crawler_coles({m:'health-beauty',c:'shower-bath-care',p:7})
 	
 }, null, true, 'Australia/Sydney');
 
-new CronJob('0 54 2 * * 3', function() {
+new CronJob('0 33 2 * * 3', function() {
 	
 	crawler_coles({m:'health-beauty',c:'skin-care',p:8})
 	
 }, null, true, 'Australia/Sydney');
 
-new CronJob('0 57 2 * * 3', function() {
+new CronJob('0 37 2 * * 3', function() {
 	
 	crawler_coles({m:'healthy-living',c:'diet-sports-nutrition',p:4})
 	
@@ -104,61 +105,59 @@ function crawler_coles(element){
 	}
 }
 
-
-
-//priceline
-// new CronJob('0 0 1 * * 3', function() {
-// 	//資料筆數: 617
-// 	crawler_priceline('https://www.priceline.com.au/weight-and-vitamins');
+// priceline
+new CronJob('0 0 1 * * 3', function() {
+	//資料筆數: 617
+	crawler_priceline('https://www.priceline.com.au/weight-and-vitamins');
 	
-// }, null, true, 'Australia/Sydney');
+}, null, true, 'Australia/Sydney');
 
-// new CronJob('0 7 1 * * 3', function() {
-// 	//資料筆數: 2216
-// 	crawler_priceline('https://www.priceline.com.au/cosmetics');
+new CronJob('0 18 1 * * 3', function() {
+	//資料筆數: 2216
+	crawler_priceline('https://www.priceline.com.au/cosmetics');
 	
-// }, null, true, 'Australia/Sydney');
+}, null, true, 'Australia/Sydney');
 
-// new CronJob('0 29 1 * * 3', function() {
-// 	//資料筆數: 2102
-// 	crawler_priceline('https://www.priceline.com.au/hair');
+new CronJob('0 29 1 * * 3', function() {
+	//資料筆數: 2102
+	crawler_priceline('https://www.priceline.com.au/hair');
 	
-// }, null, true, 'Australia/Sydney');
+}, null, true, 'Australia/Sydney');
 
-// new CronJob('0 51 1 * * 3', function() {
-// 	//資料筆數: 2244
-// 	crawler_priceline('https://www.priceline.com.au/skincare');
+new CronJob('0 45 1 * * 3', function() {
+	//資料筆數: 2244
+	crawler_priceline('https://www.priceline.com.au/skincare');
 	
-// }, null, true, 'Australia/Sydney');
+}, null, true, 'Australia/Sydney');
 
-// new CronJob('0 13 2 * * 3', function() {
-// 	//資料筆數: 729
-// 	crawler_priceline('https://www.priceline.com.au/fragrances');
+new CronJob('0 55 1 * * 3', function() {
+	//資料筆數: 729
+	crawler_priceline('https://www.priceline.com.au/fragrances');
 	
-// }, null, true, 'Australia/Sydney');
+}, null, true, 'Australia/Sydney');
 
-// new CronJob('0 20 2 * * 3', function() {
-// 	//資料筆數: 793
-// 	crawler_priceline('https://www.priceline.com.au/health');
+new CronJob('0 2 2 * * 3', function() {
+	//資料筆數: 793
+	crawler_priceline('https://www.priceline.com.au/health');
 	
-// }, null, true, 'Australia/Sydney');
+}, null, true, 'Australia/Sydney');
 
-// new CronJob('0 28 2 * * 3', function() {
-// 	//資料筆數: 156
-// 	crawler_priceline('https://www.priceline.com.au/diet-and-nutrition');
+new CronJob('0 9 2 * * 3', function() {
+	//資料筆數: 156
+	crawler_priceline('https://www.priceline.com.au/diet-and-nutrition');
 	
-// }, null, true, 'Australia/Sydney');
+}, null, true, 'Australia/Sydney');
 
-// new CronJob('0 30 2 * * 3', function() {
-// 	//資料筆數: 422
-// 	crawler_priceline('https://www.priceline.com.au/mens');
+new CronJob('0 10 2 * * 3', function() {
+	//資料筆數: 422
+	crawler_priceline('https://www.priceline.com.au/mens');
 	
-// }, null, true, 'Australia/Sydney');
+}, null, true, 'Australia/Sydney');
 
 
   async function crawler_priceline(url){
 
-  const browser = await pptrFirefox.launch({headless:true});
+  const browser = await pptrFirefox.launch({headless:false});
   const page = await browser.newPage();
   
   	await page.goto(url);
@@ -176,13 +175,13 @@ function crawler_coles(element){
   	await page.waitFor(5000);
 
   
-  // 把網頁的body抓出來
+    // 把網頁的body抓出來
     let body = await page.content();
 
-  //送到 dao 處理
+    //送到 dao 處理
 	dao.product.insertPriceline(body);
 
-  await browser.close();
+    await browser.close();
 	};
   
 
@@ -205,20 +204,13 @@ function crawler_coles(element){
 	    });
 	}
 
-
-// 秒：0-59
-// 分鐘：0-59
-// 小時：0-23
-// 天：1-31
-// 月份：0-11（1月至12月）
-// 星期幾：0-6（週日至週六）
-new CronJob('0 21 14 * * 0', function() {
+// chemistwarehouse
+new CronJob('0 55 10 * * 3', function() {
 	// get vitamin product from (sorce: chemistwarehouse.com.au, insert into database( table name: product_c ))
 	let element = ['/81/vitamins','/542/fragrances','/665/skin-care','/648/cosmetics','/159/oral-hygiene-and-dental-care','/792/household','/129/hair-care','/1255/sports-nutrition'];
 	for(let i=0; i<element.length; i++){
 	  setTimeout(async () => {
 	  let category = element[i];
-	  // console.log(category)	
 	  request({
 	    url: `https://www1.chemistwarehouse.com.au/shop-online${category}?`,
 	    method: "GET",
@@ -256,60 +248,42 @@ new CronJob('0 21 14 * * 0', function() {
 }, null, true, 'Australia/Sydney');
 
 
-// new CronJob('0 3 3 * * 3', function() {
-// 	// get beauty product from (sorce: chemistwarehouse.com.au, insert into database( table name: product_c ))
-// 	for(let i=1; i<291; i++){
-
-// 		request({
-// 		    url: `https://www1.chemistwarehouse.com.au/Shop-Online/257/Beauty?page=${i}`,
-// 		    method: "GET"
-// 		  }, function(error, res, body) {
-// 		    if (error) {
-// 		      console.log(error);	
-// 		      return;
-// 		    }else{
-// 		    	dao.product.insertChemist(body).then(console.log('ok!'));
-
-// 		  }
-// 		});
-// 	}
+// woolworths
+new CronJob('0 56 10 * * 3', function() {
+	// 105 page woolworths.com.au
+	for(let i=1; i<106; i++){
 	
-// }, null, true, 'Australia/Sydney');
-
-
-// new CronJob('0 6 3 * * 3', function() {
-// 	// 105 page woolworths.com.au
-// 	for(let i=1; i<106; i++){
-
-// 		request({
-// 	    	url: 'https://www.woolworths.com.au/apis/ui/browse/category',
-// 	    	method: "POST",
-// 		    json:{
-// 		    	"categoryId":"1_894D0A8",
-// 		    	"pageNumber":`${i}`,
-// 		    	"pageSize":24,
-// 		    	"sortType":"TraderRelevance",
-// 		    	"url":`/shop/browse/health-beauty?pageNumber=${i}`,
-// 		    	"location":"/shop/browse/health-beauty",
-// 		    	"formatObject":"{\"name\":\"Health & Beauty\"}",
-// 		    	"isSpecial":false,"isBundle":false,
-// 		    	"isMobile":true,
-// 		    	"filters":null
-// 	    	}
-// 	  	}, function(error, response, body) {
-// 		    if (error) {
-// 		      console.log(error);	
-// 		      return;
-// 		    }else{
-// 		    	dao.product.insertWws(body).then(console.log('ok!'));
-// 		    }
-// 		});
-// 	}
+		request({
+	    	url: 'https://www.woolworths.com.au/apis/ui/browse/category',
+	    	method: "POST",
+		    json:{
+		    	"categoryId":"1_894D0A8",
+		    	"pageNumber":`${i}`,
+		    	"pageSize":24,
+		    	"sortType":"TraderRelevance",
+		    	"url":`/shop/browse/health-beauty?pageNumber=${i}`,
+		    	"location":"/shop/browse/health-beauty",
+		    	"formatObject":"{\"name\":\"Health & Beauty\"}",
+		    	"isSpecial":false,"isBundle":false,
+		    	"isMobile":true,
+		    	"filters":null
+	    	}
+	  	}, function(error, response, body) {
+		    if (error) {
+		      console.log(error);	
+		      return;
+		    }else{
+		    	dao.product.insertWws(body).then(console.log('ok!'));
+		    }
+		});
+	}
 	
-// }, null, true, 'Australia/Sydney');
+}, null, true, 'Australia/Sydney');
 
-new CronJob('0 18 15 * * 0', function() {
-// 	// Big W 
+
+// Big W
+new CronJob('0 57 10 * * 3', function() {
+ 
 	let elements = [
 		{c:'bath-body/c/6221/',p:10},
 		{c:'dental-care/c/6210/',p:7},
@@ -325,6 +299,7 @@ new CronJob('0 18 15 * * 0', function() {
 	for(let element of elements){
 
 		for(let i=0; i<element.p; i++){
+
 		setTimeout(async () => {
 			request({
 			    url: `https://www.bigw.com.au/beauty-health/${element.c}?q=%3Arelevance&page=${i}`,
@@ -339,9 +314,10 @@ new CronJob('0 18 15 * * 0', function() {
 			    }else{
 			      dao.product.insertBigw(body,element).then(console.log('ok!'));
 		    }
-		  });
+		    });
 		},i*1000*Math.floor(Math.random() * Math.floor(10)));
-	}
+
+		}
 	}
 	
 }, null, true, 'Australia/Sydney');
@@ -354,59 +330,59 @@ new CronJob('0 18 15 * * 0', function() {
 // }, null, true, 'Australia/Sydney');
 
 
-// async function sendMail() {
+async function sendMail() {
   
-// 	const mailTransport = nodemailer.createTransport( {
-// 	    service: 'Gmail',
-// 	    auth: {
-// 	        user: credentials.gmail.user,
-// 	        pass: credentials.gmail.pass
-//     	}
-// 	});
+	const mailTransport = nodemailer.createTransport( {
+	    service: 'Gmail',
+	    auth: {
+	        user: credentials.gmail.user,
+	        pass: credentials.gmail.pass
+    	}
+	});
 
-// 	let mailList;
-// 	await dao.user.getUserEmail().then(function(body){
-// 			mailList = body.data;
-// 		}).catch(function(error){
-// 			return error;
-// 		});
+	let mailList;
+	await dao.user.getUserEmail().then(function(body){
+			mailList = body.data;
+		}).catch(function(error){
+			return error;
+		});
 	
-// 	for(let mail of mailList){
+	for(let mail of mailList){
 
-// 		let data;
-// 		await dao.product.showTracklist(`${mail.id}`).then(function(body){
+		let data;
+		await dao.product.showTracklist(`${mail.id}`).then(function(body){
 			
-// 			data = body.data;
+			data = body.data;
 			
-// 			if(data!='no results'){
-// 				let content ="";
-// 				for(let i=0; i<data.length; i++){
-// 					if(data[i].discount != 0){
-// 						content += `<a href='${data[i].link}'><img style="height:150px;width:150px;" src='${data[i].img}'></a><br>`+`<span>${data[i].title} at ${data[i].store} now is $${data[i].price}</span>`+	`<span style="color:red;"> save $${data[i].discount}</span><br><br>`;
-// 					}
-// 				};
+			if(data!='no results'){
+				let content ="";
+				for(let i=0; i<data.length; i++){
+					if(data[i].discount != 0){
+						content += `<a href='${data[i].link}'><img style="height:150px;width:150px;" src='${data[i].img}'></a><br>`+`<span>${data[i].title} at ${data[i].store} now is $${data[i].price}</span>`+	`<span style="color:red;"> save $${data[i].discount}</span><br><br>`;
+					}
+				};
 				
-// 				mailTransport.sendMail({
-// 			    from: 'AU SHOP <aushop951753@gmail.com>',
-// 			    to: `<${mail.email}>`,
-// 			    subject: `Hi, ${mail.name} :)`,
-// 			    html: 
-// 			    `<h1>Your tacking list for this week:</h1>
-// 			    <h3>${content}</h3>`
+				mailTransport.sendMail({
+			    from: 'AU SHOP <aushop951753@gmail.com>',
+			    to: `<${mail.email}>`,
+			    subject: `Hi, ${mail.name} :)`,
+			    html: 
+			    `<h1>Your tacking list for this week:</h1>
+			    <h3>${content}</h3>`
 				
-// 				}, function(err){
-// 				    if(err){
-// 				        console.log('Unable to send email: ' + err);
-// 				    }
-// 				});
-// 			}
+				}, function(err){
+				    if(err){
+				        console.log('Unable to send email: ' + err);
+				    }
+				});
+			}
 			
-// 		}).catch(function(error){
-// 			return error;
-// 		});
-// 	}
+		}).catch(function(error){
+			return error;
+		});
+	}
 
-// };
+};
 
 
  

@@ -2,1101 +2,876 @@
 <html lang="en">
 
 <head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <title>AuShop</title>
-
-  <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom styles for this template -->
-  <!-- <link href="css/shop-homepage.css" rel="stylesheet"> -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384–5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-
-  <style>
-    .carousel-control-next{
-      width: 20px;
-    }
-
-    .carousel-control-prev{
-      width: 30px; 
-    }
-
-    .far.fa-heart{
-      position: absolute;
-      right: 1.5em;
-      bottom: 1em;
-      font-size: 1.5em;
-      cursor:pointer;
-    }
-
-    .fas.fa-heart{
-      position: absolute;
-      right: 1.5em;
-      bottom: 1em;
-      font-size: 1.5em;
-      cursor:pointer;
-    }
-  
-    #heart_icon{
-      position:relative;
-      right: auto;
-      bottom: 0;
-    }
-
-    .container.my-4{
-      position: relative;
-    }
-
-    .btn.btn-outline-warning{
-      position: absolute;
-      right: 2em;
-      top: 2em;
-    }
-
-    .fas.fa-search{
-      margin-top: 0.3em;
-      font-size: 1.5em;
-      color: white;
-      cursor:pointer;
-    }
-
-    ul li{
-      margin-right: 0.5em;
-    }
-
-
-  </style>
-
+<link rel="import" href="/head.html">
 </head>
 
 <body>
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-info fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="/index.html">Au Shop</a>
-      <!-- <img src="/logo/logo.png" alt=""> -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <input type="text" class="form-control" placeholder="" id="searchInput">
-          </li>
-          <li><i class="fas fa-search" onclick="search(this)"></i></li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/wishlist.html">Wish List&nbsp<i class="far fa-heart" id="heart_icon"></i></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/tracklist.html">Track List&nbsp<i class="far fa-bell" id="track_icon"></i></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/signin.html#sign-in">Sign In&nbsp<i class="far fa-user"></i></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/index.html" onclick="signOut()">Sign Out&nbsp<i class="fas fa-sign-out-alt"></i></a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<!-- Navigation -->
+<div id="nav-placeholder"></div>
 
-  <!-- Page Content -->
-  <div class="container">
+<!-- Page Content -->
+<div class="container">
 
-    <div class="row">
+  <div class="row">
 
-      <!-- <div class="col-lg-3">
-
-      <hr class="my-4">
-
-        <div class="list-group mt-5">
-          <a href="#" class="list-group-item">HAIR CARE</a>
-          <a href="#" class="list-group-item">VITAMINS</a>
-          <a href="#" class="list-group-item">SKIN CARE</a>
-        </div>
-
-      </div> -->
-      <!-- /.col-lg-3 -->
-
-      <div class="col-lg-12 mt-5">
+    <div class="col-lg-12 mt-5">
 
 
 <!-- wws -->
 <div class="container my-4">
 
-    <hr class="my-4">
-    <a href="https://www.woolworths.com.au"><img src="/logo/woolworths_logo.svg.png" style="height:4em; width: 4em;"></a>
-    <button type="button" class="btn btn-outline-warning" name="woolworths" onclick="moreItem(this)">more</button>
-    <!--Carousel Wrapper-->
-    <div id="carouselIndicatorsWws" class="carousel slide carousel-multi-item" data-ride="carousel">
-      <!--Controls-->
-      <a class="carousel-control-prev" href="#carouselIndicatorsWws" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon bg-info" aria-hidden="true"></span>
-        <i class="fa fa-chevron-left"></i></a>
-      </a>
-      <a class="carousel-control-next" href="#carouselIndicatorsWws" role="button" data-slide="next">
-        <span class="carousel-control-next-icon bg-info" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-      <!--/.Controls-->
+  <hr class="my-4">
+  <a href="https://www.woolworths.com.au"><img src="/logo/woolworths_logo.svg.png" style="height:4em; width: 4em;"></a>
+  <button type="button" class="btn btn-outline-warning" name="woolworths" onclick="moreItem(this)">more</button>
+  <!--Carousel Wrapper-->
+  <div id="carouselIndicatorsWws" class="carousel slide carousel-multi-item" data-ride="carousel">
+    <!--Controls-->
+    <a class="carousel-control-prev" href="#carouselIndicatorsWws" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon bg-info" aria-hidden="true"></span>
+      <i class="fa fa-chevron-left"></i></a>
+    </a>
+    <a class="carousel-control-next" href="#carouselIndicatorsWws" role="button" data-slide="next">
+      <span class="carousel-control-next-icon bg-info" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+    <!--/.Controls-->
 
-      <!--Slides-->
-      <div class="carousel-inner" role="listbox">
-        <!--First slide-->
-        <div class="carousel-item active">
+    <!--Slides-->
+    <div class="carousel-inner" role="listbox">
+      <!--First slide-->
+      <div class="carousel-item active">
 
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-2" id="w0" style="position:relative;">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="w1">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="w2">
-              </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-2" id="w0" style="position:relative;">
             </div>
           </div>
 
-        </div>
-        <!--/.First slide-->
-
-        <!--Second slide-->
-        <div class="carousel-item">
-
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-2" id="w3">
-                <!-- <i class="far fa-heart" onclick="isWish(this)"></i> -->
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="w4">
-                <!-- <i class="far fa-heart" onclick="isWish(this)"></i> -->
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="w5">
-                <!-- <i class="far fa-heart" onclick="isWish(this)"></i> -->
-              </div>
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="w1">
             </div>
           </div>
 
-        </div>
-        <!--/.Second slide-->
-
-        <!--Third slide-->
-        <div class="carousel-item">
-
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-2" id="w6">
-                <!-- <i class="far fa-heart" onclick="isWish(this)"></i> -->
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="w7">
-                <!-- <i class="far fa-heart" onclick="isWish(this)"></i> -->
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="w8">
-                <!-- <i class="far fa-heart" onclick="isWish(this)"></i> -->
-              </div>
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="w2">
             </div>
           </div>
-
         </div>
-        <!--/.Third slide-->
 
       </div>
-      <!--/.Slides-->
+      <!--/.First slide-->
+
+      <!--Second slide-->
+      <div class="carousel-item">
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-2" id="w3">
+              <!-- <i class="far fa-heart" onclick="index_isWish(this)"></i> -->
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="w4">
+              <!-- <i class="far fa-heart" onclick="index_isWish(this)"></i> -->
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="w5">
+              <!-- <i class="far fa-heart" onclick="index_isWish(this)"></i> -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--/.Second slide-->
+
+      <!--Third slide-->
+      <div class="carousel-item">
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-2" id="w6">
+              <!-- <i class="far fa-heart" onclick="index_isWish(this)"></i> -->
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="w7">
+              <!-- <i class="far fa-heart" onclick="index_isWish(this)"></i> -->
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="w8">
+              <!-- <i class="far fa-heart" onclick="index_isWish(this)"></i> -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--/.Third slide-->
 
     </div>
-    <!--/.Carousel Wrapper-->
+    <!--/.Slides-->
+
+  </div>
+  <!--/.Carousel Wrapper-->
+
+
+</div>
+
+  <!-- chemist -->
+  <div class="container my-4">
+
+  <hr class="my-4">
+  <a href="https://www.chemistwarehouse.com.au/"><img src="/logo/6402263-1.png" style="height:4em; width: 4em;" alt=""></a>
+  <button type="button" class="btn btn-outline-warning" name="chemistwarehouse" onclick="moreItem(this)">more</button>
+  <!--Carousel Wrapper-->
+  <div id="carouselIndicatorsChemist" class="carousel slide carousel-multi-item" data-ride="carousel">
+    <!--Controls-->
+    <a class="carousel-control-prev" href="#carouselIndicatorsChemist" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon bg-info" aria-hidden="true"></span>
+      <i class="fa fa-chevron-left"></i></a>
+    </a>
+    <a class="carousel-control-next" href="#carouselIndicatorsChemist" role="button" data-slide="next">
+      <span class="carousel-control-next-icon bg-info" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+    <!--/.Controls-->
+
+    <!--Slides-->
+    <div class="carousel-inner" role="listbox">
+      <!--First slide-->
+      <div class="carousel-item active">
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-2" id="c0">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="c1">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="c2">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--/.First slide-->
+
+      <!--Second slide-->
+      <div class="carousel-item">
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-2" id="c3">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="c4">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="c5">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--/.Second slide-->
+
+      <!--Third slide-->
+      <div class="carousel-item">
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-2" id="c6">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="c7">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="c8">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--/.Third slide-->
+
+    </div>
+    <!--/.Slides-->
+
+  </div>
+  <!--/.Carousel Wrapper-->
+
+</div>
+
+<!-- bigw -->
+  <div class="container my-4">
+
+  <hr class="my-4">
+  <a href="https://www.bigw.com.au/"><img src="/logo/BIGW-logo.png" style="height:4em; width: 4em;"></a>
+  <button type="button" class="btn btn-outline-warning" name="bigw" onclick="moreItem(this)">more</button>
+  <!--Carousel Wrapper-->
+  <div id="carouselIndicatorsBigw" class="carousel slide carousel-multi-item" data-ride="carousel">
+    <!--Controls-->
+    <a class="carousel-control-prev" href="#carouselIndicatorsBigw" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon bg-info" aria-hidden="true"></span>
+      <i class="fa fa-chevron-left"></i></a>
+    </a>
+    <a class="carousel-control-next" href="#carouselIndicatorsBigw" role="button" data-slide="next">
+      <span class="carousel-control-next-icon bg-info" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+    <!--/.Controls-->
+
+    <!--Slides-->
+    <div class="carousel-inner" role="listbox">
+      <!--First slide-->
+      <div class="carousel-item active">
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-2" id="b0">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="b1">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="b2">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--/.First slide-->
+
+      <!--Second slide-->
+      <div class="carousel-item">
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-2" id="b3">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="b4">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="b5">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--/.Second slide-->
+
+      <!--Third slide-->
+      <div class="carousel-item">
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-2" id="b6">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="b7">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="b8">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--/.Third slide-->
+
+    </div>
+    <!--/.Slides-->
+
+  </div>
+  <!--/.Carousel Wrapper-->
+
+</div>
+    </div>
+    <!-- /.col-lg-9 -->
+
 
 
   </div>
+  <!-- /.row -->
 
-    <!-- chemist -->
-    <div class="container my-4">
 
-    <hr class="my-4">
-    <a href="https://www.chemistwarehouse.com.au/"><img src="/logo/6402263-1.png" style="height:4em; width: 4em;" alt=""></a>
-    <button type="button" class="btn btn-outline-warning" name="chemistwarehouse" onclick="moreItem(this)">more</button>
-    <!--Carousel Wrapper-->
-    <div id="carouselIndicatorsChemist" class="carousel slide carousel-multi-item" data-ride="carousel">
-      <!--Controls-->
-      <a class="carousel-control-prev" href="#carouselIndicatorsChemist" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon bg-info" aria-hidden="true"></span>
-        <i class="fa fa-chevron-left"></i></a>
-      </a>
-      <a class="carousel-control-next" href="#carouselIndicatorsChemist" role="button" data-slide="next">
-        <span class="carousel-control-next-icon bg-info" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-      <!--/.Controls-->
+</div>
+<!-- /.container -->
 
-      <!--Slides-->
-      <div class="carousel-inner" role="listbox">
-        <!--First slide-->
-        <div class="carousel-item active">
+<!-- coles -->
+  <div class="container my-4">
 
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-2" id="c0">
-              </div>
-            </div>
+  <hr class="my-4">
+  <a href="https://www.coles.com.au/"><img src="/logo/coles.png" style="height:4em; width: 9em;"></a>
+  <button type="button" class="btn btn-outline-warning" name="coles" onclick="moreItem(this)">more</button>
+  <!--Carousel Wrapper-->
+  <div id="carouselIndicatorsColes" class="carousel slide carousel-multi-item" data-ride="carousel">
+    <!--Controls-->
+    <a class="carousel-control-prev" href="#carouselIndicatorsColes" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon bg-info" aria-hidden="true"></span>
+      <i class="fa fa-chevron-left"></i></a>
+    </a>
+    <a class="carousel-control-next" href="#carouselIndicatorsColes" role="button" data-slide="next">
+      <span class="carousel-control-next-icon bg-info" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+    <!--/.Controls-->
 
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="c1">
-              </div>
-            </div>
+    <!--Slides-->
+    <div class="carousel-inner" role="listbox">
+      <!--First slide-->
+      <div class="carousel-item active">
 
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="c2">
-              </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-2" id="co0">
             </div>
           </div>
 
-        </div>
-        <!--/.First slide-->
-
-        <!--Second slide-->
-        <div class="carousel-item">
-
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-2" id="c3">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="c4">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="c5">
-              </div>
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="co1">
             </div>
           </div>
 
-        </div>
-        <!--/.Second slide-->
-
-        <!--Third slide-->
-        <div class="carousel-item">
-
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-2" id="c6">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="c7">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="c8">
-              </div>
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="co2">
             </div>
           </div>
-
         </div>
-        <!--/.Third slide-->
 
       </div>
-      <!--/.Slides-->
+      <!--/.First slide-->
+
+      <!--Second slide-->
+      <div class="carousel-item">
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-2" id="co3">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="co4">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="co5">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--/.Second slide-->
+
+      <!--Third slide-->
+      <div class="carousel-item">
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-2" id="co6">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="co7">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="co8">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--/.Third slide-->
 
     </div>
-    <!--/.Carousel Wrapper-->
+    <!--/.Slides-->
 
   </div>
+  <!--/.Carousel Wrapper-->
 
-  <!-- bigw -->
-    <div class="container my-4">
-
-    <hr class="my-4">
-    <a href="https://www.bigw.com.au/"><img src="/logo/BIGW-logo.png" style="height:4em; width: 4em;"></a>
-    <button type="button" class="btn btn-outline-warning" name="bigw" onclick="moreItem(this)">more</button>
-    <!--Carousel Wrapper-->
-    <div id="carouselIndicatorsBigw" class="carousel slide carousel-multi-item" data-ride="carousel">
-      <!--Controls-->
-      <a class="carousel-control-prev" href="#carouselIndicatorsBigw" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon bg-info" aria-hidden="true"></span>
-        <i class="fa fa-chevron-left"></i></a>
-      </a>
-      <a class="carousel-control-next" href="#carouselIndicatorsBigw" role="button" data-slide="next">
-        <span class="carousel-control-next-icon bg-info" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-      <!--/.Controls-->
-
-      <!--Slides-->
-      <div class="carousel-inner" role="listbox">
-        <!--First slide-->
-        <div class="carousel-item active">
-
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-2" id="b0">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="b1">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="b2">
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <!--/.First slide-->
-
-        <!--Second slide-->
-        <div class="carousel-item">
-
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-2" id="b3">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="b4">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="b5">
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <!--/.Second slide-->
-
-        <!--Third slide-->
-        <div class="carousel-item">
-
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-2" id="b6">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="b7">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="b8">
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <!--/.Third slide-->
-
-      </div>
-      <!--/.Slides-->
-
+</div>
     </div>
-    <!--/.Carousel Wrapper-->
+    <!-- /.col-lg-9 -->
 
-  </div>
-      </div>
-      <!-- /.col-lg-9 -->
-
-
-
-    </div>
-    <!-- /.row -->
 
 
   </div>
-  <!-- /.container -->
+  <!-- /.row -->
 
-  <!-- coles -->
-    <div class="container my-4">
 
-    <hr class="my-4">
-    <a href="https://www.coles.com.au/"><img src="/logo/coles.png" style="height:4em; width: 9em;"></a>
-    <button type="button" class="btn btn-outline-warning" name="coles" onclick="moreItem(this)">more</button>
-    <!--Carousel Wrapper-->
-    <div id="carouselIndicatorsColes" class="carousel slide carousel-multi-item" data-ride="carousel">
-      <!--Controls-->
-      <a class="carousel-control-prev" href="#carouselIndicatorsColes" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon bg-info" aria-hidden="true"></span>
-        <i class="fa fa-chevron-left"></i></a>
-      </a>
-      <a class="carousel-control-next" href="#carouselIndicatorsColes" role="button" data-slide="next">
-        <span class="carousel-control-next-icon bg-info" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-      <!--/.Controls-->
+</div>
+<!-- /.container -->
 
-      <!--Slides-->
-      <div class="carousel-inner" role="listbox">
-        <!--First slide-->
-        <div class="carousel-item active">
+<!-- priceline -->
+  <div class="container my-4">
 
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-2" id="co0">
-              </div>
-            </div>
+  <hr class="my-4">
+  <a href="https://www.priceline.com.au/"><img src="/logo/priceline.jpg" style="height:4em; width: 9em;"></a>
+  <button type="button" class="btn btn-outline-warning" name="priceline" onclick="moreItem(this)">more</button>
+  <!--Carousel Wrapper-->
+  <div id="carouselIndicatorsPriceline" class="carousel slide carousel-multi-item" data-ride="carousel">
+    <!--Controls-->
+    <a class="carousel-control-prev" href="#carouselIndicatorsPriceline" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon bg-info" aria-hidden="true"></span>
+      <i class="fa fa-chevron-left"></i></a>
+    </a>
+    <a class="carousel-control-next" href="#carouselIndicatorsPriceline" role="button" data-slide="next">
+      <span class="carousel-control-next-icon bg-info" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+    <!--/.Controls-->
 
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="co1">
-              </div>
-            </div>
+    <!--Slides-->
+    <div class="carousel-inner" role="listbox">
+      <!--First slide-->
+      <div class="carousel-item active">
 
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="co2">
-              </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-2" id="p0">
             </div>
           </div>
 
-        </div>
-        <!--/.First slide-->
-
-        <!--Second slide-->
-        <div class="carousel-item">
-
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-2" id="co3">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="co4">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="co5">
-              </div>
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="p1">
             </div>
           </div>
 
-        </div>
-        <!--/.Second slide-->
-
-        <!--Third slide-->
-        <div class="carousel-item">
-
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-2" id="co6">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="co7">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="co8">
-              </div>
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="p2">
             </div>
           </div>
-
         </div>
-        <!--/.Third slide-->
 
       </div>
-      <!--/.Slides-->
+      <!--/.First slide-->
+
+      <!--Second slide-->
+      <div class="carousel-item">
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-2" id="p3">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="p4">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="p5">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--/.Second slide-->
+
+      <!--Third slide-->
+      <div class="carousel-item">
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-2" id="p6">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="p7">
+            </div>
+          </div>
+
+          <div class="col-md-4 clearfix d-none d-md-block">
+            <div class="card mb-2" id="p8">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--/.Third slide-->
 
     </div>
-    <!--/.Carousel Wrapper-->
+    <!--/.Slides-->
 
   </div>
-      </div>
-      <!-- /.col-lg-9 -->
+  <!--/.Carousel Wrapper-->
 
-
-
+</div>
     </div>
-    <!-- /.row -->
+    <!-- /.col-lg-9 -->
 
-
-  </div>
-  <!-- /.container -->
-
-  <!-- priceline -->
-    <div class="container my-4">
-
-    <hr class="my-4">
-    <a href="https://www.priceline.com.au/"><img src="/logo/priceline.jpg" style="height:4em; width: 9em;"></a>
-    <button type="button" class="btn btn-outline-warning" name="priceline" onclick="moreItem(this)">more</button>
-    <!--Carousel Wrapper-->
-    <div id="carouselIndicatorsPriceline" class="carousel slide carousel-multi-item" data-ride="carousel">
-      <!--Controls-->
-      <a class="carousel-control-prev" href="#carouselIndicatorsPriceline" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon bg-info" aria-hidden="true"></span>
-        <i class="fa fa-chevron-left"></i></a>
-      </a>
-      <a class="carousel-control-next" href="#carouselIndicatorsPriceline" role="button" data-slide="next">
-        <span class="carousel-control-next-icon bg-info" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-      <!--/.Controls-->
-
-      <!--Slides-->
-      <div class="carousel-inner" role="listbox">
-        <!--First slide-->
-        <div class="carousel-item active">
-
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-2" id="p0">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="p1">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="p2">
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <!--/.First slide-->
-
-        <!--Second slide-->
-        <div class="carousel-item">
-
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-2" id="p3">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="p4">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="p5">
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <!--/.Second slide-->
-
-        <!--Third slide-->
-        <div class="carousel-item">
-
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card mb-2" id="p6">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="p7">
-              </div>
-            </div>
-
-            <div class="col-md-4 clearfix d-none d-md-block">
-              <div class="card mb-2" id="p8">
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <!--/.Third slide-->
-
-      </div>
-      <!--/.Slides-->
-
-    </div>
-    <!--/.Carousel Wrapper-->
-
-  </div>
-      </div>
-      <!-- /.col-lg-9 -->
-
-
-
-    </div>
-    <!-- /.row -->
 
 
   </div>
-  <!-- /.container -->
+  <!-- /.row -->
 
-  <!-- Footer -->
-  <footer class="py-4 bg-info">
-    <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
-    </div>
-    <!-- /.container -->
-  </footer>
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="./vendor/jquery/jquery.min.js"></script>
-  <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script>
+</div>
+<!-- /.container -->
 
-    let xhr = new XMLHttpRequest();   // new HttpRequest instance 
+<!-- Footer -->
+<footer class="py-4 bg-info">
+  <div class="container">
+    <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+  </div>
+</footer>
 
-    xhr.open("GET", '/api/1.0/all');
+<!-- Bootstrap core JavaScript -->
+<script src="./vendor/jquery/jquery.min.js"></script>
+<script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/lib.js"></script>
+<script>
 
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  let xhr = new XMLHttpRequest();   // new HttpRequest instance 
 
-    let wish_info,wishlist;
-      if(localStorage.getItem('wish_info') === 'undefined'){
-        wishlist = [];
-        localStorage.setItem('wish_info',wishlist);
-      }else{
-        wish_info = localStorage.getItem('wish_info');
-        wishlist = JSON.parse(wish_info);
+  xhr.open("GET", '/api/1.0/all');
 
-      }
+  xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        // console.log(JSON.parse(xhr.responseText).body)
-        let wws = JSON.parse(xhr.responseText).wws;
-        let chemist = JSON.parse(xhr.responseText).chemist;
-        let bigw = JSON.parse(xhr.responseText).bigw;
-        let coles = JSON.parse(xhr.responseText).coles;
-        let priceline = JSON.parse(xhr.responseText).priceline;
+  let wish_info,wishlist;
+    if(localStorage.getItem('wish_info') === 'undefined'){
+      wishlist = [];
+      localStorage.setItem('wish_info',wishlist);
+    }else{
+      wish_info = localStorage.getItem('wish_info');
+      wishlist = JSON.parse(wish_info);
 
-        for (let i = 0; i < wws.length; i++) {
-          let cardList = document.getElementById(`w${i}`);
-
-          let image = document.createElement("img");
-          image.classList.add("card-img-top");
-          image.src = wws[i].img;
-
-          let link = document.createElement('a');
-          link.href = `/product.html?id=${wws[i].id}&store=${wws[i].store}`;
-          link.appendChild(image);
-
-          let card = document.createElement("div");
-          card.classList.add("card-body");
-
-          let title = document.createElement("h6");
-          title.innerHTML = wws[i].title;
-          card.appendChild(title);
-
-          let price = document.createElement("h5");
-          price.innerHTML = '$ '+ wws[i].price;
-          card.appendChild(price);
-
-          let discount = document.createElement("span");
-          discount.innerHTML = 'Save $'+ wws[i].discount;
-          discount.style = 'color:red';
-          card.appendChild(discount);
-
-          // if(wishlist != undefined){
-          if(wishlist){
-            // console.log(wishlist)
-            let product_wish = wishlist.find(function(item, index, array){
-                return item.product_id === wws[i].id && item.store === wws[i].store;
-              });
-
-            let heart = document.createElement("i");
-
-            if(!product_wish){
-              heart.classList.add("far");
-            }else{
-              heart.classList.add("far");
-              heart.classList.add("fas");
-            }
-            heart.classList.add("fa-heart");
-            heart.addEventListener("click", isWish);
-            cardList.appendChild(heart);
-          }else{
-            let heart = document.createElement("i");
-            heart.classList.add("far");
-            heart.classList.add("fa-heart");
-            heart.addEventListener("click", isWish);
-            cardList.appendChild(heart);
-          }
-            
-          cardList.appendChild(link);
-          cardList.appendChild(card);
-
-        }
-
-        for (let j = 0; j < chemist.length; j++) {
-          let cardList = document.getElementById(`c${j}`);
-          let image = document.createElement("img");
-          image.classList.add("card-img-top");
-          image.src = chemist[j].img;
-
-          let link = document.createElement('a');
-          link.href = `/product.html?id=${chemist[j].id}&store=${chemist[j].store}`;
-          link.appendChild(image);
-
-          let card = document.createElement("div");
-          card.classList.add("card-body");
-
-          let title = document.createElement("h6");
-          title.innerHTML = chemist[j].title;
-          card.appendChild(title);
-
-          let price = document.createElement("h5");
-          price.innerHTML = '$ '+ chemist[j].price;
-          card.appendChild(price);
-
-          let discount = document.createElement("span");
-          discount.innerHTML = 'Save $'+ chemist[j].discount;
-          discount.style = 'color:red';
-          card.appendChild(discount);
-
-          if(wishlist){
-            let product_wish = wishlist.find(function(item, index, array){
-                return item.product_id === chemist[j].id && item.store === chemist[j].store;
-              });
-          
-            let heart = document.createElement("i");
-            if(!product_wish){
-              heart.classList.add("far");
-            }else{
-              heart.classList.add("far");
-              heart.classList.add("fas");
-            }
-            heart.classList.add("fa-heart");
-            heart.addEventListener("click", isWish);
-            cardList.appendChild(heart);
-          }else{
-            let heart = document.createElement("i");
-            heart.classList.add("far");
-            heart.classList.add("fa-heart");
-            heart.addEventListener("click", isWish);
-            cardList.appendChild(heart);
-          }
-
-          cardList.appendChild(link);
-          cardList.appendChild(card);
-          
-              
-        }
-
-        for (let k = 0; k < bigw.length; k++) {
-          let cardList = document.getElementById(`b${k}`);
-          let image = document.createElement("img");
-          image.classList.add("card-img-top");
-          image.src = bigw[k].img;
-
-          let link = document.createElement('a');
-          link.href = `/product.html?id=${bigw[k].id}&store=${bigw[k].store}`;
-          // link.setAttribute("id", `${bigw[k].id}`);
-          link.appendChild(image);
-
-          let card = document.createElement("div");
-          card.classList.add("card-body");
-
-          let title = document.createElement("h6");
-          title.innerHTML = bigw[k].title;
-          card.appendChild(title);
-
-          let price = document.createElement("h5");
-          price.innerHTML = '$ '+ bigw[k].price;
-          card.appendChild(price);
-
-          let discount = document.createElement("span");
-          discount.innerHTML = 'Save $'+ bigw[k].discount;
-          discount.style = 'color:red';
-          card.appendChild(discount);
-
-          if(wishlist){
-            let product_wish = wishlist.find(function(item, index, array){
-                return item.product_id === bigw[k].id && item.store === bigw[k].store;
-              });
-
-            let heart = document.createElement("i");
-            if(!product_wish){
-              heart.classList.add("far");
-            }else{
-              heart.classList.add("far");
-              heart.classList.add("fas");
-            }
-            heart.classList.add("fa-heart");
-            heart.addEventListener("click", isWish);
-            cardList.appendChild(heart);
-          }else{
-            let heart = document.createElement("i");
-            heart.classList.add("far");
-            heart.classList.add("fa-heart");
-            heart.addEventListener("click", isWish);
-            cardList.appendChild(heart);
-          }
-
-          cardList.appendChild(link);
-          cardList.appendChild(card);
-          
-              
-        }
-
-        for (let l = 0; l < coles.length; l++) {
-          let cardList = document.getElementById(`co${l}`);
-          let image = document.createElement("img");
-          image.classList.add("card-img-top");
-          image.src = coles[l].img;
-
-          let link = document.createElement('a');
-          link.href = `/product.html?id=${coles[l].id}&store=${coles[l].store}`;
-          // link.setAttribute("id", `${coles[l].id}`);
-          link.appendChild(image);
-
-          let card = document.createElement("div");
-          card.classList.add("card-body");
-
-          let title = document.createElement("h6");
-          title.innerHTML = coles[l].title;
-          card.appendChild(title);
-
-          let price = document.createElement("h5");
-          price.innerHTML = '$ '+ coles[l].price;
-          card.appendChild(price);
-
-          let discount = document.createElement("span");
-          discount.innerHTML = 'Save $'+ coles[l].discount;
-          discount.style = 'color:red';
-          card.appendChild(discount);
-
-          if(wishlist){
-            let product_wish = wishlist.find(function(item, index, array){
-                return item.product_id === coles[l].id && item.store === coles[l].store;
-              });
-
-            let heart = document.createElement("i");
-            if(!product_wish){
-              heart.classList.add("far");
-            }else{
-              heart.classList.add("far");
-              heart.classList.add("fas");
-            }
-            heart.classList.add("fa-heart");
-            heart.addEventListener("click", isWish);
-            cardList.appendChild(heart);
-          }else{
-            let heart = document.createElement("i");
-            heart.classList.add("far");
-            heart.classList.add("fa-heart");
-            heart.addEventListener("click", isWish);
-            cardList.appendChild(heart);
-          }
-
-          cardList.appendChild(link);
-          cardList.appendChild(card);
-          
-              
-        }
-
-        for (let m = 0; m < priceline.length; m++) {
-          let cardList = document.getElementById(`p${m}`);
-          let image = document.createElement("img");
-          image.classList.add("card-img-top");
-          image.src = priceline[m].img;
-
-          let link = document.createElement('a');
-          link.href = `/product.html?id=${priceline[m].id}&store=${priceline[m].store}`;
-          // link.setAttribute("id", `${priceline[m].id}`);
-          link.appendChild(image);
-
-          let card = document.createElement("div");
-          card.classList.add("card-body");
-
-          let title = document.createElement("h6");
-          title.innerHTML = priceline[m].title;
-          card.appendChild(title);
-
-          let price = document.createElement("h5");
-          price.innerHTML = '$ '+ priceline[m].price;
-          card.appendChild(price);
-
-          let discount = document.createElement("span");
-          discount.innerHTML = 'Save $'+ priceline[m].discount;
-          discount.style = 'color:red';
-          card.appendChild(discount);
-
-          if(wishlist){
-            let product_wish = wishlist.find(function(item, index, array){
-                return item.product_id === priceline[m].id && item.store === priceline[m].store;
-              });
-
-            let heart = document.createElement("i");
-            if(!product_wish){
-              heart.classList.add("far");
-            }else{
-              heart.classList.add("far");
-              heart.classList.add("fas");
-            }
-            heart.classList.add("fa-heart");
-            heart.addEventListener("click", isWish);
-            cardList.appendChild(heart);
-          }else{
-            let heart = document.createElement("i");
-            heart.classList.add("far");
-            heart.classList.add("fa-heart");
-            heart.addEventListener("click", isWish);
-            cardList.appendChild(heart);
-          }
-
-          cardList.appendChild(link);
-          cardList.appendChild(card);
-          
-              
-        }
-
-      }
     }
-    xhr.send();
 
-    
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      // console.log(JSON.parse(xhr.responseText).body)
+      let wws = JSON.parse(xhr.responseText).wws;
+      let chemist = JSON.parse(xhr.responseText).chemist;
+      let bigw = JSON.parse(xhr.responseText).bigw;
+      let coles = JSON.parse(xhr.responseText).coles;
+      let priceline = JSON.parse(xhr.responseText).priceline;
 
-    function isWish(e) {
+      for (let i = 0; i < wws.length; i++) {
+        let cardList = document.getElementById(`w${i}`);
 
-      let user_info = localStorage.getItem('user_info');
+        let image = document.createElement("img");
+        image.classList.add("card-img-top");
+        image.src = wws[i].img;
 
-      if(!user_info){
-        window.alert('Please sign in first!');
-        return;
-      }else{
+        let link = document.createElement('a');
+        link.href = `/product.html?id=${wws[i].id}&store=${wws[i].store}`;
+        link.appendChild(image);
 
-        let heart = e.target;
+        let card = document.createElement("div");
+        card.classList.add("card-body");
 
-        heart.classList.toggle("fas");
+        let title = document.createElement("h6");
+        title.innerHTML = wws[i].title;
+        card.appendChild(title);
 
-        let product_id = heart.parentNode.children[1].href;
+        let price = document.createElement("h5");
+        price.innerHTML = '$ '+ wws[i].price;
+        card.appendChild(price);
 
-        let xhr = new XMLHttpRequest();
+        let discount = document.createElement("span");
+        discount.innerHTML = 'Save $'+ wws[i].discount;
+        discount.style = 'color:red';
+        card.appendChild(discount);
 
-        xhr.open("POST", "/api/1.0/wishlist");
+        // if(wishlist != undefined){
+        if(wishlist){
+          // console.log(wishlist)
+          let product_wish = wishlist.find(function(item, index, array){
+              return item.product_id === wws[i].id && item.store === wws[i].store;
+            });
 
-        xhr.setRequestHeader('Content-Type', 'application/json');
+          let heart = document.createElement("i");
 
-        let token = JSON.parse(user_info).data.access_token;
-
-        xhr.setRequestHeader('Authorization', 'Bearer '+ token);
-        
-        let wishInfo = {
-            "product_id":product_id.split('=')[1].split('&')[0], 
-            "store":product_id.split('=')[2],
-        };
-
-        if(localStorage.getItem('wish_info')){
-          let wish_info = JSON.parse(localStorage.getItem('wish_info'));
-
-          let product_track = wish_info.find(function(item, index, array){
-
-            return item.product_id === wishInfo.product_id && item.store === wishInfo.store;
-
-          });
-          
-          if(!product_track||product_track === undefined){
-
-            wish_info.push(wishInfo)
-            localStorage.setItem('wish_info', JSON.stringify(wish_info));
-            console.log('add track cache')
-
+          if(!product_wish){
+            heart.classList.add("far");
           }else{
-            wish_info.splice(wish_info.indexOf(product_track), 1);
-            localStorage.setItem('wish_info', JSON.stringify(wish_info));
-            console.log('delete track cache')
+            heart.classList.add("far");
+            heart.classList.add("fas");
           }
-
+          heart.classList.add("fa-heart");
+          heart.addEventListener("click", index_isWish);
+          cardList.appendChild(heart);
         }else{
-          let wish_info = [];
-          wish_info.push(wishInfo);
-          localStorage.setItem('wish_info', JSON.stringify(wish_info));
-        };
-
-        xhr.send(JSON.stringify(wishInfo));
-
-        xhr.onreadystatechange = function () {
-            
-            let msg = JSON.parse(xhr.responseText);
-            // console.log(JSON.parse(msg));
-
-            if(msg.data) {
-              console.log(msg.data)
-            }else if(msg.error){
-                console.log(msg.error);
-            }
-        };
+          let heart = document.createElement("i");
+          heart.classList.add("far");
+          heart.classList.add("fa-heart");
+          heart.addEventListener("click", index_isWish);
+          cardList.appendChild(heart);
+        }
+          
+        cardList.appendChild(link);
+        cardList.appendChild(card);
 
       }
 
-    }
+      for (let j = 0; j < chemist.length; j++) {
+        let cardList = document.getElementById(`c${j}`);
+        let image = document.createElement("img");
+        image.classList.add("card-img-top");
+        image.src = chemist[j].img;
 
-    function moreItem(e) {
-        let store = e.name;
-        location.assign(`/store.html?store=${store}`);
-    }
+        let link = document.createElement('a');
+        link.href = `/product.html?id=${chemist[j].id}&store=${chemist[j].store}`;
+        link.appendChild(image);
 
-    function search(e) {
-        let keyword = document.getElementById('searchInput').value
-        // console.log(keyword)
-        location.assign(`/search.html?keyword=${keyword}`);
-    }
+        let card = document.createElement("div");
+        card.classList.add("card-body");
 
-    let input = document.getElementById('searchInput');
-    input.addEventListener("keyup", function(event) {
-      if (event.keyCode === 13) {
-       event.preventDefault();
-       search(this);
-      }
-    });
+        let title = document.createElement("h6");
+        title.innerHTML = chemist[j].title;
+        card.appendChild(title);
 
-    function signOut() {
+        let price = document.createElement("h5");
+        price.innerHTML = '$ '+ chemist[j].price;
+        card.appendChild(price);
 
-      let user_info = localStorage.getItem('user_info');
-      let token = JSON.parse(user_info).data.access_token;
-      if(!user_info){
-        window.alert('Please sign in first!');
-      }else{
+        let discount = document.createElement("span");
+        discount.innerHTML = 'Save $'+ chemist[j].discount;
+        discount.style = 'color:red';
+        card.appendChild(discount);
+
+        if(wishlist){
+          let product_wish = wishlist.find(function(item, index, array){
+              return item.product_id === chemist[j].id && item.store === chemist[j].store;
+            });
         
-        let wish_info = localStorage.getItem('wish_info');
-        let trac_info = localStorage.getItem('track_info');
+          let heart = document.createElement("i");
+          if(!product_wish){
+            heart.classList.add("far");
+          }else{
+            heart.classList.add("far");
+            heart.classList.add("fas");
+          }
+          heart.classList.add("fa-heart");
+          heart.addEventListener("click", index_isWish);
+          cardList.appendChild(heart);
+        }else{
+          let heart = document.createElement("i");
+          heart.classList.add("far");
+          heart.classList.add("fa-heart");
+          heart.addEventListener("click", index_isWish);
+          cardList.appendChild(heart);
+        }
 
-        localStorage.removeItem('user_info');
-        localStorage.removeItem('track_info');
-        localStorage.removeItem('wish_info');
+        cardList.appendChild(link);
+        cardList.appendChild(card);
+        
+            
+      }
 
+      for (let k = 0; k < bigw.length; k++) {
+        let cardList = document.getElementById(`b${k}`);
+        let image = document.createElement("img");
+        image.classList.add("card-img-top");
+        image.src = bigw[k].img;
+
+        let link = document.createElement('a');
+        link.href = `/product.html?id=${bigw[k].id}&store=${bigw[k].store}`;
+        // link.setAttribute("id", `${bigw[k].id}`);
+        link.appendChild(image);
+
+        let card = document.createElement("div");
+        card.classList.add("card-body");
+
+        let title = document.createElement("h6");
+        title.innerHTML = bigw[k].title;
+        card.appendChild(title);
+
+        let price = document.createElement("h5");
+        price.innerHTML = '$ '+ bigw[k].price;
+        card.appendChild(price);
+
+        let discount = document.createElement("span");
+        discount.innerHTML = 'Save $'+ bigw[k].discount;
+        discount.style = 'color:red';
+        card.appendChild(discount);
+
+        if(wishlist){
+          let product_wish = wishlist.find(function(item, index, array){
+              return item.product_id === bigw[k].id && item.store === bigw[k].store;
+            });
+
+          let heart = document.createElement("i");
+          if(!product_wish){
+            heart.classList.add("far");
+          }else{
+            heart.classList.add("far");
+            heart.classList.add("fas");
+          }
+          heart.classList.add("fa-heart");
+          heart.addEventListener("click", index_isWish);
+          cardList.appendChild(heart);
+        }else{
+          let heart = document.createElement("i");
+          heart.classList.add("far");
+          heart.classList.add("fa-heart");
+          heart.addEventListener("click", index_isWish);
+          cardList.appendChild(heart);
+        }
+
+        cardList.appendChild(link);
+        cardList.appendChild(card);
+        
+            
+      }
+
+      for (let l = 0; l < coles.length; l++) {
+        let cardList = document.getElementById(`co${l}`);
+        let image = document.createElement("img");
+        image.classList.add("card-img-top");
+        image.src = coles[l].img;
+
+        let link = document.createElement('a');
+        link.href = `/product.html?id=${coles[l].id}&store=${coles[l].store}`;
+        // link.setAttribute("id", `${coles[l].id}`);
+        link.appendChild(image);
+
+        let card = document.createElement("div");
+        card.classList.add("card-body");
+
+        let title = document.createElement("h6");
+        title.innerHTML = coles[l].title;
+        card.appendChild(title);
+
+        let price = document.createElement("h5");
+        price.innerHTML = '$ '+ coles[l].price;
+        card.appendChild(price);
+
+        let discount = document.createElement("span");
+        discount.innerHTML = 'Save $'+ coles[l].discount;
+        discount.style = 'color:red';
+        card.appendChild(discount);
+
+        if(wishlist){
+          let product_wish = wishlist.find(function(item, index, array){
+              return item.product_id === coles[l].id && item.store === coles[l].store;
+            });
+
+          let heart = document.createElement("i");
+          if(!product_wish){
+            heart.classList.add("far");
+          }else{
+            heart.classList.add("far");
+            heart.classList.add("fas");
+          }
+          heart.classList.add("fa-heart");
+          heart.addEventListener("click", index_isWish);
+          cardList.appendChild(heart);
+        }else{
+          let heart = document.createElement("i");
+          heart.classList.add("far");
+          heart.classList.add("fa-heart");
+          heart.addEventListener("click", index_isWish);
+          cardList.appendChild(heart);
+        }
+
+        cardList.appendChild(link);
+        cardList.appendChild(card);
+        
+            
+      }
+
+      for (let m = 0; m < priceline.length; m++) {
+        let cardList = document.getElementById(`p${m}`);
+        let image = document.createElement("img");
+        image.classList.add("card-img-top");
+        image.src = priceline[m].img;
+
+        let link = document.createElement('a');
+        link.href = `/product.html?id=${priceline[m].id}&store=${priceline[m].store}`;
+        // link.setAttribute("id", `${priceline[m].id}`);
+        link.appendChild(image);
+
+        let card = document.createElement("div");
+        card.classList.add("card-body");
+
+        let title = document.createElement("h6");
+        title.innerHTML = priceline[m].title;
+        card.appendChild(title);
+
+        let price = document.createElement("h5");
+        price.innerHTML = '$ '+ priceline[m].price;
+        card.appendChild(price);
+
+        let discount = document.createElement("span");
+        discount.innerHTML = 'Save $'+ priceline[m].discount;
+        discount.style = 'color:red';
+        card.appendChild(discount);
+
+        if(wishlist){
+          let product_wish = wishlist.find(function(item, index, array){
+              return item.product_id === priceline[m].id && item.store === priceline[m].store;
+            });
+
+          let heart = document.createElement("i");
+          if(!product_wish){
+            heart.classList.add("far");
+          }else{
+            heart.classList.add("far");
+            heart.classList.add("fas");
+          }
+          heart.classList.add("fa-heart");
+          heart.addEventListener("click", index_isWish);
+          cardList.appendChild(heart);
+        }else{
+          let heart = document.createElement("i");
+          heart.classList.add("far");
+          heart.classList.add("fa-heart");
+          heart.addEventListener("click", index_isWish);
+          cardList.appendChild(heart);
+        }
+
+        cardList.appendChild(link);
+        cardList.appendChild(card);
+        
+            
       }
 
     }
+  }
+  xhr.send();
 
-  </script>
+</script>
 
 </body>
 

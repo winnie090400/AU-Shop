@@ -113,35 +113,60 @@
     <script>
         
         function signup() {
-        var xhr = new XMLHttpRequest();
-        
-        xhr.open("POST", "/user/signup");
-        
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        
 
-        var userInfo = { 
-            "name": document.getElementById("name").value,
-            "email": document.getElementById("email").value,
-            "pass": document.getElementById("pass").value
-        };
-         
-        xhr.send(JSON.stringify(userInfo));
-
-
-        xhr.onreadystatechange = function () {
+            var xhr = new XMLHttpRequest();
             
-            let msg = JSON.parse(xhr.responseText);
+            xhr.open("POST", "/user/signup");
             
-            if(msg.data) {
-                document.getElementById('msg').innerHTML = 'Successful sign up!';
-                document.getElementById("msg").style.color = "black";
-                localStorage.setItem("user_info", xhr.responseText);
-            }else if(msg.error){
-                document.getElementById('msg').innerHTML = 'Please use other email address!';
-                document.getElementById("msg").style.color = "red";
-            }
-        };
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            
+
+            var userInfo = { 
+                "name": document.getElementById("name").value,
+                "email": document.getElementById("email").value,
+                "pass": document.getElementById("pass").value
+            };
+             
+            xhr.send(JSON.stringify(userInfo));
+
+
+            xhr.onreadystatechange = function () {
+                
+                let msg = JSON.parse(xhr.responseText);
+                
+                if(msg.data) {
+                    window.alert('Successful sign up!');
+
+                    localStorage.setItem("user_info", xhr.responseText);
+
+                    window.location.href='/index.html'
+
+
+                }else if(msg.error){
+                    document.getElementById('msg').innerHTML = 'Please use other email address!';
+                    document.getElementById("msg").style.color = "red";
+                }
+
+                if(msg.data) {
+                    window.alert('Successful log in!');
+
+                    localStorage.setItem("user_info", xhr.responseText);
+
+                    if(msg.data.wishInfo){
+                        localStorage.setItem("wish_info", JSON.stringify(msg.data.wishInfo));
+                    }
+
+                    if(msg.data.trackInfo){
+                        localStorage.setItem("track_info", JSON.stringify(msg.data.trackInfo));
+                    }
+
+                    window.location.href='/index.html'
+
+                }else if(msg.error){
+                    document.getElementById('msg2').innerHTML = 'Please try again or create an account!';
+                    document.getElementById("msg2").style.color = "red";
+                }
+            };
 
         }
 
@@ -151,56 +176,43 @@
         
         function signin() {
 
-        var xhr = new XMLHttpRequest();
+            var xhr = new XMLHttpRequest();
 
-        xhr.open("POST", "/user/signin");
+            xhr.open("POST", "/user/signin");
 
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        
-        var userInfo = {
-            "provider":"native", 
-            "email": document.getElementById("your_email").value,
-            "pass": document.getElementById("your_pass").value
-        };
-
-        xhr.send(JSON.stringify(userInfo));
-        
-        xhr.onreadystatechange = function () {
+            xhr.setRequestHeader('Content-Type', 'application/json');
             
-            let msg = JSON.parse(xhr.responseText);
+            var userInfo = {
+                "provider":"native", 
+                "email": document.getElementById("your_email").value,
+                "pass": document.getElementById("your_pass").value
+            };
+
+            xhr.send(JSON.stringify(userInfo));
             
-            if(msg.data) {
-                document.getElementById('msg2').innerHTML = 'Successful log in!';
-                document.getElementById("msg2").style.color = "black";
-
-                localStorage.setItem("user_info", xhr.responseText);
-                if(msg.data.wishInfo){
-                    localStorage.setItem("wish_info", JSON.stringify(msg.data.wishInfo));
-                }
-
-                if(msg.data.trackInfo){
-                    localStorage.setItem("track_info", JSON.stringify(msg.data.trackInfo));
-                }
-
-                // }else{
-                //     wishlist = [];
-                //     localStorage.setItem('wish_info',wishlist);
-                // }
+            xhr.onreadystatechange = function () {
                 
-                // if(msg.data.trackInfo){
-                    // localStorage.setItem("track_info", JSON.stringify(msg.data.trackInfo));
-                // }else{
-                //     tracklist = [];
-                //     localStorage.setItem('track_info',tracklist);
-                // }
+                let msg = JSON.parse(xhr.responseText);
                 
-                // 拿資料時候要JSON.parse(localStorage.wish_info)
+                if(msg.data) {
+                    window.alert('Successful log in!');
 
-            }else if(msg.error){
-                document.getElementById('msg2').innerHTML = 'Please try again or create an account!';
-                document.getElementById("msg2").style.color = "red";
-            }
-        };
+                    localStorage.setItem("user_info", xhr.responseText);
+                    if(msg.data.wishInfo){
+                        localStorage.setItem("wish_info", JSON.stringify(msg.data.wishInfo));
+                    }
+
+                    if(msg.data.trackInfo){
+                        localStorage.setItem("track_info", JSON.stringify(msg.data.trackInfo));
+                    }
+
+                    window.location.href='/index.html'
+
+                }else if(msg.error){
+                    document.getElementById('msg2').innerHTML = 'Please try again or create an account!';
+                    document.getElementById("msg2").style.color = "red";
+                }
+             };
 
         }
     </script>
@@ -259,10 +271,7 @@
             
 
         }
-        else{
-            document.getElementById('status').innerHTML = 'Please log ' +
-                'into this app.';
-        }
+
       }
 
       function checkLoginState() {

@@ -1,5 +1,5 @@
-const conn = require("../mysql.js");
-// const conn = require("../mysql.js").pool;
+// const conn = require("../mysql.js");
+const conn = require("../mysql.js").pool;
 const crypto = require('crypto');
 
 module.exports={

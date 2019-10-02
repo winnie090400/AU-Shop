@@ -1,276 +1,248 @@
-// initialize app structure
-let app={
-	fb:{},
-	state:{
-		cart:null, auth:null
-	}, evts:{}, cart:{},
-	cst:{
-		API_HOST:"https://api.appworks-school.tw/api/1.0"
-	}
-};
-// core operations
-app.get=function(selector){
-	return document.querySelector(selector);
-};
-app.getAll=function(selector){
-	return document.querySelectorAll(selector);
-};
-app.createElement=function(tagName,settings,parentElement){
-	let obj=document.createElement(tagName);
-	if(settings.atrs){app.setAttributes(obj,settings.atrs);}
-	if(settings.stys){app.setStyles(obj,settings.stys);}
-	if(settings.evts){app.setEventHandlers(obj,settings.evts);}
-	if(parentElement instanceof Element){parentElement.appendChild(obj);}
-	return obj;
-};
-app.modifyElement=function(obj,settings,parentElement){
-	if(settings.atrs){
-		app.setAttributes(obj,settings.atrs);
-	}
-	if(settings.stys){
-		app.setStyles(obj,settings.stys);
-	}
-	if(settings.evts){
-		app.setEventHandlers(obj,settings.evts);
-	}
-	if(parentElement instanceof Element&&parentElement!==obj.parentNode){
-		parentElement.appendChild(obj);
-	}
-	return obj;
-};
-app.setStyles=function(obj,styles){
-	for(let name in styles){
-		obj.style[name]=styles[name];
-	}
-	return obj;
-};
-app.setAttributes=function(obj,attributes){
-	for(let name in attributes){
-		obj[name]=attributes[name];
-	}
-	return obj;
-};
-app.setEventHandlers=function(obj,eventHandlers,useCapture){
-	for(let name in eventHandlers){
-		if(eventHandlers[name] instanceof Array){
-			for(let i=0;i<eventHandlers[name].length;i++){
-				obj.addEventListener(name,eventHandlers[name][i],useCapture);
-			}
-		}else{
-			obj.addEventListener(name,eventHandlers[name],useCapture);
-		}
-	}
-	return obj;
-};
-app.ajax=function(method, src, args, headers, callback){
-	let req=new XMLHttpRequest();
-	if(method.toLowerCase()==="post"){ // post through json args
-		req.open(method, src);
-		req.setRequestHeader("Content-Type", "application/json");
-		app.setRequestHeaders(req, headers);
-		req.onload=function(){
-			callback(this);
+
+$(function(){
+	$("#nav-placeholder").load("nav.html");
+});
+
+function tracklist_isTrack(e) {
+
+	e.target.classList.toggle("fas");
+	let data = e.target.classList.value.split(" ")[2];
+	isTrack(data);
+
+}
+
+function product_isTrack(e){
+
+	e.target.classList.toggle("fas");
+	let data = e.target.parentNode.classList.value;;
+	isTrack(data);
+
+}
+
+function isTrack(track) {
+
+	let user_info = localStorage.getItem('user_info');
+
+	if(!user_info){
+
+		window.alert('Please sign in first!');
+		window.location.href='/signin.html#sign-in';
+
+	}else{
+
+		let xhr = new XMLHttpRequest();
+
+		xhr.open("POST", "/api/1.0/tracklist");
+
+		xhr.setRequestHeader('Content-Type', 'application/json');
+
+		let token = JSON.parse(user_info).data.access_token;
+		xhr.setRequestHeader('Authorization', 'Bearer '+ token);
+
+		let trackInfo = {
+
+		    "product_id":track.split('-')[2], 
+		    "store":track.split('-')[0],
+		    "price":track.split('-')[1]
+
 		};
-		req.send(JSON.stringify(args));
-	}else{ // get through http args
-		req.open(method, src+"?"+args);
-		app.setRequestHeaders(req, headers);
-		req.onload=function(){
-			callback(this);
-		};
-		req.send();
-	}
-};
-	app.setRequestHeaders=function(req, headers){
-		for(let key in headers){
-			req.setRequestHeader(key, headers[key]);
-		}
-	};
-app.getParameter=function(name){
-    let result=null, tmp=[];
-    window.location.search.substring(1).split("&").forEach(function(item){
-		tmp=item.split("=");
-		if(tmp[0]===name){
-			result=decodeURIComponent(tmp[1]);
-		}
-	});
-    return result;
-};
-// menu items
-app.updateMenuItems=function(tag){
-	let desktopItems=app.getAll("header>nav>.item");
-	let mobileItems=app.getAll("nav.mobile>.item");
-	if(tag==="women"){
-		desktopItems[0].classList.add("current");
-		mobileItems[0].classList.add("current");
-	}else if(tag==="men"){
-		desktopItems[1].classList.add("current");
-		mobileItems[1].classList.add("current");
-	}else if(tag==="accessories"){
-		desktopItems[2].classList.add("current");
-		mobileItems[2].classList.add("current");
-	}
-};
-// loading
-app.showLoading=function(){
-	app.get("#loading").style.display="block";
-};
-app.closeLoading=function(){
-	app.get("#loading").style.display="none";
-};
-// facebook login
-app.fb.load=function(){
-	// Load the SDK asynchronously
-	(function(d, s, id){
-		var js, fjs = d.getElementsByTagName(s)[0];
-		if (d.getElementById(id)) return;
-		js = d.createElement(s); js.id = id;
-		js.src = "https://connect.facebook.net/zh_TW/sdk.js";
-		fjs.parentNode.insertBefore(js, fjs);
-	}(document, "script", "facebook-jssdk"));
-};
-app.fb.init=function(){
-	FB.init({
-		appId:"1999890763414585",
-		cookie:true, xfbml:true,
-		version:"v3.1"
-	});
-	FB.getLoginStatus(function(response){
-		app.fb.loginStatusChange(response);
-		// set member click handlers
-		let memberIcons=app.getAll(".member");
-		for(let i=0;i<memberIcons.length;i++){
-			app.setEventHandlers(memberIcons[i], {
-				click:app.fb.clickProfile
+
+		if(localStorage.getItem('track_info')){
+
+			let track_info = JSON.parse(localStorage.getItem('track_info'));
+
+			let product_track = track_info.find(function(item, index, array){
+
+			return item.product_id === trackInfo.product_id && item.store === trackInfo.store;
+
 			});
-		}
-	});
-};
-app.fb.login=function(){
-	FB.login(function(response){
-		app.fb.loginStatusChange(response);
-	}, {scope:"public_profile,email"});
-};
-app.fb.loginStatusChange=function(response){
-	if(response.status==="connected"){
-		app.state.auth=response.authResponse;
-		app.fb.updateLoginToServer();
-	}else{
-		app.state.auth=null;
-	}
-	if(typeof app.fb.statusChangeCallback==="function"){
-		app.fb.statusChangeCallback();
-	}
-};
-app.fb.updateLoginToServer=function(){
-	let data={
-		provider:"facebook",
-		access_token:app.state.auth.accessToken
-	}
-	app.ajax("post", app.cst.API_HOST+"/user/signin", data, {}, function(req){});
-};
-app.fb.clickProfile=function(){
-	if(app.state.auth===null){
-		app.fb.login();
-	}else{
-		window.location="./profile.html";
-	}
-};
-app.fb.getProfile=function(){
-	return new Promise((resolve, reject)=>{
-		FB.api("/me?fields=id,name,email", function(response){
-			if(response.error){
-				reject(response.error);
+
+			if(!product_track||product_track === undefined){
+
+				track_info.push(trackInfo)
+				localStorage.setItem('track_info', JSON.stringify(track_info));
+				console.log('add track cache')
+
 			}else{
-				resolve(response);
+
+				track_info.splice(track_info.indexOf(product_track), 1);
+				localStorage.setItem('track_info', JSON.stringify(track_info));
+				console.log('delete track cache')
+
 			}
-		});
-	});
-};
-window.fbAsyncInit=app.fb.init;
-window.addEventListener("DOMContentLoaded", app.fb.load);
-// shopping cart
-app.cart.init=function(){
-	let storage=window.localStorage;
-	let cart=storage.getItem("cart");
-	if(cart===null){
-		cart={
-			shipping:"delivery", payment:"credit_card",
-			recipient:{
-				name:"", phone:"", email:"", address:"", time:"anytime"
-			},
-			list:[],
-			subtotal:0,
-			freight:60,
-			total:0
+
+		}else{
+
+			let track_info = [];
+			track_info.push(trackInfo);
+			localStorage.setItem('track_info', JSON.stringify(track_info));
+
 		};
+
+		xhr.send(JSON.stringify(trackInfo));
+
+		xhr.onreadystatechange = function(){
+		    
+		    let msg = JSON.parse(xhr.responseText);
+
+		    if(msg.data) {
+
+		    	console.log(msg.data)
+
+		    }else if(msg.error){
+
+		        console.log(msg.error);
+
+		    }
+		};
+
+	}
+
+}
+
+function index_isWish(e) {
+      
+    let heart = e.target;
+
+    heart.classList.toggle("fas");
+
+    let product_id = heart.parentNode.children[1].href;
+
+    isWish(product_id);
+
+}
+
+function store_isWish(e) {
+      
+    let heart = e.target;
+
+    heart.classList.toggle("fas");
+
+    let product_id = heart.parentNode.children[0].href;
+
+    isWish(product_id);
+
+}
+
+function isWish(product_id) {
+
+	let user_info = localStorage.getItem('user_info');
+
+	if(!user_info){
+
+		window.alert('Please sign in first!');
+		window.location.href='/signin.html#sign-in';
+
 	}else{
-		try{
-			cart=JSON.parse(cart);
-		}catch(e){
-			storage.removeItem("cart");
-			app.cart.init();
-			return;
-		}
+
+		let xhr = new XMLHttpRequest();
+
+		xhr.open("POST", "/api/1.0/wishlist");
+
+		xhr.setRequestHeader('Content-Type', 'application/json');
+
+		let token = JSON.parse(user_info).data.access_token;
+
+		xhr.setRequestHeader('Authorization', 'Bearer '+ token);
+
+		let wishInfo = {
+
+		    "product_id":product_id.split('=')[1].split('&')[0], 
+		    "store":product_id.split('=')[2],
+
+		};
+
+		if(localStorage.getItem('wish_info')){
+
+			let wish_info = JSON.parse(localStorage.getItem('wish_info'));
+
+			let product_track = wish_info.find(function(item, index, array){
+
+			return item.product_id === wishInfo.product_id && item.store === wishInfo.store;
+
+			});
+
+			if(!product_track||product_track === undefined){
+
+			wish_info.push(wishInfo)
+			localStorage.setItem('wish_info', JSON.stringify(wish_info));
+			console.log('add track')
+
+			}else{
+
+			wish_info.splice(wish_info.indexOf(product_track), 1);
+			localStorage.setItem('wish_info', JSON.stringify(wish_info));
+			console.log('delete track')
+
+			}
+
+		}else{
+
+			let wish_info = [];
+			wish_info.push(wishInfo);
+			localStorage.setItem('wish_info', JSON.stringify(wish_info));
+
+		};
+
+		xhr.send(JSON.stringify(wishInfo));
+
+		xhr.onreadystatechange = function () {
+		    
+		    let msg = JSON.parse(xhr.responseText);
+
+		    if(msg.data) {
+		      console.log(msg.data)
+		    }else if(msg.error){
+		        console.log(msg.error);
+		    }
+
+		};
+
 	}
-	app.state.cart=cart;
-	// refresh UIs
-	app.cart.show();
-};
-app.cart.update=function(){
-	let storage=window.localStorage;
-	let cart=app.state.cart;
-	let subtotal=0;
-	for(let i=0;i<cart.list.length;i++){
-		subtotal+=cart.list[i].price*cart.list[i].qty;
+
+}
+
+function moreItem(e) {
+
+    let store = e.name;
+    location.assign(`/store.html?store=${store}`);
+}
+
+function search(e) {
+
+    let keyword = document.getElementById('searchInput').value
+    location.assign(`/search.html?keyword=${keyword}`);
+
+}
+
+let input = document.getElementById('searchInput');
+
+input.addEventListener("keyup", function(event) {
+
+	if (event.keyCode === 13) {
+
+	  	event.preventDefault();
+	  	search(this);
+
 	}
-	cart.subtotal=subtotal;
-	cart.total=cart.subtotal+cart.freight;
-	// save to storage
-	storage.setItem("cart", JSON.stringify(cart));
-	// refresh UIs
-	app.cart.show();
-};
-app.cart.show=function(){
-	let cart=app.state.cart;
-	app.get("#cart-qty-mobile").textContent=app.get("#cart-qty").textContent=cart.list.length;
-};
-app.cart.add=function(product, variant, qty){
-	let list=app.state.cart.list;
-	let color=product.colors.find((item)=>{
-		return item.code===variant.color_code;
-	});
-	let item=list.find((item)=>{
-		return item.id===product.id&&item.size===variant.size&&item.color.code===color.code;
-	});
-	if(item){
-		item.qty=qty;
+
+});
+
+function signOut() {
+
+	let user_info = localStorage.getItem('user_info');
+	let token = JSON.parse(user_info).data.access_token;
+
+	if(!user_info){
+
+		window.alert('Please sign in first!');
+
 	}else{
-		list.push({
-			id:product.id,
-			name:product.title,
-			price:product.price,
-			main_image:product.main_image,
-			size:variant.size,
-			color:color,
-			qty:qty, stock:variant.stock
-		});
+
+		localStorage.removeItem('user_info');
+		localStorage.removeItem('track_info');
+		localStorage.removeItem('wish_info');
+
 	}
-	app.cart.update();
-	alert("已加入購物車");
-};
-app.cart.remove=function(index){
-	let list=app.state.cart.list;
-	list.splice(index, 1);
-	app.cart.update();
-	alert("已從購物車中移除");
-};
-app.cart.change=function(index, qty){
-	let list=app.state.cart.list;
-	list[index].qty=qty;
-	app.cart.update();
-};
-app.cart.clear=function(){
-	let storage=window.localStorage;
-	storage.removeItem("cart");
-};
+
+}

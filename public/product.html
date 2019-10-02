@@ -2,70 +2,7 @@
 <html lang="en">
 
 <head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <title>AuShop</title>
-
-  <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom styles for this template -->
-  <!-- <link href="css/shop-homepage.css" rel="stylesheet"> -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384–5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-
-  <style>
-    .carousel-control-next{
-      width: 20px;
-    }
-
-    .carousel-control-prev{
-      width: 30px; 
-    }
-
-    .far.fa-heart{
-      position: absolute;
-      right: 1.5em;
-      bottom: 1em;
-      font-size: 1.5em;
-      cursor:pointer;
-    }
-
-    .fas.fa-heart{
-      position: absolute;
-      right: 1.5em;
-      bottom: 1em;
-      font-size: 1.5em;
-      cursor:pointer;
-    }
-
-    #container{
-      margin-top: 80px;
-    }
-
-    #container img{
-      height: 22em;
-      width: 22em;
-    }
-
-    #heart_icon{
-      position:relative;
-      right: auto;
-      bottom: 0;
-    }
-
-    .fas.fa-search{
-      margin-top: 0.3em;
-      font-size: 1.5em;
-      color: white;
-      cursor:pointer;
-    }
-
-  </style>
-
+  <link rel="import" href="/head.html">
 </head>
 
 <body>
@@ -104,7 +41,7 @@
   <div class="container mt-5">
 
     <div class="col-lg-12 mt-5">
-      <div id="container"></div>
+      <div id="product_container"></div>
       <table class="table mt-4 mb-5">
         <thead>
           <tr>
@@ -137,12 +74,12 @@
   <!-- Bootstrap core JavaScript -->
   <script src="./vendor/jquery/jquery.min.js"></script>
   <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/lib.js"></script>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get("id");
     const store = urlParams.get("store");
     const url = `/api/1.0/products/details?id=${productId}&store=${store}`;
-    // const container = document.querySelector(".wishTable");
     const xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
 
@@ -173,7 +110,7 @@
         let title = document.createElement("h4");
         title.innerHTML = data[0].title;
         
-        let container = document.getElementById("container");
+        let container = document.getElementById("product_container");
         container.appendChild(image);
         container.appendChild(title);
 
@@ -197,10 +134,6 @@
           price.innerHTML = '$'+data[i].price;
           tr.appendChild(price);
 
-          // let calendar = document.createElement("td");
-          // calendar.innerHTML = '<i class="far fa-calendar-alt"></i>';
-          // tr.appendChild(calendar);
-
           let bell = document.createElement("td");
 
           if(tracklist){
@@ -221,7 +154,7 @@
             bell.innerHTML = '<i class="far fa-bell"></i>';
           }
           bell.classList.add(`${data[i].store}-${data[i].originPrice}-${data[i].id}`);
-          bell.addEventListener("click", isTrack);
+          bell.addEventListener("click", product_isTrack);
           tr.appendChild(bell);
           
           let table = document.getElementById("table");
@@ -233,146 +166,7 @@
     }
     xhr.send();
 
-    function search(e) {
-        let keyword = document.getElementById('searchInput').value
-        // console.log(keyword)
-        location.assign(`/search.html?keyword=${keyword}`);
-    }
-
-    let input = document.getElementById('searchInput');
-    input.addEventListener("keyup", function(event) {
-      if (event.keyCode === 13) {
-       event.preventDefault();
-       search(this);
-      }
-    });
-
-    function isTrack(e) {
-
-      let user_info = localStorage.getItem('user_info');
-
-      if(!user_info){
-        window.alert('Please sign in first!');
-        return;
-      }else{
-
-        
-        e.target.classList.toggle("fas");
-
-        let track = e.target.parentNode.classList.value;
-        
-        let xhr = new XMLHttpRequest();
-
-        xhr.open("POST", "/api/1.0/tracklist");
-
-        xhr.setRequestHeader('Content-Type', 'application/json');
-
-        let token = JSON.parse(user_info).data.access_token;
-        xhr.setRequestHeader('Authorization', 'Bearer '+ token);
-        
-        // const tracklist = (localStorage.getItem('track_info')) ? JSON.parse(localStorage.getItem('track_info')):{
-        //   track_info: []
-        // };
-
-        let trackInfo = {
-            "product_id":track.split('-')[2], 
-            "store":track.split('-')[0],
-            "price":track.split('-')[1]
-        };
-
-        if(localStorage.getItem('track_info')){
-          let track_info = JSON.parse(localStorage.getItem('track_info'));
-
-          let product_track = track_info.find(function(item, index, array){
-
-            return item.product_id === trackInfo.product_id && item.store === trackInfo.store;
-
-          });
-          console.log(product_track)
-          
-          if(!product_track||product_track === undefined){
-
-            track_info.push(trackInfo)
-            localStorage.setItem('track_info', JSON.stringify(track_info));
-            console.log('add track cache')
-
-          }else{
-            track_info.splice(track_info.indexOf(product_track), 1);
-            localStorage.setItem('track_info', JSON.stringify(track_info));
-            console.log('delete track cache')
-          }
-
-        }else{
-          let track_info = [];
-          track_info.push(trackInfo);
-          localStorage.setItem('track_info', JSON.stringify(track_info));
-        };
-
-        xhr.send(JSON.stringify(trackInfo));
-
-        xhr.onreadystatechange = function () {
-            
-            let msg = JSON.parse(xhr.responseText);
-            // console.log(JSON.parse(msg));
-
-            if(msg.data) {
-              console.log(msg.data)
-            }else if(msg.error){
-                console.log(msg.error);
-            }
-        };
-
-      }
-
-    }
-
-    // function isTrack(e) {
-
-    //   let user_info = localStorage.getItem('user_info');
-
-    //   if(!user_info){
-    //     window.alert('Please sign in first!');
-    //     return;
-    //   }else{
-
-        
-    //     e.target.classList.toggle("fas");
-
-    //     let track = e.target.parentNode.classList.value;
-        
-    //     let xhr = new XMLHttpRequest();
-
-    //     xhr.open("POST", "/api/1.0/tracklist");
-
-    //     xhr.setRequestHeader('Content-Type', 'application/json');
-
-    //     let token = JSON.parse(user_info).data.access_token;
-
-    //     xhr.setRequestHeader('Authorization', 'Bearer '+ token);
-        
-    //     let trackInfo = {
-    //         "product_id":track.split('-')[2], 
-    //         "store":track.split('-')[0],
-    //         "price":track.split('-')[1]
-    //     };
-    //     // console.log(wishInfo)
-    //     xhr.send(JSON.stringify(trackInfo));
-
-    //     xhr.onreadystatechange = function () {
-            
-    //         let msg = JSON.parse(xhr.responseText);
-    //         // console.log(JSON.parse(msg));
-
-    //         if(msg.data) {
-    //           console.log(msg.data)
-    //         }else if(msg.error){
-    //             console.log(msg.error);
-    //         }
-    //     };
-
-    //   }
-
-    // }
+    
 
   </script>
 
