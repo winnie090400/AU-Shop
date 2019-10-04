@@ -1,6 +1,100 @@
 
+get=function(selector){
+	return document.querySelector(selector);
+};
+
+getAll=function(selector){
+	return document.querySelectorAll(selector);
+};
+
+createElement=function(tagName,settings,parentElement){
+	let obj=document.createElement(tagName);
+	if(settings.atrs){setAttributes(obj,settings.atrs);}
+	if(settings.stys){setStyles(obj,settings.stys);}
+	if(settings.evts){setEventHandlers(obj,settings.evts);}
+	if(parentElement instanceof Element){parentElement.appendChild(obj);}
+	return obj;
+};
+modifyElement=function(obj,settings,parentElement){
+	if(settings.atrs){
+		setAttributes(obj,settings.atrs);
+	}
+	if(settings.stys){
+		setStyles(obj,settings.stys);
+	}
+	if(settings.evts){
+		setEventHandlers(obj,settings.evts);
+	}
+	if(parentElement instanceof Element&&parentElement!==obj.parentNode){
+		parentElement.appendChild(obj);
+	}
+	return obj;
+};
+setStyles=function(obj,styles){
+	for(let name in styles){
+		obj.style[name]=styles[name];
+	}
+	return obj;
+};
+setAttributes=function(obj,attributes){
+	for(let name in attributes){
+		obj[name]=attributes[name];
+	}
+	return obj;
+};
+setEventHandlers=function(obj,eventHandlers,useCapture){
+	for(let name in eventHandlers){
+		if(eventHandlers[name] instanceof Array){
+			for(let i=0;i<eventHandlers[name].length;i++){
+				obj.addEventListener(name,eventHandlers[name][i],useCapture);
+			}
+		}else{
+			obj.addEventListener(name,eventHandlers[name],useCapture);
+		}
+	}
+	return obj;
+};
+ajax=function(method, src, args, headers, callback){
+	let req=new XMLHttpRequest();
+	if(method.toLowerCase()==="post"){ // post through json args
+		req.open(method, src);
+		req.setRequestHeader("Content-Type", "application/json");
+		setRequestHeaders(req, headers);
+		req.onload=function(){
+			callback(this);
+		};
+		req.send(JSON.stringify(args));
+	}else{ // get through http args
+		req.open(method, src+"?"+args);
+		setRequestHeaders(req, headers);
+		req.onload=function(){
+			callback(this);
+		};
+		req.send();
+	}
+};
+	setRequestHeaders=function(req, headers){
+		for(let key in headers){
+			req.setRequestHeader(key, headers[key]);
+		}
+	};
+getParameter=function(name){
+    let result=null, tmp=[];
+    window.location.search.substring(1).split("&").forEach(function(item){
+		tmp=item.split("=");
+		if(tmp[0]===name){
+			result=decodeURIComponent(tmp[1]);
+		}
+	});
+    return result;
+};
+
 $(function(){
 	$("#nav-placeholder").load("nav.html");
+});
+
+$(function(){
+	$("#head-placeholder").load("head.html");
 });
 
 function tracklist_isTrack(e) {
@@ -215,18 +309,17 @@ function search(e) {
 
 }
 
-let input = document.getElementById('searchInput');
+function keyup_search(e) {
 
-input.addEventListener("keyup", function(event) {
-
-	if (event.keyCode === 13) {
+    if (event.keyCode === 13) {
 
 	  	event.preventDefault();
+	  	console.log(this)
 	  	search(this);
 
 	}
 
-});
+}
 
 function signOut() {
 

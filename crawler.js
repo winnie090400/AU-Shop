@@ -287,13 +287,13 @@ new CronJob('0 57 10 * * 3', function() {
 	let elements = [
 		{c:'bath-body/c/6221/',p:10},
 		{c:'dental-care/c/6210/',p:7},
-		{c:'deodorant/c/6225/',p:6},
+		{c:'deodorant/c/6225/',p:7},
 		{c:'fragrances/c/6211/',p:1},
-		{c:'hair-care/c/6213/',p:41},
+		{c:'hair-care/c/6213/',p:42},
 		{c:'health-care/c/6226/',p:12},
-		{c:'makeup-cosmetics/c/6220/',p:61},
+		{c:'makeup-cosmetics/c/6220/',p:63},
 		{c:'shaving-grooming/c/6224/',p:9},
-		{c:'skincare/c/6218/',p:30}
+		{c:'skincare/c/6218/',p:32}
 	];
 
 	for(let element of elements){

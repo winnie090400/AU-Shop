@@ -241,22 +241,6 @@ module.exports={
 
 		});
 	},
-	// forIndex:function(size){
-	// 	return new Promise(function(resolve, reject){
-			
-	// 		conn.query(`select * from product_w order by discount desc limit ?,${size} union all select * from product_c order by discount desc limit ?,${size} union all select * from product_b order by discount desc limit ?,${size} union all select * from product_p order by discount desc limit ?,${size} union all select * from product_co order by discount desc limit ?,${size}`, function(error, results, fields){
-				
-	// 			if(error){
-	// 				reject("Database Query Error");
-	// 			}else{	
-					
-	// 				resolve({data:results});	
-					
-	// 			}
-	// 		});
-			
-	// 	});
-	// },
 	forIndex:function(size){
 		return new Promise(function(resolve, reject){
 			
@@ -519,7 +503,7 @@ module.exports={
 						if(error){
 							reject("Database Query Error");
 						}else{
-							
+
 							if(results.length > 0){
 								
 								for(let i=0; i<results.length; i++){
@@ -589,7 +573,7 @@ module.exports={
 
 				if(results.length > 0){
 					resolve({data:results});
-					console.log(results)
+			
 				}
 			});
 

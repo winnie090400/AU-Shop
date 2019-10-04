@@ -2,41 +2,13 @@
 <html lang="en">
 
 <head>
-  <link rel="import" href="/head.html">
+  <div id="head-placeholder"></div>
 </head>
 
 <body>
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-info fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="/index.html">Au Shop</a>
-      <!-- <img src="/logo/logo.png" alt=""> -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <input type="text" class="form-control" placeholder="" id="searchInput">
-          </li>
-          <li><i class="fas fa-search" onclick="search(this)"></i></li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/wishlist.html">Wish List&nbsp<i class="far fa-heart" id="heart_icon"></i></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/tracklist.html">Track List&nbsp<i class="far fa-bell" id="track_icon"></i></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/signin.html#sign-in">Sign In&nbsp<i class="far fa-user"></i></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/index.html" onclick="signOut()">Sign Out&nbsp<i class="fas fa-sign-out-alt"></i></a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <div id="nav-placeholder"></div>
 
   <div class="container mt-5">
 
@@ -79,94 +51,117 @@
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get("id");
     const store = urlParams.get("store");
-    const url = `/api/1.0/products/details?id=${productId}&store=${store}`;
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        
-        let data = JSON.parse(xhr.responseText).data;
-        console.log(data)
-        let user_info = localStorage.getItem('user_info');
-        
-        
-        let track_info,tracklist;
-        if(localStorage.getItem('track_info') === undefined){
-          tracklist = [];
-          localStorage.setItem('track_info',tracklist);
-        }else{
-          track_info = localStorage.getItem('track_info');
-          tracklist = JSON.parse(track_info);
-        }
-        
-
-        let image = document.createElement("img");
-        image.classList.add("mb-3");
-        image.src = data[0].img;
-
-        let title = document.createElement("h4");
-        title.innerHTML = data[0].title;
-        
-        let container = document.getElementById("product_container");
-        container.appendChild(image);
-        container.appendChild(title);
-
-        for (let i = 0; i < data.length; i++) {
-
-          let tr = document.createElement("tr");
-          
-          let store = document.createElement("td");
-          
-          let link = document.createElement("a");
-          if(data[i].store === 'chemistwarehouse'){
-            link.href = 'https://www.'+data[i].link;
-          }else{
-            link.href = data[i].link;
-          }
-          link.innerHTML = data[i].store;
-          store.appendChild(link);
-          tr.appendChild(store);
-
-          let price = document.createElement("td");
-          price.innerHTML = '$'+data[i].price;
-          tr.appendChild(price);
-
-          let bell = document.createElement("td");
-
-          if(tracklist){
-            let product_track = tracklist.find(function(item, index, array){
-                return item.product_id === data[i].id && item.store === data[i].store;
-              });
-
-            let heart = document.createElement("i");
-            if(!product_track){
-              bell.innerHTML = '<i class="far fa-bell"></i>';
-              console.log('not track')
-            }else{
-              bell.innerHTML = '<i class="far fa-bell fas"></i>';
-              console.log('track')
-            }
-            
-          }else{
-            bell.innerHTML = '<i class="far fa-bell"></i>';
-          }
-          bell.classList.add(`${data[i].store}-${data[i].originPrice}-${data[i].id}`);
-          bell.addEventListener("click", product_isTrack);
-          tr.appendChild(bell);
-          
-          let table = document.getElementById("table");
-          table.appendChild(tr);
-   
-        }
-        
-      }
-    }
-    xhr.send();
-
+    const url = "/api/1.0/products/details";
     
+    ajax("get", url, `id=${productId}&store=${store}`, "", function(req){
+      
+      let data=JSON.parse(req.responseText).data;
+      showProduct(data);
+
+    });
+
+    showProduct=function(data){
+
+      let user_info = localStorage.getItem('user_info');
+      
+      let track_info,tracklist;
+
+      if(localStorage.getItem('track_info') === undefined){
+
+        tracklist = [];
+        localStorage.setItem('track_info',tracklist);
+
+      }else{
+
+        track_info = localStorage.getItem('track_info');
+        tracklist = JSON.parse(track_info);
+
+      }
+
+      let container = get("#product_container");
+
+      createElement("img", {atrs:{
+        className:"mb-3", src:data[0].img
+      }}, container);
+
+      createElement("h4", {atrs:{
+        textContent:data[0].title
+      }}, container);
+
+
+      for (let i = 0; i < data.length; i++) {
+        let table = get("#table");
+        let tr = createElement("tr", "", table);
+        let store = createElement("td", "", tr);
+
+        let link = document.createElement("a");
+
+
+        if(data[i].store === 'chemistwarehouse'){
+
+          createElement("a", {atrs:{
+            href:'https://www.'+data[i].link,
+            textContent:data[i].store
+          }}, store);
+          
+        }else{
+
+          createElement("a", {atrs:{
+            href:data[i].link,
+            textContent:data[i].store
+          }}, store);
+          
+        }
+
+        createElement("td", {atrs:{
+          textContent:'$'+data[i].price
+        }}, tr);
+
+        if(tracklist){
+
+          let product_track = tracklist.find(function(item, index, array){
+              return item.product_id === data[i].id && item.store === data[i].store;
+            });
+
+          if(!product_track){
+
+            createElement("td", {atrs:{
+                className:`${data[i].store}-${data[i].originPrice}-${data[i].id}`,
+                innerHTML:'<i class="far fa-bell"></i>'
+              },evts:{
+                click:product_isTrack
+              }
+            }, tr);
+
+            console.log('not track')
+
+          }else{
+
+            createElement("td", {atrs:{
+                className:`${data[i].store}-${data[i].originPrice}-${data[i].id}`,
+                innerHTML:'<i class="far fa-bell fas"></i>'
+              },evts:{
+                click:product_isTrack
+              }
+            }, tr);
+
+            console.log('track')
+            
+          }
+          
+        }else{
+
+          createElement("td", {atrs:{
+              className:`${data[i].store}-${data[i].originPrice}-${data[i].id}`,
+              innerHTML:'<i class="far fa-bell"></i>'
+            },evts:{
+              click:product_isTrack
+            }
+          }, tr);
+
+        }
+      }
+    };
 
   </script>
 

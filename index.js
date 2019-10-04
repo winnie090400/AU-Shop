@@ -164,7 +164,7 @@ app.post("/api/1.0/wishlist", function(req, res){
 app.post("/api/1.0/user/wishlist", function(req, res){
 	
 	let accessToken=req.get("Authorization");
-
+	
 	if(accessToken){
 		accessToken=accessToken.replace("Bearer ", "");
 	}else{

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <link rel="import" href="/head.html">
+  <div id="head-placeholder"></div>
 </head>
 
 <body>
@@ -95,6 +95,11 @@
             bell.classList.add("fas");
             bell.classList.add("far");
             bell.classList.add("fa-bell");
+            bell.style.position = 'absolute';
+            bell.style.right = '2em';
+            bell.style.bottom = '2em';
+            bell.style.fontsize = '2em';
+            bell.style.cursor = 'pointer';
             bell.classList.add(`${data[i].store}-${data[i].originPrice}-${data[i].id}`);
             bell.addEventListener("click", tracklist_isTrack);
 
