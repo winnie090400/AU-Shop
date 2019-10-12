@@ -1,7 +1,3 @@
----
-title: 'AU Shop'
-disqus: price comparison website
----
 
 AU Shop
 ===
