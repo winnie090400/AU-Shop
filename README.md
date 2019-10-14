@@ -7,7 +7,7 @@ AU shop is a price comparison website powered by Node.js, aggregating product li
 
 Demo
 ---
-![](https://media.giphy.com/media/MEoqiKqdfvbwLcdtbH/giphy.gif | width=100)
+<img src="https://media.giphy.com/media/MEoqiKqdfvbwLcdtbH/giphy.gif" width="100%">
 
 Features
 ---
