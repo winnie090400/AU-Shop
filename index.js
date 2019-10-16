@@ -8,12 +8,12 @@ const CronJob = require('cron').CronJob;
 const crawler = require('./crawler.js');
 const app = express();
 const usersRouter = require('./route/user');
+const myCache = require('./cache.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static(__dirname + '/public'));
 app.use('/user', usersRouter);
-
 
 app.get("/api/1.0/products/details",function(req, res){
 
@@ -29,26 +29,27 @@ app.get("/api/1.0/products/details",function(req, res){
 });
 
 app.get("/api/1.0/all",function(req, res){
-	
-	let size=9;
 
-	dao.product.forIndex(size).then(function(data){
-		res.send(data);
-	}).catch(function(error){
-		res.send({error:error});
-	});		
+	if(myCache.get("index_cache") === undefined){
+		
+		let size=9;
+
+		dao.product.forIndex(size).then(function(data){
+			myCache.set("index_cache",data);
+			res.send(data);
+		}).catch(function(error){
+			res.send({error:error});
+		});
+		
+	}else{
+		console.log('index data from cache')
+		res.send(myCache.get("index_cache"));
+		
+	}
 
 });
 
 app.get("/api/1.0/search",function(req, res){
-
-	let accessToken=req.get("Authorization");
-
-	if(accessToken === undefined){
-		accessToken=null;
-	}else{
-		accessToken=req.get("Authorization").replace("Bearer ", "");
-	}
 
 	let size=24;
 	let keyword;
@@ -62,7 +63,7 @@ app.get("/api/1.0/search",function(req, res){
 		res.send({error:"Wrong Request"});
 	}
 
-	dao.product.search(size, accessToken, keyword).then(function(data){
+	dao.product.search(size, keyword).then(function(data){
 		res.send(data);
 	}).catch(function(error){
 		res.send({error:error});
@@ -83,13 +84,6 @@ app.get("/api/1.0/products/:category", function(req, res){
 	if(!filter){
 		filter=null;
 	}
-	
-	let accessToken=req.get("Authorization");
-	if(accessToken === undefined){
-		accessToken=null;
-	}else{
-		accessToken=req.get("Authorization").replace("Bearer ", "");
-	}
 
 	let size = 24;
 	let category = req.params.category;
@@ -102,23 +96,23 @@ app.get("/api/1.0/products/:category", function(req, res){
 	switch(category){
 
 		case "woolworths":
-			listProducts({store:'w'},filter, size, accessToken, paging, listCallback);
+			listProducts({store:'w'},filter, size, paging, listCallback);
 			break;
 			
 		case "chemistwarehouse":
-			listProducts({store:'c'},filter, size, accessToken, paging, listCallback);
+			listProducts({store:'c'},filter, size, paging, listCallback);
 			break;
 
 		case "bigw":
-			listProducts({store:'b'},filter, size, accessToken, paging, listCallback);
+			listProducts({store:'b'},filter, size, paging, listCallback);
 			break;
 
 		case "coles":
-			listProducts({store:'co'},filter, size, accessToken, paging, listCallback);
+			listProducts({store:'co'},filter, size, paging, listCallback);
 			break;
 
 		case "priceline":
-			listProducts({store:'p'},filter, size, accessToken, paging, listCallback);
+			listProducts({store:'p'},filter, size, paging, listCallback);
 			break;
 	
 		default:
@@ -126,9 +120,9 @@ app.get("/api/1.0/products/:category", function(req, res){
 	}
 });
 	
-	function listProducts(category, filters, size, accessToken, paging,callback){
+	function listProducts(category, filters, size, paging,callback){
 
-		dao.product.list(category, filters, size, accessToken, paging).then(function(body){
+		dao.product.list(category, filters, size, paging).then(function(body){
 			callback(body);
 		}).catch(function(error){
 			callback({error:error});

@@ -89,12 +89,8 @@ getParameter=function(name){
     return result;
 };
 
-$(function(){
+window.addEventListener("load",()=>{
 	$("#nav-placeholder").load("nav.html");
-});
-
-$(function(){
-	$("#head-placeholder").load("head.html");
 });
 
 function tracklist_isTrack(e) {

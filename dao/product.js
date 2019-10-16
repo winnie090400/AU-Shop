@@ -1,6 +1,6 @@
-// const conn = require("../mysql.js");
-const conn = require("../mysql.js").pool;
-const ec2 = require("../mysql.js").ec2;
+const conn = require("../mysql.js");
+// const conn = require("../mysql.js").pool;
+// const ec2 = require("../mysql.js").ec2;
 const cheerio = require("cheerio");
 
 module.exports={
@@ -16,6 +16,7 @@ module.exports={
 				let price = $(el).find('.Price').text().replace(/\s\s+/g, '').replace('$', '');
 				let discount = $(el).find('.Price').next().text().replace(/\s\s+/g, '').replace(' Off RRP!','').replace('$', '');
 				let none = $(el).find('.Price').next().attr('style');
+				let id = link.split("/")[2];
 
 				if(!discount || none == 'display:none'){
 					discount ='0';
@@ -27,7 +28,7 @@ module.exports={
 				let category = cate;
 
 				let data = {
-					id: link.split("/")[2],
+					id: id,
 					category: category,
 					link: 'chemistwarehouse.com.au'+link,
 					title: $(el).attr('title').replace(' ', ''),
@@ -39,7 +40,7 @@ module.exports={
 					store: 'chemistwarehouse'
 				}
 				
-				ec2.query("INSERT INTO product_c SET ? ON DUPLICATE KEY UPDATE originPrice=?,price=?,discount=?", [data,originPrice,price,discount], function(err, results, fields){
+				conn.query("INSERT INTO product_c SET ? ON DUPLICATE KEY UPDATE originPrice=?,price=?,discount=?", [data,originPrice,price,discount], function(err, results, fields){
 					
 					if(err){
 
@@ -49,7 +50,7 @@ module.exports={
 					console.log('insert or update chemist product')
 
 				});
-
+			    
 			});
 			
 		});
@@ -85,7 +86,7 @@ module.exports={
 
 				if(isAvailable){
 
-					ec2.query("INSERT INTO product_w SET ? ON DUPLICATE KEY UPDATE originPrice=?,price=?,discount=?", [data,originPrice,price,discount], function(err, results, fields){
+					conn.query("INSERT INTO product_w SET ? ON DUPLICATE KEY UPDATE originPrice=?,price=?,discount=?", [data,originPrice,price,discount], function(err, results, fields){
 						if(err){
 							console.log(err);
 							return;
@@ -94,15 +95,26 @@ module.exports={
 						console.log('insert or update wws product')
 					});
 
+					conn.query(`INSERT INTO product_w_copy (id) VALUES ('${id}') ON DUPLICATE KEY UPDATE id=?`, [id],function(err, results, fields){
+				
+					if(err){
+
+						console.log(err);
+						return;
+					}
+					console.log('insert into product_w_copy')
+
+				});
+
 				}else{
 
-					ec2.query("DELETE FROM product_w WHERE id = ?",id, function(err, results, fields){
+					conn.query("DELETE FROM product_w WHERE id = ?",id, function(err, results, fields){
 						if(err){
 							console.log(err);
 							return;
 						}
 
-						console.log('delete wws product')
+						console.log('delete wws product '+id)
 					});
 
 				}
@@ -145,7 +157,7 @@ module.exports={
 	        	let store = 'bigw';
 	        	let data = {id,category,link,title,subTitle,img,price,discount,originPrice,store};
 
-				ec2.query("INSERT INTO product_b SET ? ON DUPLICATE KEY UPDATE originPrice=?,price=?,discount=?", [data,originPrice,price,discount], function(err, results, fields){
+				conn.query("INSERT INTO product_b SET ? ON DUPLICATE KEY UPDATE originPrice=?,price=?,discount=?", [data,originPrice,price,discount], function(err, results, fields){
 					
 					if(err){
 						console.log(err);
@@ -154,7 +166,18 @@ module.exports={
 
 					console.log('insert or update bigw product')
 				});
-					        	
+
+			    conn.query(`INSERT INTO product_b_copy (id) VALUES ('${id}') ON DUPLICATE KEY UPDATE id=?`, [id],function(err, results, fields){
+				
+					if(err){
+
+						console.log(err);
+						return;
+					}
+					console.log('insert into product_b_copy')
+
+				});
+        	
 			});
 			
 		});
@@ -270,77 +293,27 @@ module.exports={
 			
 		});
 	},
-	search:function(size, accessToken, keyword){
+	search:function(size, keyword){
 
 		return new Promise(function(resolve, reject){
-			
-			let filter = "WHERE title LIKE "+conn.escape("%"+keyword+"%");
+			let keywords = keyword.replace(/\s+/g,'%');
+			let filter = "WHERE title LIKE "+conn.escape("%"+keywords+"%");
 			let query=`SELECT * FROM product_w ${filter} UNION ALL SELECT * FROM product_c ${filter} UNION ALL SELECT * FROM product_b ${filter} UNION ALL SELECT * FROM product_co ${filter} UNION ALL SELECT * FROM product_p ${filter} ORDER BY discount DESC`;
+
+			conn.query(query, [0,size], function(error, results, fields){
 			
-			if(accessToken){
-
-				conn.query("SELECT * FROM user WHERE token = ?", [accessToken], function(error, results, fields){
-					
-					if(error){
-						reject("Database Query Error");
-					}
-
-					let user_id = results[0].id;
-
-					conn.query("SELECT * FROM wishlist WHERE user_id = ?", [user_id], function(error, results, fields){
-						if(error){
-							reject("Database Query Error");
-						}
-
-						if(results.length > 0){
-
-							let wish = results;
-
-							conn.query(query, [0,size], function(error, results, fields){
-				
-								if(error){
-									reject("Database Query Error");
-								}else{	
-									let data = results;
-									resolve({data,wish});
-								}
-							
-							});
-
-						}else{
-
-							conn.query(query, [0,size], function(error, results, fields){
-				
-								if(error){
-									reject("Database Query Error");
-								}else{	
-									let data = results;
-									resolve({data});
-								}
-							
-							});
-						}
-
-					});
-				});
-
-			}else{
-
-				conn.query(query, [0,size], function(error, results, fields){
-				
-					if(error){
-						reject("Database Query Error");
-					}else{	
-						let data = results;
-						resolve({data});
-					}
-				
-				});
-			}
+				if(error){
+					reject("Database Query Error");
+				}else{	
+					let data = results;
+					resolve({data});
+				}
+			
+			});
 			
 		});
 	},
-	list:function(category, filters, size, accessToken, paging){
+	list:function(category, filters, size, paging){
 		
 		return new Promise(function(resolve, reject){
 	
@@ -363,82 +336,24 @@ module.exports={
 					if(paging<maxPage){
 						paging=paging+1;
 					}
-										
-					if(accessToken){
-						conn.query("SELECT * FROM user WHERE token = ?", [accessToken], function(error, results, fields){
-							if(error){
-								reject("Database Query Error 2");
-							}
-							let user_id = results[0].id;
-							conn.query("SELECT * FROM wishlist WHERE user_id = ?", [user_id], function(error, results, fields){
-								if(error){
-									reject("Database Query Error 3");
+
+					conn.query(`select * from product_${category.store} `+filter+" order by discount desc limit ?,?", [offset,size], function(error, results, fields){
+						
+						if(error){
+							reject("Database Query Error 4");
+						}else{
+							let data = results;
+
+							conn.query(`select distinct category from product_${category.store}`, function(error, results, fields){
+								let cate = [];
+								for(let i=0; i<results.length; i++){
+									cate.push(results[i].category);
 								}
-								if(results.length > 0){
-									let wish = results;
-									
-									conn.query(`select * from product_${category.store} `+filter+" order by discount desc limit ?,?", [offset,size], function(error, results, fields){
-										
-										if(error){
-											reject("Database Query Error 4");
-										}else{
-											let data = results;
-
-											conn.query(`select distinct category from product_${category.store}`, function(error, results, fields){
-												let cate = [];
-												for(let i=0; i<results.length; i++){
-													cate.push(results[i].category);
-												}
-											
-												resolve({paging,data,wish,cate});
-											});
-										}
-									});
-									
-								}else{
-									conn.query(`select * from product_${category.store} `+filter+" order by discount desc limit ?,?", [offset,size], function(error, results, fields){
-										
-										if(error){
-											reject("Database Query Error 4");
-										}else{
-											let data = results;
-
-											conn.query(`select distinct category from product_${category.store}`, function(error, results, fields){
-												let cate = [];
-												for(let i=0; i<results.length; i++){
-													cate.push(results[i].category);
-												}
-											
-												resolve({paging,data,cate});
-											});
-										}
-									});
-								}
-
-							});
-						});
-					}else{
-
-						conn.query(`select * from product_${category.store} `+filter+" order by discount desc limit ?,?", [offset,size], function(error, results, fields){
 							
-							if(error){
-								reject("Database Query Error 4");
-							}else{
-								let data = results;
-
-								conn.query(`select distinct category from product_${category.store}`, function(error, results, fields){
-									let cate = [];
-									for(let i=0; i<results.length; i++){
-										cate.push(results[i].category);
-									}
-								
-									resolve({paging,data,cate});
-								});
-							}
-						});
-
-
-					}
+								resolve({paging,data,cate});
+							});
+						}
+					});
 				}
 			});
 		});
@@ -591,7 +506,7 @@ module.exports={
 			}
 
 			conn.query("SELECT * FROM tracklist WHERE user_id = ? AND product_id = ? AND store = ?", [user_id,product_id,store], function(error, results, fields){
-				
+
 				if(results.length===0){
 					
 					conn.query("INSERT INTO tracklist SET ?", tracklist, function(error, results, fields){
@@ -629,6 +544,65 @@ module.exports={
 
 			});
 		});
+	},
+	createTable:function(tableName){
+		let query = `CREATE TABLE ${tableName} (id VARCHAR(20) PRIMARY KEY)`;
+
+	    conn.query(query, function (err, results, fields) {
+		    if(err){
+				console.log(err);
+				return;
+			}
+		    console.log("Table created");
+
+	    });
+	},
+	dropTable:function(tableName){
+		let query = `DROP TABLE ${tableName}`;
+
+	    conn.query(query, function (err, results, fields) {
+		    if(err){
+				console.log(err);
+				return;
+			}
+		    console.log("Table deleted");
+
+	    });
+	},
+	delete:function(tableName){
+		return new Promise( function(resolve, reject){
+			let copyTable = tableName+'_copy';
+
+			conn.query(`select count(*) as total from ${tableName} union all select count(*) as total from ${copyTable}`, function (err, results, fields) {
+			    if(err){
+					console.log(err);
+					return;
+				}
+				
+			    let count = results[0].total;
+			    let count_copy = results[1].total;
+			    console.log(count-count_copy)
+			
+			    console.log(typeof(count))
+
+			   //  if(count*0.05 > count_copy){
+			   //  	console.log("do crawler again");
+			   //  	reject({error:"do crawler again"});
+			   //  }else{
+			   //  	conn.query(`DELETE FROM ${tableName} WHERE id NOT IN (SELECT id from ${copyTable})`, function (err, results, fields) {
+					 //    if(err){
+						// 	console.log(err);
+						// 	return;
+						// }
+					 //    console.log("delete product");
+					 //    resolve({data:"delete product"});
+				  //   });
+			   //  }
+		    });
+		});
+	},
+	sum:function sum(a, b) {
+	  return a + b;
 	}
 	
 };

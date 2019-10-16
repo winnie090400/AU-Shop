@@ -1,16 +1,14 @@
 const pptrFirefox = require('puppeteer-firefox');
 const cheerio = require('cheerio');
 const request = require("request");
+const nodemailer = require('nodemailer');
 const dao={
 	product:require("./dao/product.js"),
 	user:require("./dao/user.js")
 };
 const CronJob = require('cron').CronJob;
 const credentials = require('./credentials.js');
-const nodemailer = require('nodemailer');
-const NodeCache = require( "node-cache" );
-const myCache = new NodeCache();
-
+const myCache = require('./cache.js');
 
 // coles 爬蟲
 
@@ -83,22 +81,16 @@ new CronJob('0 37 2 * * 3', function() {
 
 function crawler_coles(element){
 	for(let i=1; i<element.p; i++){
-		
+
 		setTimeout(async () => {
 			
 		  	const browser = await pptrFirefox.launch();
 		  	const page = await browser.newPage();
 		  	await page.goto(`https://shop.coles.com.au/a/a-vic-metro-richmond-south/everything/browse/${element.m}/${element.c}?pageNumber=${i}`);
-
-		  	//先等待網頁載入到底下的section的html標籤，不然有時候執行太快抓不到網頁
 		  	await page.waitForSelector('.product-image');
-		  
-		  	//把網頁的body抓出來
 		  	let body = await page.content();
-		  
-		  	//送到 dao 處理
 		  	dao.product.insertColes(body,element);
-
+		  	myCache.flushAll();
 		  	await browser.close();
 
 		}, i*20000);
@@ -249,10 +241,20 @@ new CronJob('0 55 10 * * 3', function() {
 
 
 // woolworths
-new CronJob('0 56 10 * * 3', function() {
-	// 105 page woolworths.com.au
+new CronJob('0 07 18 * * 2',async function() {
+	await dao.product.createTable('product_w_copy');
+
 	for(let i=1; i<106; i++){
-	
+		await crawler_woolworths(i);
+	}
+
+	await dao.product.delete('product_w');
+	await dao.product.dropTable('product_w_copy');
+
+}, null, true, 'Australia/Sydney');
+
+function crawler_woolworths(i){
+	return new Promise( function(resolve, reject){
 		request({
 	    	url: 'https://www.woolworths.com.au/apis/ui/browse/category',
 	    	method: "POST",
@@ -273,17 +275,20 @@ new CronJob('0 56 10 * * 3', function() {
 		      console.log(error);	
 		      return;
 		    }else{
-		    	dao.product.insertWws(body).then(console.log('ok!'));
+		    	dao.product.insertWws(body).then(console.log('data '+ i + ' ok!'));
+		    	resolve();
 		    }
 		});
-	}
-	
-}, null, true, 'Australia/Sydney');
+	});
+}
 
+dao.product.delete('product_b');
 
 // Big W
-new CronJob('0 57 10 * * 3', function() {
- 
+new CronJob('0 24 19 * * 2', async function() {
+
+ 	await dao.product.createTable('product_b_copy');
+
 	let elements = [
 		{c:'bath-body/c/6221/',p:10},
 		{c:'dental-care/c/6210/',p:7},
@@ -300,7 +305,19 @@ new CronJob('0 57 10 * * 3', function() {
 
 		for(let i=0; i<element.p; i++){
 
-		setTimeout(async () => {
+			await crawler_bigw(element,i);
+
+		}
+	}
+
+	// await dao.product.delete('product_b');
+	// await dao.product.dropTable('product_b_copy');
+	
+}, null, true, 'Australia/Sydney');
+
+function crawler_bigw(element,i){
+	return new Promise( function(resolve, reject){
+		// setTimeout(async () => {
 			request({
 			    url: `https://www.bigw.com.au/beauty-health/${element.c}?q=%3Arelevance&page=${i}`,
 			    method: "GET",
@@ -312,16 +329,13 @@ new CronJob('0 57 10 * * 3', function() {
 			      console.log(error);	
 			      return;
 			    }else{
-			      dao.product.insertBigw(body,element).then(console.log('ok!'));
+			      dao.product.insertBigw(body,element).then(console.log(element.c+i+'ok!'));
+			      resolve();
 		    }
 		    });
-		},i*1000*Math.floor(Math.random() * Math.floor(10)));
-
-		}
-	}
-	
-}, null, true, 'Australia/Sydney');
-
+		// },i*1000*Math.floor(Math.random() * Math.floor(5)));
+	});
+}
 
 // new CronJob('0 15 3 * * 3', function() {
 
@@ -382,7 +396,5 @@ async function sendMail() {
 		});
 	}
 
+
 };
-
-
- 

@@ -1,0 +1,70 @@
+.carousel-control-next{
+  width: 20px;
+}
+
+.carousel-control-prev{
+  width: 30px; 
+}
+
+.far.fa-heart{
+  position: absolute;
+  right: 1.5em;
+  bottom: 1em;
+  font-size: 1.5em;
+  cursor:pointer;
+}
+
+.fas.fa-heart{
+  position: absolute;
+  right: 1.5em;
+  bottom: 1em;
+  font-size: 1.5em;
+  cursor:pointer;
+}
+
+#heart_icon{
+  position:relative;
+  right: auto;
+  bottom: 0;
+}
+
+#track_icon{
+  position:relative;
+  right: auto;
+  bottom: 0;
+}
+
+.container.my-4{
+  position: relative;
+}
+
+.btn.btn-outline-warning{
+  position: absolute;
+  right: 2em;
+  top: 2em;
+}
+
+.fas.fa-search{
+  margin-top: 0.3em;
+  font-size: 1.5em;
+  color: white;
+  cursor:pointer;
+}
+
+ul li{
+  margin-right: 0.5em;
+}
+
+#top{
+  float:left;
+  font-size: 3em;
+}
+
+#product_container{
+  margin-top: 80px;
+}
+
+#product_container img{
+  height: 20em;
+  width: 20em;
+}

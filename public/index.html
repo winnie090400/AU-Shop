@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <div id="head-placeholder"></div>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>AuShop</title>
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384–5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/style2.css">
 </head>
 
 <body>
@@ -561,7 +567,7 @@
 <script src="/lib.js"></script>
 <script>
 
-  let xhr = new XMLHttpRequest();   // new HttpRequest instance 
+  let xhr = new XMLHttpRequest();
 
   xhr.open("GET", '/api/1.0/all');
 
@@ -579,7 +585,6 @@
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
-      // console.log(JSON.parse(xhr.responseText).body)
       let wws = JSON.parse(xhr.responseText).wws;
       let chemist = JSON.parse(xhr.responseText).chemist;
       let bigw = JSON.parse(xhr.responseText).bigw;
@@ -613,9 +618,7 @@
         discount.style = 'color:red';
         card.appendChild(discount);
 
-        // if(wishlist != undefined){
         if(wishlist){
-          // console.log(wishlist)
           let product_wish = wishlist.find(function(item, index, array){
               return item.product_id === wws[i].id && item.store === wws[i].store;
             });
@@ -707,7 +710,6 @@
 
         let link = document.createElement('a');
         link.href = `/product.html?id=${bigw[k].id}&store=${bigw[k].store}`;
-        // link.setAttribute("id", `${bigw[k].id}`);
         link.appendChild(image);
 
         let card = document.createElement("div");
@@ -763,7 +765,6 @@
 
         let link = document.createElement('a');
         link.href = `/product.html?id=${coles[l].id}&store=${coles[l].store}`;
-        // link.setAttribute("id", `${coles[l].id}`);
         link.appendChild(image);
 
         let card = document.createElement("div");
@@ -819,7 +820,6 @@
 
         let link = document.createElement('a');
         link.href = `/product.html?id=${priceline[m].id}&store=${priceline[m].store}`;
-        // link.setAttribute("id", `${priceline[m].id}`);
         link.appendChild(image);
 
         let card = document.createElement("div");

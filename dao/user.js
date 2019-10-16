@@ -1,6 +1,6 @@
-// const conn = require("../mysql.js");
-const conn = require("../mysql.js").pool;
-const crypto = require('crypto');
+const conn = require("../mysql.js");
+// const conn = require("../mysql.js").pool;
+// const crypto = require('crypto');
 
 module.exports={
 	create:function(email,name,pass){

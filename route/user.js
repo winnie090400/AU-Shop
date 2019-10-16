@@ -69,36 +69,4 @@ router.post('/signin', function(req, res) {
 
 });
 
-// router.get('/profile', function(request, response) {
-  	
-// 	//get bearer token
-// 	let header = request.header("authorization").split(" ");
-// 	let authorization = header[1];
-
-//   	//抓出db的token_expired time
-//   	conn.query('select * from user where token = ?',authorization,function (err,result) {
-//   		let token_expired = result[0].token_expired;
-// 		//確認 expired or not
-// 		  	if(token_expired - Date.now() <= 0){
-// 				//token過期 > redirect to singn in page
-// 				// response.redirect('/signin.html');
-// 				response.send({error:"Invalid token."});
-
-// 		  	}else{
-// 				//token有效 > send profile data
-// 				let userProfile = {};
-// 				let data = {};
-// 	            data.id = result[0].id;
-// 	            data.provider = result[0].provider;
-// 	            data.name = result[0].name;
-// 	            data.email = result[0].email;
-// 	            data.picture = result[0].picture;
-// 	            userProfile.data = data;
-// 				response.send(userProfile);
-// 		  	}
-
-// 	});
-
-// });
-
 module.exports = router;
