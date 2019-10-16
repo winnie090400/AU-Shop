@@ -11,7 +11,6 @@ const credentials = require('./credentials.js');
 const myCache = require('./cache.js');
 
 // coles 爬蟲
-
 new CronJob('0 14 2 * * 3', function() {
 	
 	crawler_coles({m:'health-beauty',c:'cosmetics',p:3})
@@ -99,49 +98,49 @@ function crawler_coles(element){
 
 // priceline
 new CronJob('0 0 1 * * 3', function() {
-	//資料筆數: 617
+
 	crawler_priceline('https://www.priceline.com.au/weight-and-vitamins');
 	
 }, null, true, 'Australia/Sydney');
 
 new CronJob('0 18 1 * * 3', function() {
-	//資料筆數: 2216
+
 	crawler_priceline('https://www.priceline.com.au/cosmetics');
 	
 }, null, true, 'Australia/Sydney');
 
 new CronJob('0 29 1 * * 3', function() {
-	//資料筆數: 2102
+
 	crawler_priceline('https://www.priceline.com.au/hair');
 	
 }, null, true, 'Australia/Sydney');
 
 new CronJob('0 45 1 * * 3', function() {
-	//資料筆數: 2244
+
 	crawler_priceline('https://www.priceline.com.au/skincare');
 	
 }, null, true, 'Australia/Sydney');
 
 new CronJob('0 55 1 * * 3', function() {
-	//資料筆數: 729
+
 	crawler_priceline('https://www.priceline.com.au/fragrances');
 	
 }, null, true, 'Australia/Sydney');
 
 new CronJob('0 2 2 * * 3', function() {
-	//資料筆數: 793
+
 	crawler_priceline('https://www.priceline.com.au/health');
 	
 }, null, true, 'Australia/Sydney');
 
 new CronJob('0 9 2 * * 3', function() {
-	//資料筆數: 156
+
 	crawler_priceline('https://www.priceline.com.au/diet-and-nutrition');
 	
 }, null, true, 'Australia/Sydney');
 
 new CronJob('0 10 2 * * 3', function() {
-	//資料筆數: 422
+
 	crawler_priceline('https://www.priceline.com.au/mens');
 	
 }, null, true, 'Australia/Sydney');
@@ -166,11 +165,8 @@ new CronJob('0 10 2 * * 3', function() {
 
   	await page.waitFor(5000);
 
-  
-    // 把網頁的body抓出來
     let body = await page.content();
 
-    //送到 dao 處理
 	dao.product.insertPriceline(body);
 
     await browser.close();
@@ -198,7 +194,6 @@ new CronJob('0 10 2 * * 3', function() {
 
 // chemistwarehouse
 new CronJob('0 55 10 * * 3', function() {
-	// get vitamin product from (sorce: chemistwarehouse.com.au, insert into database( table name: product_c ))
 	let element = ['/81/vitamins','/542/fragrances','/665/skin-care','/648/cosmetics','/159/oral-hygiene-and-dental-care','/792/household','/129/hair-care','/1255/sports-nutrition'];
 	for(let i=0; i<element.length; i++){
 	  setTimeout(async () => {
@@ -310,14 +305,13 @@ new CronJob('0 24 19 * * 2', async function() {
 		}
 	}
 
-	// await dao.product.delete('product_b');
-	// await dao.product.dropTable('product_b_copy');
+	await dao.product.delete('product_b');
+	await dao.product.dropTable('product_b_copy');
 	
 }, null, true, 'Australia/Sydney');
 
 function crawler_bigw(element,i){
 	return new Promise( function(resolve, reject){
-		// setTimeout(async () => {
 			request({
 			    url: `https://www.bigw.com.au/beauty-health/${element.c}?q=%3Arelevance&page=${i}`,
 			    method: "GET",
@@ -333,15 +327,14 @@ function crawler_bigw(element,i){
 			      resolve();
 		    }
 		    });
-		// },i*1000*Math.floor(Math.random() * Math.floor(5)));
 	});
 }
 
-// new CronJob('0 15 3 * * 3', function() {
+new CronJob('0 15 3 * * 3', function() {
 
-// 	sendMail();
+	sendMail();
 
-// }, null, true, 'Australia/Sydney');
+}, null, true, 'Australia/Sydney');
 
 
 async function sendMail() {
@@ -395,6 +388,4 @@ async function sendMail() {
 			return error;
 		});
 	}
-
-
 };

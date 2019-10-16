@@ -7,10 +7,6 @@ const dao = {
 const user = require("./route/user.js");
 const supertest = require('supertest');
 
-test('adds 1 + 2 to equal 3', () => {
-  expect(dao.product.sum(1, 2)).toBe(3);
-});
-
 // wishlist RESTful APIs test
 test('wishlist add test', () => {
   return dao.product.wishlist('10103','bigw','3d42ef457876b74874be115c228db6fc51f71708e897f0093669b18a2d0d1642').then(data => {
@@ -63,7 +59,6 @@ test('if request to chemistwarehouse website, connected and get product successf
 		let title = $('.product-container').attr('title').replace(' ', '');
 		let subTitle = link.split("/")[3].split("?")[0];
 
-		// expect(statusCode).toBe('200');
 		expect(link).not.toBeNull();
 		expect(price).not.toBeNull();
 		expect(originPrice).not.toBeNull();
@@ -122,7 +117,6 @@ test('if request to woolworths website, connected and get product successful', (
 
 		let discount = originPrice - price;
 		
-		// expect(statusCode).toBe(200);
 		expect(id).not.toBeNull();
 		expect(category).not.toBeNull();
 		expect(link).not.toBeNull();
@@ -175,7 +169,6 @@ test('if request to bigw website, connected and get product successful', () => {
     	let subTitle = link.split("/")[4];
     	let originPrice = Math.floor((parseFloat(price) + parseFloat(discount))*100) / 100;
 
-		// expect(statusCode).toBe(200);
 		expect(id).not.toBeNull();
 		expect(link).not.toBeNull();
 		expect(subTitle).not.toBeNull();
@@ -186,48 +179,6 @@ test('if request to bigw website, connected and get product successful', () => {
 	  }
 	});
 });
-
-
-// test('test signup', () => {
-//     request({
-//     	url: 'https://kelolooo.con/user/signup',
-//     	method: "POST",
-	    // json:{
-	    // 	"name":"",
-	    // 	"email":"",
-	    // 	"pass":"",
-    	// }
-//   	}, function(error, res, body) {
-// 		if (!error) {
-// 			expect(body).toEqual({error:"Wrong Request"});
-// 		}
-// 	});
-// });
-
-
-// test('test signup', async () => {
-//     const response = await supertest(user).post('/user/signup').set();
-//     .send('name=john')
-//     // expect(response.statusCode).toBe(200);
-//     expect(res.body).toHaveProperty(error);
-// });
-
-// describe('POST /user/signup', function() {
-//   it('responds with json', function() {
-//     return supertest(user)
-//       .post('/user/signup')
-//       .set('Accept', 'application/json')
-//       // .send('{}name=""')
-//       // .send('email=""')
-//       // .send('pass=""')
-//       // .expect(200)
-//       .then(res => {
-//           expect(res.body).toHaveProperty(error);
-//       })
-
-//   });
-// });
-
 
 describe('test user signup', function() {
   test('test1', () => {

@@ -31,7 +31,7 @@ Features
 * Database:
     * Setting **index** for tables for performance
     * Implemented database **CRUD** for user tracklist and wishlist
-* RESTful APIs: Build RESTful APIs for front-end development
+* RESTful APIs: Build RESTful APIs for front-end development, [API Document](https://github.com/winnie090400/crawler/blob/master/api_doc.md)
 * Notification: Send email notification with weekly product price by **nodemailer**
 * Cache: Add cache mechanism by **node-cache**
 * Authentication: Engaged authentication and generated user token by **hash** function in crypto module to ensure user data security
@@ -65,6 +65,9 @@ Database Schema
 ---
 ![](https://i.imgur.com/n96dysk.png)
 
+API Document
+---
+[API Document](https://github.com/winnie090400/crawler/blob/master/api_doc.md)
 
 Contact
 ---

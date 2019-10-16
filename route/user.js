@@ -17,6 +17,7 @@ router.post('/signup', function(req, res) {
 	res.send({error:"Wrong Request"});
 	return;
   }
+
   dao.user.create(email,name,pass).then(function(data){
 		res.send(data);
 	}).catch(function(error){
@@ -24,18 +25,11 @@ router.post('/signup', function(req, res) {
 	});
 });
 
-
-
 router.post('/signin', function(req, res) {
 
 	let email = req.body.email;
 	let pass = req.body.pass;
 	let provider = req.body.provider;
-
-	// if(!email||!pass){
-	// 	res.send({error:"Wrong Request"});
-	// 	return;
-	// }
 
 	if(provider == "native"){
 
@@ -47,26 +41,20 @@ router.post('/signin', function(req, res) {
 
     }else if(provider == "facebook"){
     	let fbToken = req.body.token;
-    	//從header request取得fb token
+
     	request('https://graph.facebook.com/v3.3/me?&fields=name,email&access_token=' + fbToken, (error, resp, body) => {
     	    
     		let fbbody = JSON.parse(body);
     		let name = fbbody.name;
     		let email = fbbody.email;
 
-	    	//判斷email 在DB內有沒有資料
-
 	    	dao.user.FB(name,email).then(function(data){
 				res.send(data);
 			}).catch(function(error){
 				res.send({error:error});
 			});
-	    	
-
 		});
-  
     }   
-
 });
 
 module.exports = router;

@@ -1,6 +1,4 @@
 const conn = require("../mysql.js");
-// const conn = require("../mysql.js").pool;
-// const ec2 = require("../mysql.js").ec2;
 const cheerio = require("cheerio");
 
 module.exports={
@@ -581,28 +579,21 @@ module.exports={
 				
 			    let count = results[0].total;
 			    let count_copy = results[1].total;
-			    console.log(count-count_copy)
-			
-			    console.log(typeof(count))
 
-			   //  if(count*0.05 > count_copy){
-			   //  	console.log("do crawler again");
-			   //  	reject({error:"do crawler again"});
-			   //  }else{
-			   //  	conn.query(`DELETE FROM ${tableName} WHERE id NOT IN (SELECT id from ${copyTable})`, function (err, results, fields) {
-					 //    if(err){
-						// 	console.log(err);
-						// 	return;
-						// }
-					 //    console.log("delete product");
-					 //    resolve({data:"delete product"});
-				  //   });
-			   //  }
+			    if(count*0.05 > count_copy){
+			    	console.log("do crawler again");
+			    	reject({error:"do crawler again"});
+			    }else{
+			    	conn.query(`DELETE FROM ${tableName} WHERE id NOT IN (SELECT id from ${copyTable})`, function (err, results, fields) {
+					    if(err){
+							console.log(err);
+							return;
+						}
+					    console.log("delete product");
+					    resolve({data:"delete product"});
+				    });
+			    }
 		    });
 		});
-	},
-	sum:function sum(a, b) {
-	  return a + b;
 	}
-	
 };
