@@ -106,7 +106,7 @@
 }
 ```
 
-* **Error Response: 4XX**
+* **Error Response:**
 
 | Field | Type | Description |
 | :---: | :---: | :---: |
@@ -209,7 +209,7 @@
 }
 ```
 
-* **Error Response: 4XX**
+* **Error Response:**
 
 | Field | Type | Description |
 | :---: | :---: | :---: |
@@ -272,7 +272,7 @@
 }
 ```
 
-* **Error Response: 4XX**
+* **Error Response:**
 
 | Field | Type | Description |
 | :---: | :---: | :---: |
@@ -343,7 +343,7 @@ or
 }
 ```
 
-* **Error Response: 4XX**
+* **Error Response:**
 
 | Field | Type | Description |
 | :---: | :---: | :---: |
@@ -462,7 +462,7 @@ or
 }
 ```
 
-* **Error Response: 4XX**
+* **Error Response:**
 
 | Field | Type | Description |
 | :---: | :---: | :---: |

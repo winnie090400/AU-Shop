@@ -63,7 +63,7 @@ Backend Architecture
 
 Database Schema
 ---
-![](https://i.imgur.com/n96dysk.png)
+![](https://i.imgur.com/tfcxLvt.png)
 
 API Document
 ---

@@ -96,56 +96,6 @@ function crawler_coles(element){
 	}
 }
 
-// priceline
-new CronJob('0 0 1 * * 3', function() {
-
-	crawler_priceline('https://www.priceline.com.au/weight-and-vitamins');
-	
-}, null, true, 'Australia/Sydney');
-
-new CronJob('0 18 1 * * 3', function() {
-
-	crawler_priceline('https://www.priceline.com.au/cosmetics');
-	
-}, null, true, 'Australia/Sydney');
-
-new CronJob('0 29 1 * * 3', function() {
-
-	crawler_priceline('https://www.priceline.com.au/hair');
-	
-}, null, true, 'Australia/Sydney');
-
-new CronJob('0 45 1 * * 3', function() {
-
-	crawler_priceline('https://www.priceline.com.au/skincare');
-	
-}, null, true, 'Australia/Sydney');
-
-new CronJob('0 55 1 * * 3', function() {
-
-	crawler_priceline('https://www.priceline.com.au/fragrances');
-	
-}, null, true, 'Australia/Sydney');
-
-new CronJob('0 2 2 * * 3', function() {
-
-	crawler_priceline('https://www.priceline.com.au/health');
-	
-}, null, true, 'Australia/Sydney');
-
-new CronJob('0 9 2 * * 3', function() {
-
-	crawler_priceline('https://www.priceline.com.au/diet-and-nutrition');
-	
-}, null, true, 'Australia/Sydney');
-
-new CronJob('0 10 2 * * 3', function() {
-
-	crawler_priceline('https://www.priceline.com.au/mens');
-	
-}, null, true, 'Australia/Sydney');
-
-
   async function crawler_priceline(url){
 
   const browser = await pptrFirefox.launch({headless:false});
@@ -277,8 +227,6 @@ function crawler_woolworths(i){
 	});
 }
 
-dao.product.delete('product_b');
-
 // Big W
 new CronJob('0 24 19 * * 2', async function() {
 
@@ -312,21 +260,21 @@ new CronJob('0 24 19 * * 2', async function() {
 
 function crawler_bigw(element,i){
 	return new Promise( function(resolve, reject){
-			request({
-			    url: `https://www.bigw.com.au/beauty-health/${element.c}?q=%3Arelevance&page=${i}`,
-			    method: "GET",
-			    headers:{
-			    	'User-Agent':'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Mobile Safari/537.36'
-			    }
-			  }, function(error, response, body) {
-			    if (error) {
-			      console.log(error);	
-			      return;
-			    }else{
-			      dao.product.insertBigw(body,element).then(console.log(element.c+i+'ok!'));
-			      resolve();
+		request({
+		    url: `https://www.bigw.com.au/beauty-health/${element.c}?q=%3Arelevance&page=${i}`,
+		    method: "GET",
+		    headers:{
+		    	'User-Agent':'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Mobile Safari/537.36'
 		    }
-		    });
+		  }, function(error, response, body) {
+		    if (error) {
+		      console.log(error);	
+		      return;
+		    }else{
+		      dao.product.insertBigw(body,element).then(console.log(element.c+i+'ok!'));
+		      resolve();
+		    }
+    	});
 	});
 }
 

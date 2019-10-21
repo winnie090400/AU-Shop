@@ -205,7 +205,7 @@ module.exports={
 			let store = 'coles';
 			let data = {id,category,link,title,subTitle,img,price,discount,originPrice,store};
 	    	
-			ec2.query("INSERT INTO product_co SET ? ON DUPLICATE KEY UPDATE originPrice=?,price=?,discount=?", [data,originPrice,price,discount], function(err, results, fields){
+			conn.query("INSERT INTO product_co SET ? ON DUPLICATE KEY UPDATE originPrice=?,price=?,discount=?", [data,originPrice,price,discount], function(err, results, fields){
 				if(err){
 					console.log(err);
 					return;
@@ -251,7 +251,7 @@ module.exports={
 			let store = 'priceline';
 	    	let data = {id,category,link,title,subTitle,img,price,discount,originPrice,store};
 			
-			ec2.query("INSERT INTO product_p SET ? ON DUPLICATE KEY UPDATE originPrice=?,price=?,discount=?", [data,originPrice,price,discount], function(err, results, fields){
+			conn.query("INSERT INTO product_p SET ? ON DUPLICATE KEY UPDATE originPrice=?,price=?,discount=?", [data,originPrice,price,discount], function(err, results, fields){
 				if(err){
 					console.log(err);
 					return;
