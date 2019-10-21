@@ -56,12 +56,14 @@ module.exports={
 	},
 	native:function(email,pass,provider){
 		return new Promise(function(resolve, reject){
+		
 			conn.query('select id from user where email = ? and password = ? and provider = "native"', [email,pass] , function (err,results) {
 
 			    if (!results.length){
 		            reject({error:"user info not founded"});
 		            
 			    }else{
+		    	
 			    	let hash = crypto.createHash('sha256');
 			    	hash.update(crypto.randomBytes(48));
 			        let token = hash.digest('hex');
@@ -99,7 +101,7 @@ module.exports={
 			 			});
 			        });
 		    	}
-	    	}); 	
+	    	}); 
 		});
 	},
 	FB:function(name,email){
@@ -168,13 +170,9 @@ module.exports={
 				            	});
 			            		
 			            	});
-
 			 			});
-
-			        });
-				        
+			        });				        
 			    }
-
 		    });
 	  });  
 	},
@@ -202,7 +200,6 @@ module.exports={
 				}else{
 					let data = results;
 					resolve({data});
-					
 				}
 			});
 		});

@@ -91,18 +91,17 @@ module.exports={
 						}
 						
 						console.log('insert or update wws product')
+	
 					});
 
 					conn.query(`INSERT INTO product_w_copy (id) VALUES ('${id}') ON DUPLICATE KEY UPDATE id=?`, [id],function(err, results, fields){
-				
-					if(err){
+						if(err){
+							console.log(err);
+							return;
+						}
+						console.log('insert into product_w_copy')
 
-						console.log(err);
-						return;
-					}
-					console.log('insert into product_w_copy')
-
-				});
+					});
 
 				}else{
 
@@ -111,18 +110,13 @@ module.exports={
 							console.log(err);
 							return;
 						}
-
 						console.log('delete wws product '+id)
 					});
-
 				}
-
-			}
-			
+			}			
 		});
 	},
-	insertBigw:function(body,element){
-		
+	insertBigw:function(body,element){	
 		return new Promise(function(resolve, reject){
 
 			let $ = cheerio.load(body);
@@ -163,6 +157,7 @@ module.exports={
 					}
 
 					console.log('insert or update bigw product')
+
 				});
 
 			    conn.query(`INSERT INTO product_b_copy (id) VALUES ('${id}') ON DUPLICATE KEY UPDATE id=?`, [id],function(err, results, fields){
@@ -175,9 +170,7 @@ module.exports={
 					console.log('insert into product_b_copy')
 
 				});
-        	
 			});
-			
 		});
 	},
 	insertColes:function(body,element){
@@ -210,10 +203,8 @@ module.exports={
 					console.log(err);
 					return;
 				}
-
 				console.log('insert or update coles product')
 			});
-	  		
 		});
 	},
 	insertPriceline:function(body){
@@ -259,7 +250,6 @@ module.exports={
 
 				console.log('insert or update product')
 			});
-
 		});
 	},
 	forIndex:function(size){
@@ -306,13 +296,10 @@ module.exports={
 					let data = results;
 					resolve({data});
 				}
-			
 			});
-			
 		});
 	},
 	list:function(category, filters, size, paging){
-		
 		return new Promise(function(resolve, reject){
 	
 			let offset=paging*size;

@@ -120,7 +120,6 @@
             
             xhr.setRequestHeader('Content-Type', 'application/json');
             
-
             var userInfo = { 
                 "name": document.getElementById("name").value,
                 "email": document.getElementById("email").value,
@@ -167,7 +166,6 @@
                     document.getElementById("msg2").style.color = "red";
                 }
             };
-
         }
 
     </script>
@@ -219,34 +217,30 @@
 
     
     <script>
-      //FB SDK
-      window.fbAsyncInit = function() {
+    //FB SDK
+    window.fbAsyncInit = function() {
         FB.init({
           appId      : '2231839726913744',  //應用程式編碼
           cookie     : true,
           xfbml      : true,
           version    : 'v3.3'  //預設版本
         });
-        
+
         //檢查用戶登入狀態所執行的部分程式碼：  
         FB.getLoginStatus(function(response) {
             statusChangeCallback(response);
             console.log(response);
         });   
-          
-      };
+      
+    };
         
-        //提供給回呼的 response 物件
-      function statusChangeCallback(response) {
+    //提供給回呼的 response 物件
+    function statusChangeCallback(response) {
         if (response.status === 'connected') {
-
-
             var userInfo = {
                 token:response.authResponse.accessToken,
                 provider:"facebook",
             }
-
-            console.log(response.authResponse.accessToken);
 
             let xhr = new XMLHttpRequest();
             xhr.open("POST","/user/signin");
@@ -268,27 +262,23 @@
                 }
               testAPI();
             }
-            
-
         }
+    }
 
-      }
+    function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+        
+        });
+    }
 
-      function checkLoginState() {
-            FB.getLoginStatus(function(response) {
-            statusChangeCallback(response);
-            
-            });
-        }
-
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "https://connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
 
 
        function testAPI() {
