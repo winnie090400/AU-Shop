@@ -96,51 +96,44 @@ function crawler_coles(element){
 	}
 }
 
-  async function crawler_priceline(url){
+async function crawler_priceline(url){
 
-  const browser = await pptrFirefox.launch({headless:false});
-  const page = await browser.newPage();
-  
-  	await page.goto(url);
-
+	const browser = await pptrFirefox.launch({headless:false});
+	const page = await browser.newPage();
+	await page.goto(url);
 	await page.setViewport({
-        width: 1200,
-        height: 800
-    });
-  	await page.waitForSelector('body');
-
-  	await page.click('#start-next-page');
-
-  	await autoScroll(page);
-
-  	await page.waitFor(5000);
-
-    let body = await page.content();
-
+	    width: 1200,
+	    height: 800
+	});
+	await page.waitForSelector('body');
+	await page.click('#start-next-page');
+	await autoScroll(page);
+	await page.waitFor(5000);
+	let body = await page.content();
 	dao.product.insertPriceline(body);
+	await browser.close();
 
-    await browser.close();
-	};
+};
   
 
-	async function autoScroll(page){
-	    await page.evaluate(async () => {
-	        await new Promise((resolve, reject) => {
-	            var totalHeight = 0;
-	            var distance = 100;
-	            var timer = setInterval(() => {
-	                var scrollHeight = document.body.scrollHeight;
-	                window.scrollBy(0, distance);
-	                totalHeight += distance;
+async function autoScroll(page){
+    await page.evaluate(async () => {
+        await new Promise((resolve, reject) => {
+            let totalHeight = 0;
+            let distance = 100;
+            let timer = setInterval(() => {
+                let scrollHeight = document.body.scrollHeight;
+                window.scrollBy(0, distance);
+                totalHeight += distance;
 
-	                if(totalHeight >= scrollHeight){
-	                    clearInterval(timer);
-	                    resolve();
-	                }
-	            },400);
-	        });
-	    });
-	}
+                if(totalHeight >= scrollHeight){
+                    clearInterval(timer);
+                    resolve();
+                }
+            },400);
+        });
+    });
+}
 
 // chemistwarehouse
 new CronJob('0 55 10 * * 3', function() {
@@ -181,9 +174,7 @@ new CronJob('0 55 10 * * 3', function() {
 		});
 	  }, i*20000);
 	}
-	
 }, null, true, 'Australia/Sydney');
-
 
 // woolworths
 new CronJob('0 07 18 * * 2',async function() {
@@ -283,7 +274,6 @@ new CronJob('0 15 3 * * 3', function() {
 	sendMail();
 
 }, null, true, 'Australia/Sydney');
-
 
 async function sendMail() {
   
