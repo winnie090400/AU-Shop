@@ -67,3 +67,7 @@ credentials.json
 mysql.js
 
 crawler.js
+
+dump.sql
+
+constant.js
