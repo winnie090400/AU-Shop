@@ -114,13 +114,13 @@
         
         function signup() {
 
-            var xhr = new XMLHttpRequest();
+            let xhr = new XMLHttpRequest();
             
             xhr.open("POST", "/user/signup");
             
             xhr.setRequestHeader('Content-Type', 'application/json');
             
-            var userInfo = { 
+            let userInfo = { 
                 "name": document.getElementById("name").value,
                 "email": document.getElementById("email").value,
                 "pass": document.getElementById("pass").value
@@ -174,13 +174,13 @@
         
         function signin() {
 
-            var xhr = new XMLHttpRequest();
+            let xhr = new XMLHttpRequest();
 
             xhr.open("POST", "/user/signin");
 
             xhr.setRequestHeader('Content-Type', 'application/json');
             
-            var userInfo = {
+            let userInfo = {
                 "provider":"native", 
                 "email": document.getElementById("your_email").value,
                 "pass": document.getElementById("your_pass").value
@@ -237,7 +237,7 @@
     //提供給回呼的 response 物件
     function statusChangeCallback(response) {
         if (response.status === 'connected') {
-            var userInfo = {
+            let userInfo = {
                 token:response.authResponse.accessToken,
                 provider:"facebook",
             }
@@ -273,7 +273,7 @@
     }
 
     (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
+        let js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) {return;}
             js = d.createElement(s); js.id = id;
             js.src = "https://connect.facebook.net/en_US/sdk.js";
